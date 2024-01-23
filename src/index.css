@@ -15,9 +15,18 @@ body{
   width: 100vw;
   overflow-x: hidden;
   font-family: "Poppins", sans-serif;
+  background-color: #E2E2E2
 }
 :root {
   
 }
 
+.gradient-circle {
+  background: radial-gradient(
+    circle at 50% 50%,
+    #f1c9c7 1%,
+    #E2E2E2 55%,
+    #E2E2E2
+  );
+}
 

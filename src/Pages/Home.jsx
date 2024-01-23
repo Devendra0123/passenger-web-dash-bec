@@ -1,9 +1,30 @@
-import React from 'react'
+import React from "react";
+import CurrentRide from "../components/CurrentRide";
+import ScheduledBooking from "../components/ScheduledBooking";
+import Notice from "../components/Notice";
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div className="w-full flex justify-center">
+      <div className="w-full grid grid-cols-2 gap-[30px]">
+        {/* Current Ride */}
+        <div>
+          <CurrentRide />
+        </div>
 
-export default Home
+        <div className="flex flex-col gap-[30px]">
+          {/* notices */}
+          <div>
+            <Notice />
+          </div>
+          {/* scheduled booking */}
+          <div>
+            <ScheduledBooking />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;

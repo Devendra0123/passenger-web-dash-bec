@@ -8,26 +8,26 @@ export const navItems = [
     {
         name: 'Schedule Booking',
         slug: "",
-        icon: GrSchedule
+        icon: './asset/icons/schedule.svg'
     },
     {
         name: 'Notice',
         slug: "",
-        icon: AiOutlineNotification 
+        icon: './asset/icons/notice.svg' 
     },
     {
         name: 'Services History',
         slug: "",
-        icon: MdOutlineHistory 
-    },
-    {
-        name: 'FAQ',
-        slug: "",
-        icon: FaQuestionCircle
+        icon: './asset/icons/history.svg' 
     },
     {
         name: 'Invoice',
         slug: "",
-        icon: LiaFileInvoiceDollarSolid 
+        icon: './asset/icons/invoice.svg' 
+    },
+    {
+        name: 'FAQ',
+        slug: "",
+        icon: './asset/icons/faq.svg'
     },
 ]

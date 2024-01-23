@@ -8,18 +8,20 @@ import GoogleMap from "./Pages/GoogleMap";
 
 function App() {
   return (
-    <div className="w-full min-h-[100vh] flex justify-center bg-slate-200">
-      <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl grid grid-cols-7 gap-[40px] mt-[50px]">
-        <div className="col-span-2">
+    <div className="w-full min-h-[100vh] flex justify-center">
+      <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[30px] mt-[50px]">
+        <div className="col-span-2 h-full">
           <Sidebar />
         </div>
-        <div className="col-span-5">
+        <div className="col-span-5 h-full">
           <Header />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
-          </Routes>
+          <div className="mt-[30px] h-full">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
+            </Routes>
+          </div>
         </div>
       </div>
     </div>

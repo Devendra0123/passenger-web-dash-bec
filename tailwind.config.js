@@ -13,7 +13,7 @@ export default {
         width_xl: "95%"
       },
       colors:{
-        primary: "#EC6536"
+        primary: "#E63631"
       }
     },
   },
