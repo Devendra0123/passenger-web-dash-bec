@@ -50,8 +50,8 @@ const GoogleMapDirection = () => {
       <div className="w-full flex flex-col items-center justify-center gap-[6px]">
         <div className="w-full flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-[3px] rounded-[25px] border px-[15px] py-[5px]">
-              <img src="./asset/icons/passenger.svg" alt="passenger" className="w-[16px] h-[16px]" />
+            <div className="bg-blue-500 text-white flex items-center gap-[3px] rounded-[25px] border border-blue-500 px-[15px] py-[5px]">
+              <img src="/asset/icons/passenger.svg" alt="passenger" className="w-[16px] h-[16px]" />
               <p className="">POB</p>
             </div>
           </div>
