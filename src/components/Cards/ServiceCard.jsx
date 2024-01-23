@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const ServiceCard = ({ data, serviceType }) => {
+const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
   const { dateAndTime, price, duration, bkid, vehicle, location, distance } = data;
   return (
-    <div className={`cursor-pointer w-full ${serviceType == "current" ? "bg-orange-100 rounded-[15px]" : "border-b border-primary hover:bg-orange-100 hover:rounded-[15px]"} flex flex-col gap-[12px] p-[10px]`}>
+    <Link to={doNotShowHoverEffect ? "" : `/service-details/${bkid}`} className={`cursor-pointer w-full ${serviceType == "current" ? "bg-orange-100 rounded-[15px]" : `border-b border-primary ${doNotShowHoverEffect ? "" : "hover:bg-orange-100 hover:rounded-[15px]"}`} flex flex-col gap-[12px] p-[10px]`}>
       <div className="w-full flex items-center justify-between">
         <p className="text-slate-500 text-[13px]">{dateAndTime}</p>
         <p className="text-slate-500 text-[14px]">{distance}</p>
@@ -17,7 +18,7 @@ const ServiceCard = ({ data, serviceType }) => {
           </p>
           <div className="flex items-center gap-[5px]">
             <img
-              src="./asset/icons/vehicle.svg"
+              src="/asset/icons/vehicle.svg"
               alt=""
               className="w-[20] h-[20]"
             />
@@ -27,7 +28,7 @@ const ServiceCard = ({ data, serviceType }) => {
         <div>
           <div className="flex items-center gap-[5px]">
             <img
-              src="./asset/icons/duration.svg"
+              src="/asset/icons/duration.svg"
               alt=""
               className=""
             />
@@ -44,7 +45,7 @@ const ServiceCard = ({ data, serviceType }) => {
           </p>
         </div>
         <div>
-          <img src="./asset/icons/arrow.svg" alt="arrow" />
+          <img src="/asset/icons/arrow.svg" alt="arrow" />
         </div>
         <div>
           <p className="text-end">
@@ -53,7 +54,7 @@ const ServiceCard = ({ data, serviceType }) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

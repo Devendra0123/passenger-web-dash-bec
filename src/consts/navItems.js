@@ -6,28 +6,33 @@ import { FaQuestionCircle } from "react-icons/fa";
 
 export const navItems = [
     {
+        name: 'Dashboard',
+        slug: "",
+        icon: '/asset/icons/schedule.svg'
+    },
+    {
         name: 'Schedule Booking',
         slug: "",
-        icon: './asset/icons/schedule.svg'
+        icon: '/asset/icons/schedule.svg'
     },
     {
         name: 'Notice',
         slug: "",
-        icon: './asset/icons/notice.svg' 
+        icon: '/asset/icons/notice.svg' 
     },
     {
         name: 'Services History',
         slug: "",
-        icon: './asset/icons/history.svg' 
+        icon: '/asset/icons/history.svg' 
     },
     {
         name: 'Invoice',
         slug: "",
-        icon: './asset/icons/invoice.svg' 
+        icon: '/asset/icons/invoice.svg' 
     },
     {
         name: 'FAQ',
         slug: "",
-        icon: './asset/icons/faq.svg'
+        icon: '/asset/icons/faq.svg'
     },
 ]

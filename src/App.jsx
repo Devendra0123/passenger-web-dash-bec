@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import SignIn from "./Pages/SignIn";
 import GoogleMap from "./Pages/GoogleMap";
+import ServiceDetails from "./Pages/ServiceDetails";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
           <div className="mt-[30px] h-full">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/service-details/:slug" element={<ServiceDetails />} />
+              {/* <Route path="/sign-in" element={<SignIn />} /> */}
               {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>
           </div>

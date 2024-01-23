@@ -1,18 +1,19 @@
 import React from "react";
 import { navItems } from "../consts/navItems";
 import IconText from "./element/IconText";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
     <div className="sticky top-[50px] w-full h-[85vh] bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">
-        <div className="w-full flex items-center justify-center">
+        <Link to="/" className="w-full flex items-center justify-center">
           <img
-            src="./asset/logo/logo.png"
+            src="/asset/logo/logo.png"
             alt="logo"
             className="h-[100px] object-contain"
           />
-        </div>
+        </Link>
         <div className="mt-[20px] flex flex-col">
           {navItems?.length > 0 &&
             navItems.map(({ icon, name, slug }, index) => (
@@ -32,7 +33,7 @@ const Sidebar = () => {
 
       <div className="flex flex-col gap-[20px]">
         <div className="flex items-center gap-[10px]">
-          <img src="./asset/icons/account.svg" alt="account" className="w-[20px] h-[22px"  />
+          <img src="/asset/icons/account.svg" alt="account" className="w-[20px] h-[22px"  />
           <p>Account</p>
         </div>
       </div>

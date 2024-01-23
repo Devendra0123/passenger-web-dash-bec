@@ -37,9 +37,9 @@ export const scheduledBookingData = [
   {
     dateAndTime: "02/12/2024 12:55pm",
     price: "$71.46",
-    duration: "1hrs 45mins",
-    bkid: "10003",
-    distance: "20km",
+    duration: "11 hr 40 min ",
+    bkid: "20203",
+    distance: "1,053.8 km",
     vehicle: {
       name: "Executive Sedan",
       brand: "",
@@ -48,20 +48,20 @@ export const scheduledBookingData = [
       origin: {
         lat: "",
         long: "",
-        place: "New York, Ny",
+        place: "Paris",
         country: {
           id: "",
-          name: "USA",
+          name: "France",
         },
       },
 
       destination: {
         lat: "",
         long: "",
-        place: "Connecticut",
+        place: "Berlin",
         country: {
           id: "",
-          name: "USA",
+          name: "Germany",
         },
       },
     },
