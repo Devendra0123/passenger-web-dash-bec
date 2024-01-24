@@ -1,12 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { scheduledBookingData } from "../consts/servicesData";
-import ServiceCard from "../components/Cards/ServiceCard";
+
+// For Responsiveness to arrage boxes in correct order
+const RenderBoxes = () => {
+  useEffect(() => {
+    if (window.innerWidth <= 480) {
+      const divElements = document.querySelectorAll(".box");
+      const divArray = Array.from(divElements);
+      divArray.sort((a, b) => {
+        const idA = parseInt(a.getAttribute("data-id"));
+        const idB = parseInt(b.getAttribute("data-id"));
+        return idA - idB;
+      });
+      const container = document.getElementById("box-container");
+      divArray.forEach((div) => container.appendChild(div));
+    }
+  }, []);
+
+  return null;
+};
 
 const ServiceDetails = () => {
   const { slug } = useParams();
 
   const [data, setData] = useState();
+  // get data
   useEffect(() => {
     const filteredData = scheduledBookingData?.filter(
       (item) => item.bkid === slug
@@ -19,6 +38,7 @@ const ServiceDetails = () => {
   if (!data) {
     return <span>No Data Found</span>;
   }
+
   return (
     <div>
       <div>
@@ -53,15 +73,21 @@ const ServiceDetails = () => {
             </div>
 
             <div>
-              <p className="w-max px-[15px] py-[6px] bg-primary/75 text-white rounded-[25px]">
+              <p className={`${data.bookingStatus == "confirmed" ? "bg-green-700" : "bg-primary/75"} w-max px-[15px] py-[6px] text-white rounded-[25px]`}>
                 Booking Status: {data.bookingStatus}
               </p>
             </div>
           </div>
 
-          <div className="w-full grid grid-cols-2 gap-[20px]">
+          <div
+            id="box-container"
+            className="w-full grid grid-cols-2 gap-[20px]"
+          >
             {/* Origin and destination info */}
-            <div className="col-span-2 flex items-center justify-between gap-[10px] border border-slate-300 p-[15px] bg-[#F2F2F2]/75 rounded-[10px]">
+            <div
+              data-id="1"
+              className="box col-span-2 flex items-center justify-between gap-[10px] border border-slate-300 p-[15px] bg-[#F2F2F2]/75 rounded-[10px]"
+            >
               {/* origin */}
               <div>
                 <h3 className="text-primary">Origin</h3>
@@ -110,7 +136,10 @@ const ServiceDetails = () => {
               </div>
             </div>
             {/* Passenger Info */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+            <div
+              data-id="2"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <img
                   src="/asset/icons/account.svg"
@@ -140,7 +169,10 @@ const ServiceDetails = () => {
             </div>
 
             {/* Driver Info */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+            <div
+              data-id="6"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <img
                   src="/asset/icons/account.svg"
@@ -170,30 +202,11 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
-            {/* Vehicle Info */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
-              <div>
-                <img
-                  src="/asset/icons/vehicle.svg"
-                  alt="vehicle-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
-                <div className="flex flex-col items-center">
-                  <img
-                    src="/asset/car1.png"
-                    alt="car"
-                    className="w-[250px] h-auto object-contain"
-                  />
-                  <p>Saloon</p>
-                </div>
-              </div>
-            </div>
-
             {/* capacity */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+            <div
+              data-id="3"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <img
                   src="/asset/icons/capacity.svg"
@@ -283,9 +296,11 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
-
-            {/* Fligh Information */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+             {/* Flight Information */}
+             <div
+              data-id="7"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <svg
                   width="24"
@@ -337,8 +352,37 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
+            {/* Vehicle Info */}
+            <div
+              data-id="4"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
+              <div>
+                <img
+                  src="/asset/icons/vehicle.svg"
+                  alt="vehicle-icon"
+                  className="w-[20px] h-[20px]"
+                />
+              </div>
+              <div className="w-full flex flex-col items-center gap-[10px] text-center">
+                <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/asset/car1.png"
+                    alt="car"
+                    className="w-[250px] h-auto object-contain"
+                  />
+                  <p>Saloon</p>
+                </div>
+              </div>
+            </div>
+
+           
             {/* Total Spent */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+            <div
+              data-id="8"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -373,41 +417,20 @@ const ServiceDetails = () => {
                     <p className="text-primary font-semibold">$74.46</p>
                   </div>
                 </div>
-              </div>
-            </div>
-            {/* Payment Card Info */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M21.5 6c.276 0 .5.224.5.5v11c0 .276-.224.5-.5.5h-19c-.276 0-.5-.224-.5-.5v-11c0-.276.224-.5.5-.5h19zm2.5 0c0-1.104-.896-2-2-2h-20c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-12zm-14 7c-1.381 0-2.5-1.119-2.5-2.5s1.119-2.5 2.5-2.5c.484 0 .936.138 1.32.377-.531.552-.857 1.3-.857 2.123 0 .824.326 1.571.857 2.123-.384.239-.836.377-1.32.377zm1.5-2.5c0-1.381 1.119-2.5 2.5-2.5 1.383 0 2.5 1.119 2.5 2.5s-1.117 2.5-2.5 2.5c-1.381 0-2.5-1.119-2.5-2.5zm-4.5 4.5h-3v1h3v-1zm4 0h-3v1h3v-1zm5 0h-3v1h3v-1zm4 0h-3v1h3v-1z" />
-                </svg>
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Payment Card</h2>
 
-                <div>
-                  <div className="flex items-center gap-[10px] px-[10px] py-[8px] rounded-[5px] border border-blue-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      className="fill-blue-400"
-                    >
-                      <path d="M21.5 6c.276 0 .5.224.5.5v11c0 .276-.224.5-.5.5h-19c-.276 0-.5-.224-.5-.5v-11c0-.276.224-.5.5-.5h19zm2.5 0c0-1.104-.896-2-2-2h-20c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-12zm-14 7c-1.381 0-2.5-1.119-2.5-2.5s1.119-2.5 2.5-2.5c.484 0 .936.138 1.32.377-.531.552-.857 1.3-.857 2.123 0 .824.326 1.571.857 2.123-.384.239-.836.377-1.32.377zm1.5-2.5c0-1.381 1.119-2.5 2.5-2.5 1.383 0 2.5 1.119 2.5 2.5s-1.117 2.5-2.5 2.5c-1.381 0-2.5-1.119-2.5-2.5zm-4.5 4.5h-3v1h3v-1zm4 0h-3v1h3v-1zm5 0h-3v1h3v-1zm4 0h-3v1h3v-1z" />
-                    </svg>
-                    <p>XXXX-XXXX-XXXX-1111</p>
-                  </div>
+                <div className={`w-max px-[10px] py-[8px] rounded-[5px] ${data.paymentStatus == "paid" ? "border border-green-700 text-green-700" : "border border-primary text-primary"}`}>
+                  <p>
+                    <span className="text-black">Payment satus :</span>
+                    <span className="">{data.paymentStatus}</span>
+                  </p>
                 </div>
               </div>
             </div>
             {/* Logs */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+            <div
+              data-id="5"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
               <div>
                 <svg
                   clip-rule="evenodd"
@@ -443,9 +466,44 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
+            {/* Payment Card Info */}
+            <div
+              data-id="9"
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M21.5 6c.276 0 .5.224.5.5v11c0 .276-.224.5-.5.5h-19c-.276 0-.5-.224-.5-.5v-11c0-.276.224-.5.5-.5h19zm2.5 0c0-1.104-.896-2-2-2h-20c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-12zm-14 7c-1.381 0-2.5-1.119-2.5-2.5s1.119-2.5 2.5-2.5c.484 0 .936.138 1.32.377-.531.552-.857 1.3-.857 2.123 0 .824.326 1.571.857 2.123-.384.239-.836.377-1.32.377zm1.5-2.5c0-1.381 1.119-2.5 2.5-2.5 1.383 0 2.5 1.119 2.5 2.5s-1.117 2.5-2.5 2.5c-1.381 0-2.5-1.119-2.5-2.5zm-4.5 4.5h-3v1h3v-1zm4 0h-3v1h3v-1zm5 0h-3v1h3v-1zm4 0h-3v1h3v-1z" />
+                </svg>
+              </div>
+              <div className="w-full flex flex-col items-center gap-[10px] text-center">
+                <h2 className="text-[17px] font-semibold">Payment Card</h2>
+
+                <div>
+                  <div className="flex items-center gap-[10px] px-[10px] py-[8px] rounded-[5px] border border-blue-500">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      className="fill-blue-400"
+                    >
+                      <path d="M21.5 6c.276 0 .5.224.5.5v11c0 .276-.224.5-.5.5h-19c-.276 0-.5-.224-.5-.5v-11c0-.276.224-.5.5-.5h19zm2.5 0c0-1.104-.896-2-2-2h-20c-1.104 0-2 .896-2 2v12c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-12zm-14 7c-1.381 0-2.5-1.119-2.5-2.5s1.119-2.5 2.5-2.5c.484 0 .936.138 1.32.377-.531.552-.857 1.3-.857 2.123 0 .824.326 1.571.857 2.123-.384.239-.836.377-1.32.377zm1.5-2.5c0-1.381 1.119-2.5 2.5-2.5 1.383 0 2.5 1.119 2.5 2.5s-1.117 2.5-2.5 2.5c-1.381 0-2.5-1.119-2.5-2.5zm-4.5 4.5h-3v1h3v-1zm4 0h-3v1h3v-1zm5 0h-3v1h3v-1zm4 0h-3v1h3v-1z" />
+                    </svg>
+                    <p>XXXX-XXXX-XXXX-1111</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <RenderBoxes />
     </div>
   );
 };

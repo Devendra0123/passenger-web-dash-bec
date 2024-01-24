@@ -16,6 +16,7 @@ import Account from "./Pages/account/Account";
 import PaymentCard from "./Pages/Payment-card/PaymentCard";
 import Support from "./Pages/support/Support";
 import { useEffect } from "react";
+import SupportDetails from "./Pages/support-details/SupportDetails";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -30,13 +31,13 @@ function App() {
   return (
     <div className="w-full min-h-[100vh] flex justify-center">
       <WindowScrollTop />
-      <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[30px] mt-[50px]">
+      <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
         <div className="col-span-2 h-full">
           <Sidebar />
         </div>
         <div className="col-span-5 h-full">
           <Header />
-          <div className="mt-[30px] h-full">
+          <div className="mt-[20px] h-full">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route
@@ -52,6 +53,7 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/account/cards" element={<PaymentCard />} />
               <Route path="/support" element={<Support />} />
+              <Route path="/support/support-details" element={<SupportDetails />} />
               {/* <Route path="/sign-in" element={<SignIn />} /> */}
               {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>

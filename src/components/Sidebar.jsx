@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { navItems } from "../consts/navItems";
 import IconText from "./element/IconText";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+  const pathname = window.location.pathname;
+
+  const [activeLink, setActiveLink] = useState();
+
+  const setActivePath = (route) => {
+    setActiveLink(route);
+  };
+
+  useEffect(() => {
+    if (pathname == "/") {
+      setActiveLink("/");
+    } else {
+      setActiveLink(pathname);
+    }
+  }, []);
   return (
-    <div className="sticky top-[50px] w-full h-[85vh] bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
+    <div className="sticky top-[30px] w-full h-[90vh] bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">
         <Link to="/" className="w-full flex items-center justify-center">
           <img
@@ -14,10 +29,10 @@ const Sidebar = () => {
             className="h-[100px] object-contain"
           />
         </Link>
-        <div className="mt-[20px] flex flex-col">
+        <div className="mt-[20px] flex flex-col gap-[3px]">
           {navItems?.length > 0 &&
             navItems.map(({ icon, name, slug }, index) => (
-              <IconText key={index} text={name} icon={icon} link={slug} />
+              <IconText key={index} text={name} icon={icon} link={slug} handleClick={()=> setActivePath(`/${slug}`)} active={activeLink == `/${slug}` ? true : false} />
             ))}
         </div>
       </div>

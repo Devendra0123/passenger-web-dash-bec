@@ -14,7 +14,7 @@ const ScheduledBooking = () => {
           <Link to="/scheduled-booking" className="text-blue-500 text-[14px]">View more</Link>
         </div>
 
-        <div className="mt-[10px] flex flex-col gap-[10px]">
+        <div className="mt-[20px] flex flex-col gap-[20px]">
           {scheduledBookingData?.length > 0 &&
             scheduledBookingData
               .slice(0, 2)

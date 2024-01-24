@@ -6,13 +6,13 @@ import Notice from "../components/Notice";
 const Home = () => {
   return (
     <div className="w-full flex justify-center">
-      <div className="w-full grid grid-cols-2 gap-[30px]">
+      <div className="w-full grid grid-cols-2 gap-[20px]">
         {/* Current Ride */}
         <div>
           <CurrentRide />
         </div>
 
-        <div className="flex flex-col gap-[30px]">
+        <div className="flex flex-col gap-[20px]">
           {/* notices */}
           <div>
             <Notice />
