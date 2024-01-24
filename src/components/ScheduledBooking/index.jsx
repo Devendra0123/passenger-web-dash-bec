@@ -1,6 +1,7 @@
 import React from "react";
 import { scheduledBookingData } from "../../consts/servicesData";
 import ServiceCard from "../Cards/ServiceCard";
+import { Link } from "react-router-dom";
 
 const ScheduledBooking = () => {
   return (
@@ -10,7 +11,7 @@ const ScheduledBooking = () => {
           <h2 className="text-titleSize font-titleFontWeight text-titleColor">
             Schedule Booking
           </h2>
-          <button className="text-blue-500 text-[14px]">View more</button>
+          <Link to="/scheduled-booking" className="text-blue-500 text-[14px]">View more</Link>
         </div>
 
         <div className="mt-[10px] flex flex-col gap-[10px]">

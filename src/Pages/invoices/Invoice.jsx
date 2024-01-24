@@ -1,9 +1,9 @@
 const Invoice = () => {
   return (
     <>
-      <div className="  bg-white  p-4 rounded-[10px]  mt-2">
-        <h1 className="text-2xl mt-2 mb-4 font-semibold ">Invoices</h1>
-        <div className="invoice-cards flex flex-col gap-4 ">
+      <div className="  bg-smoke min-h-[70vh] p-[15px] rounded-[15px]">
+        <h1 className="text-titleColor text-titleSize font-titleFontWeight ">Invoices</h1>
+        <div className="invoice-cards mt-[10px] flex flex-col gap-4 ">
           <div>
             <label> Total Invoice </label>
             <div className="text-4xl font-semibold"> $ 0.00</div>

@@ -25,24 +25,55 @@ const ServiceDetails = () => {
         <h2 className="text-xl font-[600] text-slate-700">Service Details</h2>
 
         <div className="mt-[10px] flex flex-col gap-[20px]">
-          <div className="w-full flex items-center justify-start gap-[15px]">
-            <div>
-              <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                Booking ID : <span>{data.bkid}</span>
-              </p>
-            </div>
-
-            <div>
-              <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                {data.dateAndTime}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between gap-[10px] px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+          <div className="w-full flex items-center justify-between">
+            <div className="w-full flex items-center justify-start gap-[15px]">
               <div>
+                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                  Booking ID : <span>{data.bkid}</span>
+                </p>
+              </div>
+
+              <div>
+                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                  {data.dateAndTime}
+                </p>
+              </div>
+
+              <div>
+                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                  {data.distance}
+                </p>
+              </div>
+
+              <div>
+                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                  {data.duration}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="w-max px-[15px] py-[6px] bg-primary/75 text-white rounded-[25px]">
+                Booking Status: {data.bookingStatus}
+              </p>
+            </div>
+          </div>
+
+          <div className="w-full grid grid-cols-2 gap-[20px]">
+            {/* Origin and destination info */}
+            <div className="col-span-2 flex items-center justify-between gap-[10px] border border-slate-300 p-[15px] bg-[#F2F2F2]/75 rounded-[10px]">
+              {/* origin */}
+              <div>
+                <h3 className="text-primary">Origin</h3>
                 <p>
                   {data.location.origin.place}
                   <span>, {data.location.origin.country.name}</span>
+                </p>
+                <p className="text-[12px]">
+                  Pickup Address:{" "}
+                  <span className="text-blue-500">
+                    {data.location.origin.pickupLocation}
+                  </span>
                 </p>
               </div>
               <div>
@@ -50,7 +81,7 @@ const ServiceDetails = () => {
                   clip-rule="evenodd"
                   width="100px"
                   height="20px"
-                  fill="white"
+                  fill=""
                   fill-rule="evenodd"
                   stroke-linejoin="round"
                   stroke-miterlimit="2"
@@ -63,15 +94,21 @@ const ServiceDetails = () => {
                   />
                 </svg>
               </div>
-              <div>
+              {/* Destination */}
+              <div className="flex flex-col items-start">
+                <h3 className="text-primary">Destination</h3>
                 <p className="text-end">
                   {data.location.destination.place}
                   <span>, {data.location.destination.country.name}</span>
                 </p>
+                <p className="text-[12px]">
+                  Dropoff location:{" "}
+                  <span className="text-blue-500">
+                    {data.location.destination.dropoffLocation}
+                  </span>
+                </p>
               </div>
             </div>
-          </div>
-          <div className="w-full grid grid-cols-2 gap-[20px]">
             {/* Passenger Info */}
             <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
               <div>
@@ -82,14 +119,54 @@ const ServiceDetails = () => {
                 />
               </div>
               <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Lead Passenger</h2>
-                <div className="grow w-full flex flex-col justify-center items-center">
-                  <p>
-                    Name : <span>Alex Smith</span>
-                  </p>
-                  <p>
-                    Contact : <span>+97713583503</span>
-                  </p>
+                <h2 className="text-[17px] font-semibold">Passenger</h2>
+                <div className=" w-[90%] flex flex-col justify-center items-center gap-[10px]">
+                  <div className="w-full flex items-center justify-between">
+                    <p>Name:</p>
+                    <p>Alex Smith</p>
+                  </div>
+
+                  <div className="w-full flex items-center justify-between">
+                    <p>Contact:</p>
+                    <p>+97713583503</p>
+                  </div>
+
+                  <div className="w-full flex items-center justify-between">
+                    <p>Email:</p>
+                    <p>alexsmith25@gmail.com</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Driver Info */}
+            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+              <div>
+                <img
+                  src="/asset/icons/account.svg"
+                  alt="person-icon"
+                  className="w-[20px] h-[20px]"
+                />
+              </div>
+              <div className="w-full flex flex-col items-center gap-[10px] text-center">
+                <h2 className="text-[17px] font-semibold">Driver Info</h2>
+                <div className=" w-[90%] flex flex-col justify-center items-center gap-[10px]">
+                  <div className="w-full flex justify-start">
+                    <img
+                      src="/asset/person1.webp"
+                      alt="driver-image"
+                      className="w-[50px] h-[50px] rounded-full border border-blue-500"
+                    />
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Name:</p>
+                    <p>Ben Stokes</p>
+                  </div>
+
+                  <div className="w-full flex items-center justify-between">
+                    <p>Car Number:</p>
+                    <p>03458</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,7 +187,7 @@ const ServiceDetails = () => {
                     alt="car"
                     className="w-[250px] h-auto object-contain"
                   />
-                  <p>Sedan Executive</p>
+                  <p>Saloon</p>
                 </div>
               </div>
             </div>
@@ -126,98 +203,87 @@ const ServiceDetails = () => {
               </div>
               <div className="w-full flex flex-col items-center gap-[10px] text-center">
                 <h2 className="text-[17px] font-semibold">Capacity</h2>
-                <div className="flex items-center justify-center gap-[12px] flex-wrap">
-                  {/* passenger */}
-                  <div className="flex items-center gap-[5px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/account.svg"
-                      alt=""
-                      className="w-[15px] h-[15px] "
-                    />
-                    <p>
-                      Passenger : <span>1</span>
-                    </p>
-                  </div>
-                  {/* luggage */}
-                  <div className="flex items-center gap-[5px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/luggage.svg"
-                      alt=""
-                      className="w-[15px] h-[15px] "
-                    />
-                    <p>
-                      Luggage : <span>1</span>
-                    </p>
-                  </div>
-                  {/* Booster Seat */}
-                  <div className="flex items-center gap-[5px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/seat.svg"
-                      alt=""
-                      className="w-[15px] h-[15px] "
-                    />
-                    <p>
-                      Booster Seat : <span>1</span>
-                    </p>
-                  </div>
-                  {/* Infant Seat */}
-                  <div className="flex items-center gap-[5px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/seat.svg"
-                      alt=""
-                      className="w-[15px] h-[15px] "
-                    />
-                    <p>
-                      Infant Seat : <span>0</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* distance && duration info */}
-            <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
-              <div>
-                <img
-                  src="/asset/icons/duration.svg"
-                  alt="vehicle-icon"
-                  className="w-[20px] h-[20px] rotate-90"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">
-                  Coverage And Duration
-                </h2>
-                <div className="flex items-center justify-center flex-wrap gap-[12px]">
-                  <div className=" flex items-center gap-[10px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/map.svg"
-                      alt="coverage"
-                      className="w-[20px] h-[20px] "
-                    />
-                    <div className=" flex flex-col items-start">
-                      <h3 className="text-[15px] text-slate-900">Coverage</h3>
-                      <p className="text-[14px] text-slate-500">
-                        Distance <span>{data.distance}</span>
-                      </p>
-                    </div>
-                  </div>
+                <div className="w-[90%]">
+                  <table className="table w-full">
+                    <tr>
+                      <td>
+                        {/* passenger */}
+                        <div className="flex items-center gap-[5px]">
+                          <img
+                            src="/asset/icons/account.svg"
+                            alt=""
+                            className="w-[15px] h-[15px] "
+                          />
+                          <p>Passenger</p>
+                        </div>
+                      </td>
+                      <td>
+                        <span>1</span>
+                      </td>
+                    </tr>
 
-                  <div className=" flex items-center gap-[10px] rounded-[25px] border border-blue-500 px-[10px] py-[5px]">
-                    <img
-                      src="/asset/icons/duration.svg"
-                      alt="coverage"
-                      className="w-[20px] h-[20px]"
-                    />
-                    <div className="flex flex-col items-start">
-                      <h3 className="text-[15px] text-slate-900">Duration</h3>
-                      <p className="text-[14px] text-slate-500">
-                        <span>{data.duration}</span>
-                      </p>
-                    </div>
-                  </div>
+                    <tr>
+                      <td>
+                        {/* luggage */}
+                        <div className="flex items-center gap-[5px]">
+                          <img
+                            src="/asset/icons/luggage.svg"
+                            alt=""
+                            className="w-[15px] h-[15px] "
+                          />
+                          <p>Luggage</p>
+                        </div>
+                      </td>
+                      <td>
+                        <span>1</span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>
+                        {/* hand luggage */}
+                        <div className="flex items-center gap-[5px]">
+                          <img
+                            src="/asset/icons/luggage.svg"
+                            alt=""
+                            className="w-[15px] h-[15px] "
+                          />
+                          <p>Hand Luggage</p>
+                        </div>
+                      </td>
+                      <td>
+                        <span>1</span>
+                      </td>
+                    </tr>
+
+                    <tr className="">
+                      <td>
+                        {/* Car Seat */}
+                        <div className="flex items-center gap-[5px]">
+                          <img
+                            src="/asset/icons/seat.svg"
+                            alt=""
+                            className="w-[15px] h-[15px] "
+                          />
+                          <p>
+                            Car Seat : <span>3</span>
+                          </p>
+                        </div>
+                      </td>
+                      <td
+                        style={{
+                          border: "none",
+                        }}
+                        className=" flex items-center flex-wrap gap-[5px] text-[12px]"
+                      >
+                        <p>Rear facing, Forward facing, Booster</p>
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </div>
             </div>
+
             {/* Fligh Information */}
             <div className="bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
               <div>
@@ -237,8 +303,37 @@ const ServiceDetails = () => {
                   Flight Information
                 </h2>
 
-                <div>
-                  <p>aa100</p>
+                <div className="w-[90%] flex flex-col items-center gap-[10px] ">
+                  <div className="w-full flex items-center justify-between">
+                    <p>Flight Number</p>
+                    <p className="text-[14px] text-blue-500">10004</p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Landing date</p>
+                    <p className="text-[14px] text-blue-500">23/05/2024</p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Landing time</p>
+                    <p className="text-[14px] text-blue-500">13:20</p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Coming from</p>
+                    <p className="text-[14px] text-blue-500">
+                      {data.location.origin.pickupLocation},{" "}
+                      {data.location.origin.country.name}
+                    </p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Dropoff location</p>
+                    <p className="text-[14px] text-blue-500">
+                      {data.location.destination.dropoffLocation},{" "}
+                      {data.location.destination.country.name}
+                    </p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Pickup time after landing</p>
+                    <p className="text-[14px] text-blue-500">after 15 mins.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,13 +364,13 @@ const ServiceDetails = () => {
                   </div>
 
                   <div className="w-full flex items-center justify-between">
-                    <p>Sub Total</p>
-                    <p className="text-primary font-semibold">$73.46</p>
+                    <p>Waiting Charge</p>
+                    <p className="text-primary font-semibold">$1.00</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">
-                    <p className="font-[500]">Estimated Fare</p>
-                    <p className="text-primary font-semibold">$73.46</p>
+                    <p className="font-[500]">Total</p>
+                    <p className="text-primary font-semibold">$74.46</p>
                   </div>
                 </div>
               </div>

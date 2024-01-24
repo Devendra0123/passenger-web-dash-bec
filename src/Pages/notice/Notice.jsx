@@ -1,14 +1,17 @@
-import NoticeCards from "./NoticeCards";
+import { noticeData } from "../../consts/noticeData";
+import NoticeCard from "./NoticeCard";
 
 const Notice = () => {
   return (
     <>
-      <div className="  bg-white p-4 rounded-[10px]  mt-2">
-        <h1 className="text-2xl mt-2 mb-4 font-semibold ">Notice</h1>
-        <div className="flex flex-col gap-4 " >
-        <NoticeCards />
-        <NoticeCards />
-        <NoticeCards />
+      <div className="bg-smoke min-h-[70vh] p-[15px] rounded-[15px]">
+        <h1 className="text-titleSize text-titleColor font-titleFontWeight">Notice</h1>
+        <div className="mt-[10px] flex flex-col gap-4 " >
+          {
+            noticeData?.length > 0 && noticeData.map((item,index)=>(
+              <NoticeCard data={item} />
+            ))
+          }
         </div>
       </div>
     </>

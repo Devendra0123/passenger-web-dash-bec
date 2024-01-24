@@ -30,3 +30,14 @@ body{
   );
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid;
+}
+
+.table td,
+th {
+  border: 1px solid;
+  padding: 6px 5px;
+}
