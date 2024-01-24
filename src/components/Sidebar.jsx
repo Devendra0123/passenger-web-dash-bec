@@ -23,21 +23,22 @@ const Sidebar = () => {
       </div>
 
       <div className="w-full bg-gradient-to-r from-white to-slate-100 p-[20px] flex flex-col items-center gap-[12px] rounded-[5px]">
-        <p className="text-[19px] font-semibold text-center">
-          Take a ride
-        </p>
+        <p className="text-[19px] font-semibold text-center">Take a ride</p>
         <button className="w-max text-white font-[500] bg-primary px-[20px] py-[8px] rounded-[25px]">
           Book a Ride
         </button>
       </div>
 
       <div className="flex flex-col gap-[20px]">
-        <div className="flex items-center gap-[10px]">
-          <img src="/asset/icons/account.svg" alt="account" className="w-[15px] h-[15px"  />
+        <Link to="/account" className="flex items-center gap-[10px]">
+          <img
+            src="/asset/icons/account.svg"
+            alt="account"
+            className="w-[15px] h-[15px"
+          />
           <p>Account</p>
-        </div>
+        </Link>
       </div>
-
     </div>
   );
 };

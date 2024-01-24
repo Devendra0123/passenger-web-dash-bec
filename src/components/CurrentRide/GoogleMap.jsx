@@ -47,7 +47,7 @@ const GoogleMapDirection = () => {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="w-full flex flex-col items-center justify-center gap-[6px]">
+      <div className="w-full flex flex-col items-center justify-center gap-[10px]">
         <div className="w-full flex items-center justify-between">
           <div>
             <div className="bg-blue-500 text-white flex items-center gap-[3px] rounded-[25px] border border-blue-500 px-[15px] py-[5px]">

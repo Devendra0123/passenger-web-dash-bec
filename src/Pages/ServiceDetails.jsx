@@ -25,8 +25,51 @@ const ServiceDetails = () => {
         <h2 className="text-xl font-[600] text-slate-700">Service Details</h2>
 
         <div className="mt-[10px] flex flex-col gap-[20px]">
-          <div>
-            <ServiceCard data={data} doNotShowHoverEffect={true} />
+          <div className="w-full flex items-center justify-start gap-[15px]">
+            <div>
+              <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                Booking ID : <span>{data.bkid}</span>
+              </p>
+            </div>
+
+            <div>
+              <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                {data.dateAndTime}
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between gap-[10px] px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+              <div>
+                <p>
+                  {data.location.origin.place}
+                  <span>, {data.location.origin.country.name}</span>
+                </p>
+              </div>
+              <div>
+                <svg
+                  clip-rule="evenodd"
+                  width="100px"
+                  height="20px"
+                  fill="white"
+                  fill-rule="evenodd"
+                  stroke-linejoin="round"
+                  stroke-miterlimit="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z"
+                    fill-rule="nonzero"
+                  />
+                </svg>
+              </div>
+              <div>
+                <p className="text-end">
+                  {data.location.destination.place}
+                  <span>, {data.location.destination.country.name}</span>
+                </p>
+              </div>
+            </div>
           </div>
           <div className="w-full grid grid-cols-2 gap-[20px]">
             {/* Passenger Info */}
@@ -221,13 +264,18 @@ const ServiceDetails = () => {
                   </div>
 
                   <div className="w-full flex items-center justify-between">
+                    <p>Parking Charge</p>
+                    <p className="text-primary font-semibold">$2.00</p>
+                  </div>
+
+                  <div className="w-full flex items-center justify-between">
                     <p>Sub Total</p>
-                    <p className="text-primary font-semibold">$71.46</p>
+                    <p className="text-primary font-semibold">$73.46</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">
                     <p className="font-[500]">Estimated Fare</p>
-                    <p className="text-primary font-semibold">$71.46</p>
+                    <p className="text-primary font-semibold">$73.46</p>
                   </div>
                 </div>
               </div>
@@ -284,9 +332,19 @@ const ServiceDetails = () => {
               </div>
               <div className="w-full flex flex-col items-center gap-[10px] text-center">
                 <h2 className="text-[17px] font-semibold">Logs</h2>
-                <div className="flex flex-col items-center">
-                  <p>Cancelled at</p>
-                  <p>Refund Infoice at</p>
+                <div className="w-[90%] flex flex-col items-center justify-between gap-[10px]">
+                  <div className="w-full flex items-center justify-between">
+                    <p>Cancelled at:</p>
+                    <span className="ml-auto text-fontSize_md font-medium text-slate-800">
+                      14/05/2023 12:30 pm
+                    </span>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Refund Infoice at:</p>
+                    <span className="ml-auto text-fontSize_md font-medium text-slate-800">
+                      16/05/2023 09:22 pm
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

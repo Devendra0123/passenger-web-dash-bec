@@ -6,6 +6,15 @@ import Header from "./components/Header";
 import SignIn from "./Pages/SignIn";
 import GoogleMap from "./Pages/GoogleMap";
 import ServiceDetails from "./Pages/ServiceDetails";
+import ScheduledBooking from "./Pages/scheduled-booking/ScheduledBooking";
+import Notice from "./Pages/notice/Notice";
+import Invoice from "./Pages/invoices/Invoice";
+import ServiceHistory from "./Pages/service-history/ServiceHistory";
+import Faq from "./Pages/FAQ/Faq";
+import FaqDetails from "./Pages/FAQ-details/FaqDetails";
+import Account from "./Pages/account/Account";
+import PaymentCard from "./Pages/Payment-card/PaymentCard";
+import Support from "./Pages/support/Support";
 import { useEffect } from "react";
 
 // Scroll to top on page navigation
@@ -34,6 +43,15 @@ function App() {
                 path="/service-details/:slug"
                 element={<ServiceDetails />}
               />
+              <Route path="/scheduled-booking" element={<ScheduledBooking />} />
+              <Route path="/notice" element={<Notice />} />
+              <Route path="/invoice" element={<Invoice />} />
+              <Route path="/service-history" element={<ServiceHistory />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/faq/faq-details" element={<FaqDetails />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/account/cards" element={<PaymentCard />} />
+              <Route path="/support" element={<Support />} />
               {/* <Route path="/sign-in" element={<SignIn />} /> */}
               {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>

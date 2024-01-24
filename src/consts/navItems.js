@@ -12,27 +12,27 @@ export const navItems = [
     },
     {
         name: 'Schedule Booking',
-        slug: "",
+        slug: "scheduled-booking",
         icon: '/asset/icons/schedule.svg'
     },
     {
         name: 'Notice',
-        slug: "",
+        slug: "notice",
         icon: '/asset/icons/notice.svg' 
     },
     {
         name: 'Services History',
-        slug: "",
+        slug: "service-history",
         icon: '/asset/icons/history.svg' 
     },
     {
         name: 'Invoice',
-        slug: "",
+        slug: "invoice",
         icon: '/asset/icons/invoice.svg' 
     },
     {
         name: 'FAQ',
-        slug: "",
+        slug: "faq",
         icon: '/asset/icons/faq.svg'
     },
 ]
