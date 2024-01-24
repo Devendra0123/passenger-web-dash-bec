@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
   const { dateAndTime, price, duration, bkid, vehicle, location, distance } = data;
   return (
-    <Link to={doNotShowHoverEffect ? "" : `/service-details/${bkid}`} className={`cursor-pointer w-full ${serviceType == "current" ? "bg-orange-100 rounded-[15px]" : `border-b border-primary ${doNotShowHoverEffect ? "" : "hover:bg-orange-100 hover:rounded-[15px]"}`} flex flex-col gap-[12px] p-[10px]`}>
+    <Link to={(doNotShowHoverEffect || serviceType == 'current') ? "" : `/service-details/${bkid}`} className={`cursor-pointer w-full ${serviceType == "current" ? "bg-orange-100 rounded-[15px]" : `border-b border-primary ${doNotShowHoverEffect ? "" : "hover:bg-orange-100 hover:rounded-[15px]"}`} flex flex-col gap-[12px] p-[10px]`}>
       <div className="w-full flex items-center justify-between">
-        <p className="text-slate-500 text-[13px]">{dateAndTime}</p>
+        <p className="text-slate-500 text-[14px]">{dateAndTime}</p>
         <p className="text-slate-500 text-[14px]">{distance}</p>
         <p className="text-primary font-semibold">{price}</p>
       </div>

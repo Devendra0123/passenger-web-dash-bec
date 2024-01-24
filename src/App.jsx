@@ -6,10 +6,21 @@ import Header from "./components/Header";
 import SignIn from "./Pages/SignIn";
 import GoogleMap from "./Pages/GoogleMap";
 import ServiceDetails from "./Pages/ServiceDetails";
+import { useEffect } from "react";
+
+// Scroll to top on page navigation
+function WindowScrollTop() {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+  return null;
+}
 
 function App() {
   return (
     <div className="w-full min-h-[100vh] flex justify-center">
+      <WindowScrollTop />
       <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[30px] mt-[50px]">
         <div className="col-span-2 h-full">
           <Sidebar />
@@ -19,7 +30,10 @@ function App() {
           <div className="mt-[30px] h-full">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/service-details/:slug" element={<ServiceDetails />} />
+              <Route
+                path="/service-details/:slug"
+                element={<ServiceDetails />}
+              />
               {/* <Route path="/sign-in" element={<SignIn />} /> */}
               {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>

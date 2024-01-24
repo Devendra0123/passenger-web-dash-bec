@@ -33,7 +33,7 @@ const Sidebar = () => {
 
       <div className="flex flex-col gap-[20px]">
         <div className="flex items-center gap-[10px]">
-          <img src="/asset/icons/account.svg" alt="account" className="w-[20px] h-[22px"  />
+          <img src="/asset/icons/account.svg" alt="account" className="w-[15px] h-[15px"  />
           <p>Account</p>
         </div>
       </div>

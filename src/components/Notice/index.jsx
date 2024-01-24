@@ -7,7 +7,7 @@ const Notice = () => {
     <div className="relative w-full overflow-hidden">
       <div className="bg-white/75 backdrop-blur-sm w-full p-[15px] rounded-[15px] ">
         <div className="w-full flex items-center justify-between">
-          <h2 className="text-xl font-[600] text-slate-700">Notice</h2>
+          <h2 className="text-titleSize font-titleFontWeight text-titleColor">Notice</h2>
           <button className="text-blue-500 text-[14px]">View more</button>
         </div>
 
