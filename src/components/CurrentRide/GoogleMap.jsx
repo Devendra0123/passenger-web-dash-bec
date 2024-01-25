@@ -13,8 +13,9 @@ const containerStyle = {
 };
 
 const GoogleMapDirection = () => {
+
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCW4uEcxzMboANlqwcLeA870_MJakvfdxo",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     libraries: ["places"],
   });
 
