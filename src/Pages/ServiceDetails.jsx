@@ -298,7 +298,7 @@ const ServiceDetails = () => {
                             className="w-[15px] h-[15px] "
                           />
                           <p>
-                            Car Seat : <span>3</span>
+                            Car Seat
                           </p>
                         </div>
                       </td>
@@ -306,8 +306,9 @@ const ServiceDetails = () => {
                         style={{
                           border: "none",
                         }}
-                        className=" flex items-center flex-wrap gap-[5px] text-[12px]"
+                        className=" flex flex-col items-center flex-wrap gap-[5px] text-[12px]"
                       >
+                        <p className="text-center">3</p>
                         <p>Rear facing, Forward facing, Booster</p>
                       </td>
                     </tr>
@@ -355,13 +356,6 @@ const ServiceDetails = () => {
                     <p className="text-[14px] text-blue-500">
                       {data.location.origin.pickupLocation},{" "}
                       {data.location.origin.country.name}
-                    </p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Dropoff location</p>
-                    <p className="text-[14px] text-blue-500">
-                      {data.location.destination.dropoffLocation},{" "}
-                      {data.location.destination.country.name}
                     </p>
                   </div>
                   <div className="w-full flex items-center justify-between">
