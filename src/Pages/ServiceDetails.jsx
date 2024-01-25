@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { scheduledBookingData } from "../consts/servicesData";
+import Rating from "../components/Element/Rating";
 
 // For Responsiveness to arrage boxes in correct order
 const RenderBoxes = () => {
   useEffect(() => {
-      const divElements = document.querySelectorAll(".box");
-      const divArray = Array.from(divElements);
-      divArray.sort((a, b) => {
-        const idA = parseInt(a.getAttribute("data-id"));
-        const idB = parseInt(b.getAttribute("data-id"));
-        return idA - idB;
-      });
-      const container = document.getElementById("box-container");
-      divArray.forEach((div) => container.appendChild(div));
+    const divElements = document.querySelectorAll(".box");
+    const divArray = Array.from(divElements);
+    divArray.sort((a, b) => {
+      const idA = parseInt(a.getAttribute("data-id"));
+      const idB = parseInt(b.getAttribute("data-id"));
+      return idA - idB;
+    });
+    const container = document.getElementById("box-container");
+    divArray.forEach((div) => container.appendChild(div));
   }, []);
 
   return null;
@@ -46,7 +47,7 @@ const ServiceDetails = () => {
   return (
     <div>
       <div>
-        <h2 className="text-xl font-[600] text-slate-700">Service Details</h2>
+        <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
 
         <div className="mt-[10px] flex flex-col gap-[20px]">
           <div className="w-full flex items-center justify-between">
@@ -98,7 +99,7 @@ const ServiceDetails = () => {
             {/* Origin and destination info */}
             <div
               data-id="1"
-              className="box col-span-2 flex items-center justify-between gap-[10px] border border-slate-300 p-[15px] bg-[#F2F2F2]/75 rounded-[10px]"
+              className="box col-span-2 flex items-start justify-between gap-[10px] border border-slate-300 p-[15px] bg-[#F2F2F2]/75 rounded-[10px]"
             >
               {/* origin */}
               <div>
@@ -114,23 +115,16 @@ const ServiceDetails = () => {
                   </span>
                 </p>
               </div>
-              <div>
-                <svg
-                  clip-rule="evenodd"
-                  width="100px"
-                  height="20px"
-                  fill=""
-                  fill-rule="evenodd"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="2"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z"
-                    fill-rule="nonzero"
-                  />
-                </svg>
+              {/* Via point */}
+              <div className="flex flex-col items-start">
+                <h3 className="text-primary">Via Point</h3>
+                <p>{data.location.via?.place}</p>
+                <p className="text-[12px]">
+                  Via Point Address:{" "}
+                  <span className="text-blue-500">
+                    {data.location.via?.viaPointLocation}
+                  </span>
+                </p>
               </div>
               {/* Destination */}
               <div className="flex flex-col items-start">
@@ -176,6 +170,11 @@ const ServiceDetails = () => {
                     <p>Email:</p>
                     <p>alexsmith25@gmail.com</p>
                   </div>
+
+                  <div className="w-full flex items-center justify-between">
+                    <p>Passenger ID:</p>
+                    <p>103</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -195,16 +194,24 @@ const ServiceDetails = () => {
               <div className="w-full flex flex-col items-center gap-[10px] text-center">
                 <h2 className="text-[17px] font-semibold">Driver Info</h2>
                 <div className=" w-[90%] flex flex-col justify-center items-center gap-[10px]">
-                  <div className="w-full flex justify-start">
+                  <div className="w-full flex items-center gap-[30px] justify-between">
                     <img
                       src="/asset/person1.webp"
                       alt="driver-image"
                       className="w-[50px] h-[50px] rounded-full border border-blue-500"
                     />
+                    <Rating
+                      ratingValue={data.driver?.rating.value}
+                      NumberOfRating={data.driver?.rating?.numberofRating}
+                    />
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Driver ID:</p>
+                    <p>003</p>
                   </div>
                   <div className="w-full flex items-center justify-between">
                     <p>Name:</p>
-                    <p>Ben Stokes</p>
+                    <p>{data.driver?.name}</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">

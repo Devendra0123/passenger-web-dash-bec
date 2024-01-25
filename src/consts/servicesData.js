@@ -14,6 +14,10 @@ export const currentRideData = {
   driver: {
     name: "Ben Stokes",
     image: "/asset/person1.webp",
+    rating: {
+      numberofRating: 20,
+      value: 5
+    }
   },
   location: {
     origin: {
@@ -25,7 +29,16 @@ export const currentRideData = {
         name: "UK",
       },
     },
-
+    via: {
+      lat: "",
+      long: "",
+      place: "Kent",
+      viaPointLocation: "Leeds Castle",
+      country: {
+        id: "",
+        name: "UK",
+      },
+    },
     destination: {
       lat: "",
       long: "",
@@ -55,6 +68,10 @@ export const scheduledBookingData = [
     driver: {
       name: "Ben Stokes",
       image: "/asset/person1.webp",
+      rating: {
+        numberofRating: 31,
+        value: 4
+      }
     },
     location: {
       origin: {
@@ -67,7 +84,16 @@ export const scheduledBookingData = [
           name: "UK",
         },
       },
-
+      via: {
+        lat: "",
+        long: "",
+        place: "Kent",
+        viaPointLocation: "Leeds Castle",
+        country: {
+          id: "",
+          name: "UK",
+        },
+      },
       destination: {
         lat: "",
         long: "",
@@ -97,6 +123,10 @@ export const scheduledBookingData = [
     driver: {
       name: "Ben Stokes",
       image: "/asset/person1.webp",
+      rating: {
+        numberofRating: 8,
+        value: 3
+      }
     },
     location: {
       origin: {
@@ -109,7 +139,16 @@ export const scheduledBookingData = [
           name: "UK",
         },
       },
-
+      via: {
+        lat: "",
+        long: "",
+        place: "Manchester",
+        viaPointLocation: "The John Rylands Library",
+        country: {
+          id: "",
+          name: "UK",
+        },
+      },
       destination: {
         lat: "",
         long: "",
@@ -139,6 +178,10 @@ export const scheduledBookingData = [
     driver: {
       name: "Ben Stokes",
       image: "/asset/person1.webp",
+      rating: {
+        numberofRating: 12,
+        value: 5
+      }
     },
     location: {
       origin: {
@@ -151,7 +194,16 @@ export const scheduledBookingData = [
           name: "UK",
         },
       },
-
+      via: {
+        lat: "",
+        long: "",
+        place: "Irish Sea ",
+        viaPointLocation: "Blackpool",
+        country: {
+          id: "",
+          name: "UK",
+        },
+      },
       destination: {
         lat: "",
         long: "",

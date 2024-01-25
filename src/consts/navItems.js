@@ -22,7 +22,7 @@ export const navItems = [
         icon: AiOutlineNotification
     },
     {
-        name: 'Services History',
+        name: 'Booking History',
         slug: "service-history",
         icon: MdOutlineHistory 
     },
