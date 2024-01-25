@@ -5,7 +5,6 @@ import { scheduledBookingData } from "../consts/servicesData";
 // For Responsiveness to arrage boxes in correct order
 const RenderBoxes = () => {
   useEffect(() => {
-    if (window.innerWidth <= 480) {
       const divElements = document.querySelectorAll(".box");
       const divArray = Array.from(divElements);
       divArray.sort((a, b) => {
@@ -15,7 +14,6 @@ const RenderBoxes = () => {
       });
       const container = document.getElementById("box-container");
       divArray.forEach((div) => container.appendChild(div));
-    }
   }, []);
 
   return null;
@@ -25,6 +23,12 @@ const ServiceDetails = () => {
   const { slug } = useParams();
 
   const [data, setData] = useState();
+  const [windowWidth, setWindowWidth] = useState();
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, []);
+
   // get data
   useEffect(() => {
     const filteredData = scheduledBookingData?.filter(
@@ -73,7 +77,15 @@ const ServiceDetails = () => {
             </div>
 
             <div>
-              <p className={`${data.bookingStatus == "confirmed" ? "bg-green-700" : "bg-primary/75"} w-max px-[15px] py-[6px] text-white rounded-[25px]`}>
+              <p
+                className={`${
+                  data.bookingStatus == "confirmed"
+                    ? "bg-green-700"
+                    : data.bookingStatus == "pending"
+                    ? "bg-yellow-600"
+                    : "bg-primary/75"
+                } w-max px-[15px] py-[6px] text-white rounded-[25px]`}
+              >
                 Booking Status: {data.bookingStatus}
               </p>
             </div>
@@ -170,7 +182,7 @@ const ServiceDetails = () => {
 
             {/* Driver Info */}
             <div
-              data-id="6"
+              data-id={windowWidth > 520 ? "3" : "6"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -204,7 +216,7 @@ const ServiceDetails = () => {
             </div>
             {/* capacity */}
             <div
-              data-id="3"
+              data-id={windowWidth > 520 ? "4" : "3"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -296,9 +308,9 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
-             {/* Flight Information */}
-             <div
-              data-id="7"
+            {/* Flight Information */}
+            <div
+              data-id={windowWidth > 520 ? "5" : "7"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -354,7 +366,7 @@ const ServiceDetails = () => {
             </div>
             {/* Vehicle Info */}
             <div
-              data-id="4"
+              data-id={windowWidth > 520 ? "6" : "4"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -377,10 +389,9 @@ const ServiceDetails = () => {
               </div>
             </div>
 
-           
             {/* Total Spent */}
             <div
-              data-id="8"
+              data-id={windowWidth > 520 ? "7" : "8"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -418,7 +429,13 @@ const ServiceDetails = () => {
                   </div>
                 </div>
 
-                <div className={`w-max px-[10px] py-[8px] rounded-[5px] ${data.paymentStatus == "paid" ? "border border-green-700 text-green-700" : "border border-primary text-primary"}`}>
+                <div
+                  className={`w-max px-[10px] py-[8px] rounded-[5px] ${
+                    data.paymentStatus == "paid"
+                      ? "border border-green-700 text-green-700"
+                      : "border border-primary text-primary"
+                  }`}
+                >
                   <p>
                     <span className="text-black">Payment satus :</span>
                     <span className="">{data.paymentStatus}</span>
@@ -428,7 +445,7 @@ const ServiceDetails = () => {
             </div>
             {/* Logs */}
             <div
-              data-id="5"
+              data-id={windowWidth > 520 ? "8" : "5"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>

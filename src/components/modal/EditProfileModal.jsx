@@ -1,7 +1,7 @@
-import { Box, Button, Modal } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, IconButton, Modal, Tooltip } from "@mui/material";
+import { useState } from "react";
 import { BsTelephone } from "react-icons/bs";
-import { FaLock, FaRegEdit, FaTimes, FaUser, FaUserCircle } from "react-icons/fa";
+import { FaRegEdit, FaTimes, FaUser, } from "react-icons/fa";
 import { IoMailOutline } from "react-icons/io5";
 
 const style = {
@@ -23,20 +23,24 @@ const EditProfileModal = () => {
     const handleClose = () => setOpen(false);
 
     return (
-        <div>
-            <button
-                className="bg-primary hover:bg-primary text-white  h-max w-max  py-[10px] px-[20px] font-semibold text-sm rounded-[20px] flex justify-between items-center gap-2 shadow-lg"
-                onClick={handleOpen}
-            >
-                <FaRegEdit className="cursor-pointer  text-gray-white " size={20} />
-                Edit info
-            </button>
+        <div className=" " >
+            <Tooltip arrow={true} sx={{ zIndex: 0 }} leaveDelay={0} title="Edit Personal Information">
+                <IconButton>
+                    <button
+                        className="bg-light_gray hover:bg-primary border-[0.5px] border-gray-400 hover:text-white text-black  h-max w-max  py-[10px] px-[10px] font-semibold text-sm rounded-[50%] flex justify-between items-center "
+                        onClick={handleOpen}
+                    >
+                        <FaRegEdit className="cursor-pointer  text-gray-white " size={20} />
+                    </button>
+                </IconButton>
+            </Tooltip>
 
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
+
             >
                 <Box sx={style}>
                     <div className="">

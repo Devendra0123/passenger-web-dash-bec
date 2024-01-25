@@ -1,9 +1,10 @@
-import { Box, Button, Modal, Typography } from '@mui/material';
+import { Box, Button, Modal, } from '@mui/material';
 import { FaLock } from "react-icons/fa";
 import { FaTimes } from "react-icons/fa";
 import { IoCardOutline } from "react-icons/io5";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
+import { useState } from 'react';
 
 
 const style = {
@@ -21,6 +22,9 @@ const style = {
 
 const AddCardModal = (props) => {
     const { handleClose, handleOpen, open } = props
+    const [expiryDate, setExpiryDate] = useState("2018-06");
+
+
 
     return (
         <div>
@@ -40,7 +44,7 @@ const AddCardModal = (props) => {
                                 < IoCardOutline size={20} className='absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] ' />
                             </div>
                             <div className='flex relative  gap-2' >
-                                <input className='w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] ' placeholder='Expiry' min="1997-01-01" max="2030-12-31" name='begin' type="date" />
+                                <input className='w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] ' onChange={(e) => setExpiryDate(e.target.value)} value={expiryDate} type="month" />
                                 <input className='w-[50%] p-2  pr-10 border-[1px] border-gray-300 outline-none rounded-[8px] ' placeholder='CVC' type="text" />
                                 < IoInformationCircleOutline size={20} className='absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] ' />
                             </div>
@@ -59,9 +63,6 @@ const AddCardModal = (props) => {
                     </div>
                 </Box>
             </Modal>
-
-
-
         </div>
     )
 }

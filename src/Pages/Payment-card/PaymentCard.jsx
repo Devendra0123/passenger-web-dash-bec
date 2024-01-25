@@ -2,6 +2,7 @@ import { Box, Modal, Typography } from "@mui/material";
 import { useState } from "react";
 import { MdOutlineAddCard } from "react-icons/md";
 import AddCardModal from "../../components/modal/AddCardModal";
+import CardList from "./CardList";
 // import Modal from '@mui/material/Modal';
 
 const style = {
@@ -22,7 +23,6 @@ const PaymentCard = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
   return (
     <>
       <div className="  bg-white/75 min-h-[70vh] backdrop-blur-sm w-full p-[15px] rounded-[15px]">
@@ -38,7 +38,7 @@ const PaymentCard = () => {
 
 
 
-        <div className="bg-[#b8b7b7] bg-gradient-to-tr from-gray-500 to-bg-[#b8b7b7] flex flex-col justify-between p-3 rounded-[10px] w-[500px] min-h-[200px] ">
+        <div className="bg-[#b8b7b7]  border-[1px] border-gray-400  bg-gradient-to-tr from-gray-500 to-bg-[#b8b7b7] flex flex-col justify-between p-3 rounded-[10px] w-[500px] min-h-[200px] ">
           <p className="text-white text-xl font-semibold">
             xxxx-xxxx-xxxx-1111
           </p>
@@ -60,43 +60,10 @@ const PaymentCard = () => {
         <div className="card-list  mt-7">
           <h2 className="font-medium my-5 text-fontSize_lg ">Cards List</h2>
 
-          <div className="w-[500px] px-4 mb-3 py-2 rounded-[10px] shadow-md bg-slate-400 flex gap-2 flex-col justify-evenly h-max">
-            <div className="flex w justify-between">
-              <p className="text-xl font-medium text-white">
-                xxxx-xxxx-xxxx-1111
-              </p>
-              <p className="text-[#0090B6] font-bold">Verified</p>
-            </div>
-            <p className="text-white">23/03/2025</p>
-            <span className="bg-green-700 w-max rounded-[20px] text-sm text-white py-1 px-3">
-              Active
-            </span>
-          </div>
-
-          <div className="w-[500px] px-4 mb-3 py-2 rounded-[10px] shadow-md bg-slate-400 flex gap-2 flex-col justify-evenly h-max">
-            <div className="flex w justify-between">
-              <p className="text-xl font-medium text-white">
-                xxxx-xxxx-xxxx-1111
-              </p>
-              <p className="text-[#0090B6] font-bold">Verified</p>
-            </div>
-            <p className="text-white">23/03/2025</p>
-            <span className="bg-green-700 w-max rounded-[20px] text-sm text-white py-1 px-3">
-              Active
-            </span>
-          </div>
-
-          <div className="w-[500px] px-4 py-2 rounded-[10px] shadow-md bg-slate-400 flex gap-2 flex-col justify-evenly h-max">
-            <div className="flex w justify-between">
-              <p className="text-xl font-medium text-white">
-                xxxx-xxxx-xxxx-1111
-              </p>
-              <p className="text-[#0090B6] font-bold">Verified</p>
-            </div>
-            <p className="text-white">23/03/2025</p>
-            <span className="bg-green-700 w-max rounded-[20px] text-sm text-white py-1 px-3">
-              Active
-            </span>
+          <div className="" >
+            <CardList />
+            <CardList />
+            <CardList />
           </div>
         </div>
       </div>

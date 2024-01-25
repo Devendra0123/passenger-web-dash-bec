@@ -3,36 +3,37 @@ import { AiOutlineNotification } from "react-icons/ai";
 import { MdOutlineHistory } from "react-icons/md";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { FaQuestionCircle } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 
 export const navItems = [
     {
         name: 'Dashboard',
         slug: "",
-        icon: '/asset/icons/schedule.svg'
+        icon: MdDashboard
     },
     {
         name: 'Schedule Booking',
         slug: "scheduled-booking",
-        icon: '/asset/icons/schedule.svg'
+        icon: GrSchedule
     },
     {
         name: 'Notice',
         slug: "notice",
-        icon: '/asset/icons/notice.svg' 
+        icon: AiOutlineNotification
     },
     {
         name: 'Services History',
         slug: "service-history",
-        icon: '/asset/icons/history.svg' 
+        icon: MdOutlineHistory 
     },
     {
         name: 'Invoice',
         slug: "invoice",
-        icon: '/asset/icons/invoice.svg' 
+        icon: LiaFileInvoiceDollarSolid
     },
     {
         name: 'FAQ',
         slug: "faq",
-        icon: '/asset/icons/faq.svg'
+        icon: FaQuestionCircle
     },
 ]

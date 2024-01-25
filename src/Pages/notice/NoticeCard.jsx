@@ -15,9 +15,6 @@ const NoticeCard = ({ data }) => {
           <div className="font-medium text-[17px] ">{title}</div>
           <div>{date}</div>
           <div>
-            <span className="bg-green-700 text-sm px-2 py-1 rounded-[20px] text-white">
-              {status}
-            </span>{" "}
             {description}
           </div>
         </div>

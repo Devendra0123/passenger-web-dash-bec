@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { navItems } from "../consts/navItems";
-import IconText from "./element/IconText";
-import { Link } from "react-router-dom";
+import IconText from "./Element/IconText";
+import { Link, useLocation } from "react-router-dom";
+import { VscAccount } from "react-icons/vsc";
 
 const Sidebar = () => {
-  const pathname = window.location.pathname;
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const [activeLink, setActiveLink] = useState();
 
@@ -18,7 +20,8 @@ const Sidebar = () => {
     } else {
       setActiveLink(pathname);
     }
-  }, []);
+  }, [pathname]);
+
   return (
     <div className="sticky top-[30px] w-full h-[90vh] bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">
@@ -31,8 +34,13 @@ const Sidebar = () => {
         </Link>
         <div className="mt-[20px] flex flex-col gap-[3px]">
           {navItems?.length > 0 &&
-            navItems.map(({ icon, name, slug }, index) => (
-              <IconText key={index} text={name} icon={icon} link={slug} handleClick={()=> setActivePath(`/${slug}`)} active={activeLink == `/${slug}` ? true : false} />
+            navItems.map((item, index) => (
+              <IconText
+                key={index}
+                data={item}
+                handleClick={() => setActivePath(`/${item.slug}`)}
+                active={activeLink == `/${item.slug}` ? true : false}
+              />
             ))}
         </div>
       </div>
@@ -44,13 +52,15 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="flex flex-col gap-[20px]">
-        <Link to="/account" className="flex items-center gap-[10px]">
-          <img
-            src="/asset/icons/account.svg"
-            alt="account"
-            className="w-[15px] h-[15px"
-          />
+      <div className="w-full flex flex-col gap-[20px]">
+        <Link
+          to={`/account`}
+          onClick={() => setActivePath(`/${account}`)}
+          className={`${
+            activeLink == "/account" && "bg-blue-500 text-white"
+          } w-full rounded-[25px] hover:bg-blue-500 hover:text-white py-[10px] px-[10px] flex items-center gap-[10px]`}
+        >
+          <VscAccount className="w-[15px] h-[15px" />
           <p>Account</p>
         </Link>
       </div>

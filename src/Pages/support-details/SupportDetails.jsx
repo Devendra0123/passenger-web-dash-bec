@@ -17,7 +17,7 @@ const SupportDetails = () => {
     <div className="  bg-smoke h-[70vh] p-[15px] rounded-[15px]">
       {title && (
         <h1 className="text-titleSize text-titleColor font-titleFontWeight ">
-          {title}
+          Support - {title}
         </h1>
       )}
 

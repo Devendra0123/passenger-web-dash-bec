@@ -7,6 +7,7 @@ import { FaRegEdit } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 import EditProfileModal from "../../components/modal/EditProfileModal";
+import { IconButton, Tooltip } from "@mui/material";
 
 const Account = () => {
   return (
@@ -29,7 +30,6 @@ const Account = () => {
               </div>
 
               <div className="ml-[200px]">
-                {/* <FaRegEdit className="cursor-pointer text-gray-600 " size={20} /> */}
                 <EditProfileModal />
               </div>
 
@@ -63,7 +63,7 @@ const Account = () => {
             <p className="font-medium my-5 text-fontSize_lg  ">Card</p>
 
             <Link to={"/account/cards"}>
-              <div className="flex ml-5 w-[60%] hover:bg-orange-100 cursor-pointer items-center rounded-[10px] py-2 px-2 justify-between">
+              <div className="flex ml-5 w-[60%] border-[1px] border-gray-400 bg-light_gray hover:bg-orange-100 cursor-pointer items-center rounded-[10px] py-2 px-2 justify-between">
                 <div className="flex gap-2 justify-center items-center">
                   <ImCreditCard size={25} />
                   <p className="font-medium">My Card</p>

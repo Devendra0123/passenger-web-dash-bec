@@ -2,7 +2,7 @@ import React from "react";
 
 const NoticeCard = ({ title, date, description }) => {
   return (
-    <div className="flex items-start gap-[5px]">
+    <div className="w-full flex items-start gap-[5px]">
       <div className="mt-[3px]">
         <img src="./asset/icons/bell.svg" alt="notice-icon" className="w-[15px] h-[15px]" />
       </div>
