@@ -133,7 +133,7 @@ export const scheduledBookingData = [
         lat: "",
         long: "",
         place: "Cambridge",
-        pickupLocation: "",
+        pickupLocation: "Cambridge University Botanic Garden",
         country: {
           id: "",
           name: "UK",
@@ -153,7 +153,7 @@ export const scheduledBookingData = [
         lat: "",
         long: "",
         place: "Liverpool",
-        dropoffLocation: "",
+        dropoffLocation: "Anfield",
         country: {
           id: "",
           name: "UK",
@@ -188,7 +188,7 @@ export const scheduledBookingData = [
         lat: "",
         long: "",
         place: "Edinburgh",
-        pickupLocation: "",
+        pickupLocation: "Edinburgh Castle",
         country: {
           id: "",
           name: "UK",
@@ -208,7 +208,7 @@ export const scheduledBookingData = [
         lat: "",
         long: "",
         place: "Manchester",
-        dropoffLocation: "",
+        dropoffLocation: "Anfield",
         country: {
           id: "",
           name: "UK",
