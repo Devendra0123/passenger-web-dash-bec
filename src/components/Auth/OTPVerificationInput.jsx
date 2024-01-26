@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const OTPVerification = () => {
-  const { setIsAuthenticated } = useAuthContext();
+const OTPVerification = ({verifyOtp}) => {
 
   // Create an array to hold refs for each input box
   const inputRefs = Array(6)
@@ -31,13 +30,15 @@ const OTPVerification = () => {
         ))}
       </div>
       <button
-        onClick={() => {
-          setIsAuthenticated(true);
-        }}
+        onClick={verifyOtp}
         className="w-full px-[20px] py-[10px] bg-blue-500 text-white "
       >
         Submit
       </button>
+
+      <p className="mt-[20px] ">
+        Resend OTP in <span className="text-primary">35 sec</span>
+      </p>
     </div>
   );
 };

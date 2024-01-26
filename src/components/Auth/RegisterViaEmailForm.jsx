@@ -1,8 +1,14 @@
 import React, { useRef, useState } from "react";
+import { FaUser } from "react-icons/fa";
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
+import { IoMailOutline } from "react-icons/io5";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 
-const RegisterViaPhoneForm = ({handleRegisterFormSubmit}) => {
+const RegisterViaEmail = ({handleRegisterFormSubmit}) => {
+  const [showPassword, setShowPassword] = useState(false);
+
   const fileInputRef = useRef(null);
 
   const [file, setFile] = useState();
@@ -18,9 +24,8 @@ const RegisterViaPhoneForm = ({handleRegisterFormSubmit}) => {
       setUploadedImageUrl(imageUrl);
     }
   }
-
   return (
-    <div className=" w-[75%] mt-[20px]">
+    <div className=" w-[75%] mt-[20px] pb-[100px]">
       <form onSubmit={handleRegisterFormSubmit} className="flex flex-col gap-[15px]">
         {/* Profile image upload */}
         <div className="relative">
@@ -76,7 +81,24 @@ const RegisterViaPhoneForm = ({handleRegisterFormSubmit}) => {
           />
         </div>
 
-        <button type="submit" className="w-full px-[20px] py-[10px] bg-blue-500 text-white ">
+        <div className="flex flex-col gap-[5px]">
+          <label>Password:</label>
+          <input
+            type="password"
+            className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border border-primary "
+          />
+        </div>
+        <div className="flex flex-col gap-[5px]">
+          <label>Phone Number:</label>
+          <input
+            type="number"
+            className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border border-primary "
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full px-[20px] py-[10px] bg-blue-500 text-white "
+        >
           Submit
         </button>
       </form>
@@ -84,4 +106,4 @@ const RegisterViaPhoneForm = ({handleRegisterFormSubmit}) => {
   );
 };
 
-export default RegisterViaPhoneForm;
+export default RegisterViaEmail;

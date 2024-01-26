@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import OTPVerification from "./OTPVerificationInput";
+import { useAuthContext } from "../../Context/AuthContext";
+import RegisterViaPhoneForm from "./RegisterViaPhoneForm";
 
 const SignInWithPhone = () => {
+  const { setIsAuthenticated } = useAuthContext();
+
   const [otp, setOtp] = useState();
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
 
   const handlePhoneNumberSubmit = (e) => {
     e.preventDefault();
@@ -11,14 +16,24 @@ const SignInWithPhone = () => {
   return (
     <div className="w-full flex flex-col items-start gap-[20px] mt-[50px]">
       <div
-        style={{ transform: otp ? "translateX(-100%)" : "translateX(0%)" }}
+        style={{
+          transform:
+            otp && !isOtpVerified
+              ? "translateX(-100%)"
+              : isOtpVerified
+              ? "translateX(-200%)"
+              : "translateX(0%)",
+        }}
         className="w-[100%] flex transition duration-150 ease-in-out"
       >
         <div className={`pl-[50px] min-w-full p-[20px]`}>
           <h2 className="text-[25px] text-start font-semibold">
             Sign in with phone number
           </h2>
-          <form onSubmit={handlePhoneNumberSubmit} className="mt-[20px] flex flex-col">
+          <form
+            onSubmit={handlePhoneNumberSubmit}
+            className="mt-[20px] flex flex-col"
+          >
             <label>Enter your phone number:</label>
             <input
               type="number"
@@ -37,12 +52,24 @@ const SignInWithPhone = () => {
           </p>
         </div>
 
+        {/* Otp verification */}
         <div className={`pl-[50px] min-w-full p-[20px]`}>
           <h2 className="text-[25px] text-start font-semibold">
             OTP Verification
           </h2>
-          <p className="mt-[20px]">Enter the OTP code send to your phone number</p>
-          <OTPVerification />
+          <p className="mt-[20px]">
+            Enter the OTP code send to your phone number
+          </p>
+          <OTPVerification verifyOtp={() => setIsOtpVerified(true)} />
+        </div>
+
+        {/* Register form */}
+        <div className={`pl-[50px] mt-[-70px] flex flex-col min-w-full p-[20px]`}>
+          <h2 className="text-[25px] text-start font-semibold">
+            Register Account
+          </h2>
+          <p className="mt-[20px]">Fill the details to register your account</p>
+          <RegisterViaPhoneForm handleRegisterFormSubmit={()=> setIsAuthenticated(true)} />
         </div>
       </div>
     </div>

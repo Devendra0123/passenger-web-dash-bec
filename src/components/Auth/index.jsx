@@ -4,6 +4,7 @@ import { BsFillPhoneFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
 import SignInWithPhone from "./SignInWithPhone";
 import { IoChevronBackOutline } from "react-icons/io5";
+import SignInWithEmail from "./SignInWithEmail";
 
 const Auth = () => {
   const [clickedBtnId, setClickedBtnId] = useState("");
@@ -29,7 +30,12 @@ const Auth = () => {
           </div>
           <div className="col-span-2 bg-smoke/75 flex flex-col items-center gap-[20px]">
             <div className="w-full flex items-center justify-between p-[20px]">
-              <div onClick={()=> setClickedBtnId('')} className={`${!clickedBtnId && "pointer-events-none opacity-0"} cursor-pointer flex items-center gap-[5px] bg-light_gray px-[20px] py-[8px] rounded-[25px]`}>
+              <div
+                onClick={() => setClickedBtnId("")}
+                className={`${
+                  !clickedBtnId && "pointer-events-none opacity-0"
+                } cursor-pointer flex items-center gap-[5px] bg-light_gray px-[20px] py-[8px] rounded-[25px]`}
+              >
                 <IoChevronBackOutline />
                 <p>Go Back</p>
               </div>
@@ -65,6 +71,12 @@ const Auth = () => {
             {clickedBtnId == "phone" && (
               <div className="w-[100%] flex justify-center">
                 <SignInWithPhone />
+              </div>
+            )}
+
+            {clickedBtnId == "email" && (
+              <div className="w-[100%] flex justify-center">
+                <SignInWithEmail />
               </div>
             )}
           </div>
