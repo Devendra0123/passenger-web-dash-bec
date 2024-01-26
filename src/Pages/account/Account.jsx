@@ -3,17 +3,14 @@ import { IoMailOutline } from "react-icons/io5";
 import { BsTelephone } from "react-icons/bs";
 import { IoIosArrowForward } from "react-icons/io";
 import { ImCreditCard } from "react-icons/im";
-import { FaRegEdit } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
 import EditProfileModal from "../../components/modal/EditProfileModal";
-import { IconButton, Tooltip } from "@mui/material";
 import Rating from "../../components/Element/Rating";
 
 const Account = () => {
   return (
-    <>
       <div className=" bg-white/75 min-h-[70vh] backdrop-blur-sm w-full p-[15px] rounded-[15px]">
         <h2 className="text-titleSize font-titleFontWeight text-titleColor ">
           {" "}
@@ -88,7 +85,6 @@ const Account = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 

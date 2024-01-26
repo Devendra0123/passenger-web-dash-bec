@@ -68,8 +68,6 @@ function App() {
                 path="/support/support-details"
                 element={<SupportDetails />}
               />
-              {/* <Route path="/sign-in" element={<SignIn />} /> */}
-              {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>
           </div>
         </div>

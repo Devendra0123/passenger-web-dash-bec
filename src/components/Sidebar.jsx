@@ -55,12 +55,12 @@ const Sidebar = () => {
       <div className="w-full flex flex-col gap-[20px]">
         <Link
           to={`/account`}
-          onClick={() => setActivePath(`/${account}`)}
+          onClick={() => setActivePath(`/account`)}
           className={`${
-            activeLink == "/account" && "bg-blue-500 text-white"
+            activeLink === "/account" ? "bg-blue-500 text-white" : ""
           } w-full rounded-[25px] hover:bg-blue-500 hover:text-white py-[10px] px-[10px] flex items-center gap-[10px]`}
         >
-          <VscAccount className="w-[15px] h-[15px" />
+          <VscAccount className="w-[15px] h-[15px]" />
           <p>Account</p>
         </Link>
       </div>

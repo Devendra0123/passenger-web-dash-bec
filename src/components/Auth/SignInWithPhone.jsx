@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import OTPVerification from "./OTPVerificationInput";
 import { useAuthContext } from "../../Context/AuthContext";
 import RegisterViaPhoneForm from "./RegisterViaPhoneForm";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const SignInWithPhone = () => {
   const { setIsAuthenticated } = useAuthContext();
-
+  const [value, setValue] = useState();
   const [otp, setOtp] = useState();
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
@@ -35,9 +37,11 @@ const SignInWithPhone = () => {
             className="mt-[20px] flex flex-col"
           >
             <label>Enter your phone number:</label>
-            <input
-              type="number"
-              className="w-[300px] bg-light_gray border border-primary px-[10px] py-[8px] mt-[5px] rounded-[4px]"
+            <PhoneInput
+              country={"us"}
+              value={value}
+              onChange={(phone) => setValue("+" + phone)}
+              className="w-[300px] bg-light_gray border border-primary mt-[5px] rounded-[4px]"
             />
             <button
               onClick={() => setOtp(123456)}
@@ -64,12 +68,16 @@ const SignInWithPhone = () => {
         </div>
 
         {/* Register form */}
-        <div className={`pl-[50px] mt-[-70px] flex flex-col min-w-full p-[20px]`}>
+        <div
+          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full p-[20px]`}
+        >
           <h2 className="text-[25px] text-start font-semibold">
             Register Account
           </h2>
           <p className="mt-[20px]">Fill the details to register your account</p>
-          <RegisterViaPhoneForm handleRegisterFormSubmit={()=> setIsAuthenticated(true)} />
+          <RegisterViaPhoneForm
+            handleRegisterFormSubmit={() => setIsAuthenticated(true)}
+          />
         </div>
       </div>
     </div>

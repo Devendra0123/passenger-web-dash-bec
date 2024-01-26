@@ -37,7 +37,7 @@ const OTPVerification = ({verifyOtp}) => {
       </button>
 
       <p className="mt-[20px] ">
-        Resend OTP in <span className="text-primary">35 sec</span>
+        Resend OTP in <span className="text-primary">35 sec.</span>
       </p>
     </div>
   );

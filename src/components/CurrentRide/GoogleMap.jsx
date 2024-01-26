@@ -12,11 +12,13 @@ const containerStyle = {
   height: "300px",
 };
 
+const googleMapsLibraries = ["places"];
+
 const GoogleMapDirection = () => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-    libraries: ["places"],
+    libraries: googleMapsLibraries,
   });
 
   const [map, setMap] = useState(null);

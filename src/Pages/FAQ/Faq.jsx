@@ -14,7 +14,7 @@ const Faq = () => {
         <div className="faq-section w-[60%] flex flex-col gap-2 ">
           {faqData?.length > 0 &&
             faqData.map((item, index) => (
-              <Link to={`/faq/faq-details?category=${item.slug}`}>
+              <Link key={index} to={`/faq/faq-details?category=${item.slug}`}>
                 <div className="flex hover:bg-[#dfdfdf] items-center rounded-[10px] py-2 px-1 justify-between">
                   <div className="flex gap-2 justify-center items-center">
                     <img src={item.icon} alt={item.title} className="w-[20px] h-[20px] " />
