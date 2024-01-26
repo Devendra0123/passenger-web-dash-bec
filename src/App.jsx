@@ -1,22 +1,27 @@
 import "./App.css";
-import { Routes, Route, useLocation } from "react-router-dom";
-import Home from "./Pages/Home";
+
+import { useEffect } from "react";
+
+import { Routes, Route, useLocation, redirect } from "react-router-dom";
+import {
+  Account,
+  Faq,
+  FaqDetails,
+  Home,
+  Invoice,
+  Notice,
+  PaymentCard,
+  ScheduledBooking,
+  ServiceDetails,
+  ServiceHistory,
+  SignIn,
+  Support,
+  SupportDetails,
+} from "./Pages";
+import { useAuthContext } from "./Context/AuthContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import SignIn from "./Pages/SignIn";
-import GoogleMap from "./Pages/GoogleMap";
-import ServiceDetails from "./Pages/ServiceDetails";
-import ScheduledBooking from "./Pages/scheduled-booking/ScheduledBooking";
-import Notice from "./Pages/notice/Notice";
-import Invoice from "./Pages/invoices/Invoice";
-import ServiceHistory from "./Pages/service-history/ServiceHistory";
-import Faq from "./Pages/FAQ/Faq";
-import FaqDetails from "./Pages/FAQ-details/FaqDetails";
-import Account from "./Pages/account/Account";
-import PaymentCard from "./Pages/Payment-card/PaymentCard";
-import Support from "./Pages/support/Support";
-import { useEffect } from "react";
-import SupportDetails from "./Pages/support-details/SupportDetails";
+import Auth from "./components/Auth";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -28,6 +33,12 @@ function WindowScrollTop() {
 }
 
 function App() {
+  const { isAuthenticated } = useAuthContext();
+
+  if (!isAuthenticated) {
+    return <Auth />;
+  }
+
   return (
     <div className="w-full min-h-[100vh] flex justify-center">
       <WindowScrollTop />
@@ -53,7 +64,10 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/account/cards" element={<PaymentCard />} />
               <Route path="/support" element={<Support />} />
-              <Route path="/support/support-details" element={<SupportDetails />} />
+              <Route
+                path="/support/support-details"
+                element={<SupportDetails />}
+              />
               {/* <Route path="/sign-in" element={<SignIn />} /> */}
               {/* <Route path="/google-maps" element={<GoogleMap />} /> */}
             </Routes>
