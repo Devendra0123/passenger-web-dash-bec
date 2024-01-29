@@ -2,7 +2,7 @@ import React from "react";
 
 const Rating = ({ ratingValue, NumberOfRating }) => {
   const stars = Array.from({ length: 5 }, (_, index) => index + 1);
-console.log(NumberOfRating)
+
   return (
     <div className="flex items-center">
       {/* Five Star */}

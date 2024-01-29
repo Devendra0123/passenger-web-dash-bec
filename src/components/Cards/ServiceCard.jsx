@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Rating from "../Element/Rating";
 
 const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
   const {
@@ -89,13 +90,33 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
             alt={driver?.name}
             className="w-[37px] h-[37px] rounded-full border border-blue-400 "
           />
-          <p className="text-slate-500 text-[13px]">{driver?.name}</p>
+          <div>
+            <p className="text-slate-500 text-[13px]">{driver?.name}</p>
+            <Rating
+              ratingValue={driver.rating?.value}
+              NumberOfRating={driver.rating.numberofRating}
+            />
+          </div>
         </div>
         <div className="flex items-center gap-[10px]">
-          <p className={`${bookingStatus == "confirmed" ? "text-green-700 border border-green-700" : bookingStatus == "pending" ? "text-yellow-600 border border-yellow-600" : "text-primary border border-primary"} px-[10px] py-[3px] rounded-[25px]`}>
+          <p
+            className={`${
+              bookingStatus == "confirmed"
+                ? "text-green-700 border border-green-700"
+                : bookingStatus == "pending"
+                ? "text-yellow-600 border border-yellow-600"
+                : "text-primary border border-primary"
+            } px-[10px] py-[3px] rounded-[25px]`}
+          >
             {bookingStatus}
           </p>
-          <p className={`${paymentStatus == "paid" ? "text-green-700 border border-green-700" : "text-primary border border-primary"} px-[10px] py-[3px] rounded-[25px]`}>
+          <p
+            className={`${
+              paymentStatus == "paid"
+                ? "text-green-700 border border-green-700"
+                : "text-primary border border-primary"
+            } px-[10px] py-[3px] rounded-[25px]`}
+          >
             {paymentStatus}
           </p>
         </div>

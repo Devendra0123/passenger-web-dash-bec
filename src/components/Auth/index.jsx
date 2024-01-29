@@ -11,7 +11,7 @@ const Auth = () => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="w-full h-screen flex flex-col p-[20px]">
+      <div className="w-full h-screen flex flex-col items-center justify-center p-[20px]">
         <div className="w-[80%] h-[600px] grid grid-cols-3 shadow-md rounded-lg overflow-hidden ">
           <div className="z-10 col-span-1 h-[600px] bg-slate-200 flex flex-col items-center justify-center p-[20px]">
             <div className="flex flex-col items-center gap-[10px]">
