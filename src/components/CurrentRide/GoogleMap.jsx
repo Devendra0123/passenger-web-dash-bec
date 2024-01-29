@@ -3,10 +3,15 @@ import {
   useJsApiLoader,
   GoogleMap,
   DirectionsRenderer,
+  Marker,
 } from "@react-google-maps/api";
 
 const center = { lat: 48.8584, lng: 2.2945 };
 
+const viaPoint = {
+  lat: 51.248562,
+  lng: 0.630080,
+};
 const containerStyle = {
   width: "100%",
   height: "300px",
@@ -15,7 +20,6 @@ const containerStyle = {
 const googleMapsLibraries = ["places"];
 
 const GoogleMapDirection = () => {
-
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     libraries: googleMapsLibraries,
@@ -51,14 +55,6 @@ const GoogleMapDirection = () => {
   return (
     <div className="w-full flex items-center justify-center">
       <div className="w-full flex flex-col items-center justify-center gap-[10px]">
-        <div className="w-full flex items-center justify-between">
-          <div>
-            <div className="bg-blue-500 text-white flex items-center gap-[3px] rounded-[25px] border border-blue-500 px-[15px] py-[5px]">
-              <img src="/asset/icons/passenger.svg" alt="passenger" className="w-[16px] h-[16px]" />
-              <p className="">POB</p>
-            </div>
-          </div>
-        </div>
         {/* Google Map Box */}
         <GoogleMap
           center={center}
@@ -75,6 +71,7 @@ const GoogleMapDirection = () => {
           {directionsResponse && (
             <DirectionsRenderer directions={directionsResponse} />
           )}
+          {viaPoint && <Marker position={viaPoint} label="V" />}
         </GoogleMap>
       </div>
 

@@ -17,7 +17,7 @@ const ScheduledBooking = () => {
         <div className="mt-[20px] flex flex-col gap-[20px]">
           {scheduledBookingData?.length > 0 &&
             scheduledBookingData
-              .slice(0, 2)
+              .slice(0, 3)
               .map((item, index) => <ServiceCard key={index} data={item} />)}
         </div>
       </div>

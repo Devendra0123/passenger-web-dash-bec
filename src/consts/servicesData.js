@@ -1,5 +1,5 @@
 export const currentRideData = {
-  dateAndTime: "02/12/2024 12:55pm",
+  dateAndTime: "02/12/2024 Sun 12:55pm",
   bookingStatus: "pending",
   price: "$71.46",
   paymentStatus: "paid",
@@ -16,8 +16,10 @@ export const currentRideData = {
     image: "/asset/person1.webp",
     rating: {
       numberofRating: 20,
-      value: 5
-    }
+      value: 5,
+    },
+    email: "benstokes22@gmail.com",
+    phoneNumber: "+012435456",
   },
   location: {
     origin: {
@@ -53,7 +55,7 @@ export const currentRideData = {
 
 export const scheduledBookingData = [
   {
-    dateAndTime: "02/12/2024 12:55pm",
+    dateAndTime: "02/12/2024 Tue 12:55pm",
     price: "$71.46",
     paymentStatus: "paid",
     bookingStatus: "confirmed",
@@ -69,9 +71,11 @@ export const scheduledBookingData = [
       name: "Ben Stokes",
       image: "/asset/person1.webp",
       rating: {
-        numberofRating: 31,
-        value: 4
-      }
+        numberofRating: 20,
+        value: 5,
+      },
+      email: "benstokes22@gmail.com",
+      phoneNumber: "+012435456",
     },
     location: {
       origin: {
@@ -108,7 +112,7 @@ export const scheduledBookingData = [
   },
 
   {
-    dateAndTime: "02/12/2024 12:55pm",
+    dateAndTime: "02/12/2024 Mon 12:55pm",
     price: "$71.46",
     paymentStatus: "not paid",
     bookingStatus: "pending",
@@ -124,9 +128,11 @@ export const scheduledBookingData = [
       name: "Ben Stokes",
       image: "/asset/person1.webp",
       rating: {
-        numberofRating: 8,
-        value: 3
-      }
+        numberofRating: 20,
+        value: 3,
+      },
+      email: "benstokes22@gmail.com",
+      phoneNumber: "+012435456",
     },
     location: {
       origin: {
@@ -163,7 +169,7 @@ export const scheduledBookingData = [
   },
 
   {
-    dateAndTime: "02/12/2024 12:55pm",
+    dateAndTime: "02/12/2024 Wed 12:55pm",
     price: "$71.46",
     paymentStatus: "paid",
     duration: "1hrs 45mins",
@@ -179,9 +185,11 @@ export const scheduledBookingData = [
       name: "Ben Stokes",
       image: "/asset/person1.webp",
       rating: {
-        numberofRating: 12,
-        value: 5
-      }
+        numberofRating: 20,
+        value: 4,
+      },
+      email: "benstokes22@gmail.com",
+      phoneNumber: "+012435456",
     },
     location: {
       origin: {

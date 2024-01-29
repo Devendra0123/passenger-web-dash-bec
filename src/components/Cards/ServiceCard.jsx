@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "../Element/Rating";
 import { IoInformationOutline } from "react-icons/io5";
+import DriverInfo from "../modal/DriverInfo";
+import Overlay from "../Overlay";
 
 const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
   const [isPriceInfoHovered, setIsPriceInfoHovered] = useState(false);
+  const [displayDriverPopup, setDisplayDriverPopup] = useState(false);
+
   const {
     dateAndTime,
     bookingStatus,
@@ -45,7 +49,7 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
           <div
             onMouseEnter={() => setIsPriceInfoHovered(true)}
             onMouseLeave={() => setIsPriceInfoHovered(false)}
-            className="w-[26px] h-[26px] cursor-pointer rounded-full bg-slate-200 flex items-center justify-center "
+            className="w-[20px] h-[20px] cursor-pointer rounded-full bg-white text-slate-800 border border-slate-800 flex items-center justify-center "
           >
             <IoInformationOutline />
           </div>
@@ -55,16 +59,22 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
               <div className="flex items-center justify-between w-full">
                 <h3 className="font-semibold text-[15px]">Base Fare:</h3>
                 <p>
-                  <span className="text-[14px] text-primary font-semibold">$56.46</span>
+                  <span className="text-[14px] text-primary font-semibold">
+                    $56.46
+                  </span>
                 </p>
               </div>
               <div>
-              <div className="flex items-center justify-between w-full">
-                <h3 className="font-semibold text-[15px]">Additional Fare:</h3>
-                <p>
-                  <span className="text-[14px] text-primary font-semibold">$15</span>
-                </p>
-              </div>
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="font-semibold text-[15px]">
+                    Additional Fare:
+                  </h3>
+                  <p>
+                    <span className="text-[14px] text-primary font-semibold">
+                      $15
+                    </span>
+                  </p>
+                </div>
                 <ul className="pl-[5px]">
                   <div className="flex items-center justify-between w-full">
                     <p className="text-[14px]">Parking charge:</p>
@@ -73,7 +83,9 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
 
                   <div className="flex items-center justify-between w-full">
                     <p className="text-[14px]">Waiting charge</p>
-                    <p className="text-primary font-semibold text-[10px]">$11</p>
+                    <p className="text-primary font-semibold text-[10px]">
+                      $11
+                    </p>
                   </div>
                 </ul>
               </div>
@@ -96,7 +108,7 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
 
         <div>
           <p className="text-[14px]">
-            Vehicle No. <span>{vehicle.number}</span>
+            Registration No. <span>{vehicle.number}</span>
           </p>
         </div>
         <div>
@@ -107,25 +119,41 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-[10px]">
+      <div className="flex items-start justify-between gap-[20px]">
         <div>
-          <p>
+          <p className="text-blue-500 text-[12px] ">Origin</p>
+          <p className="text-[14px] ">
             {location.origin.place}
             <span>,{location.origin.country.name}</span>
           </p>
         </div>
-        <div>
-          <img src="/asset/icons/arrow.svg" alt="arrow" />
+        <div className="flex flex-col items-center text-center">
+          <p className="text-blue-500 text-[12px] ">Via</p>
+          <p className="text-[14px] ">
+            {location.via.place}
+            <span>,{location.via.viaPointLocation}</span>
+          </p>
         </div>
         <div>
-          <p className="text-end">
+          <p className="flex flex-col justify-end text-end text-blue-500 text-[12px] ">
+            Destination
+          </p>
+          <p className="text-end text-[14px] ">
             {location.destination.place}
             <span>,{location.destination.country.name}</span>
           </p>
         </div>
       </div>
-      <div className="w-full flex items-center justify-between gap-[10px]">
-        <div className="flex items-center gap-[5px]">
+
+      <div className="relative w-full flex items-center justify-between gap-[10px]">
+        {/* Driver info */}
+        <div
+          onClick={() => setDisplayDriverPopup(true)}
+          className={`${
+            serviceType == "current" &&
+            "hover:bg-light_gray cursor-pointer p-[10px] rounded-[5px]"
+          } flex items-center gap-[5px]`}
+        >
           <img
             src={driver?.image}
             alt={driver?.name}
@@ -161,7 +189,14 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
             {paymentStatus}
           </p>
         </div>
+        {displayDriverPopup && (
+        <DriverInfo
+          handleCross={() => setDisplayDriverPopup(false)}
+          data={driver}
+        />
+      )}
       </div>
+      {displayDriverPopup && <Overlay />}
     </Link>
   );
 };

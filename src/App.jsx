@@ -22,6 +22,7 @@ import { useAuthContext } from "./Context/AuthContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Auth from "./components/Auth";
+import { useOverlayContext } from "./Context/OverlayContext";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -34,7 +35,8 @@ function WindowScrollTop() {
 
 function App() {
   const { isAuthenticated } = useAuthContext();
-
+  const { overlay } = useOverlayContext();
+  
   if (!isAuthenticated) {
     return <Auth />;
   }

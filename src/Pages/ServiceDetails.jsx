@@ -116,7 +116,7 @@ const ServiceDetails = () => {
                 </p>
               </div>
               {/* Via point */}
-              <div className="flex flex-col items-start">
+              {/* <div className="flex flex-col items-start">
                 <h3 className="text-primary">Via Point</h3>
                 <p>{data.location.via?.place}</p>
                 <p className="text-[12px]">
@@ -125,7 +125,7 @@ const ServiceDetails = () => {
                     {data.location.via?.viaPointLocation}
                   </span>
                 </p>
-              </div>
+              </div> */}
               {/* Destination */}
               <div className="flex flex-col items-start">
                 <h3 className="text-primary">Destination</h3>
@@ -206,17 +206,20 @@ const ServiceDetails = () => {
                     />
                   </div>
                   <div className="w-full flex items-center justify-between">
-                    <p>Driver ID:</p>
-                    <p>003</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
                     <p>Name:</p>
                     <p>{data.driver?.name}</p>
                   </div>
-
                   <div className="w-full flex items-center justify-between">
-                    <p>Car Number:</p>
-                    <p>03458</p>
+                    <p>Email:</p>
+                    <p>{data.driver?.email}</p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Phone Number:</p>
+                    <p>{data.driver?.phoneNumber}</p>
+                  </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>Driver ID:</p>
+                    <p>003</p>
                   </div>
                 </div>
               </div>
@@ -297,9 +300,7 @@ const ServiceDetails = () => {
                             alt=""
                             className="w-[15px] h-[15px] "
                           />
-                          <p>
-                            Car Seat
-                          </p>
+                          <p>Car Seat</p>
                         </div>
                       </td>
                       <td
@@ -316,9 +317,39 @@ const ServiceDetails = () => {
                 </div>
               </div>
             </div>
-            {/* Flight Information */}
+
+            {/* Vehicle Info */}
             <div
               data-id={windowWidth > 520 ? "5" : "7"}
+              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+            >
+              <div>
+                <img
+                  src="/asset/icons/vehicle.svg"
+                  alt="vehicle-icon"
+                  className="w-[20px] h-[20px]"
+                />
+              </div>
+              <div className="w-full flex flex-col items-center gap-[10px] text-center">
+                <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/asset/car1.png"
+                    alt="car"
+                    className="w-[250px] h-auto object-contain"
+                  />
+                  <p>Saloon</p>
+                  <div className="w-full flex items-center justify-center gap-[10px]">
+                    <p>Car Number:</p>
+                    <p className="text-blue-500">03458</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Flight Information */}
+            <div
+              data-id={windowWidth > 520 ? "6" : "4"}
               className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
             >
               <div>
@@ -362,30 +393,6 @@ const ServiceDetails = () => {
                     <p>Pickup time after landing</p>
                     <p className="text-[14px] text-blue-500">after 15 mins.</p>
                   </div>
-                </div>
-              </div>
-            </div>
-            {/* Vehicle Info */}
-            <div
-              data-id={windowWidth > 520 ? "6" : "4"}
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <img
-                  src="/asset/icons/vehicle.svg"
-                  alt="vehicle-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
-                <div className="flex flex-col items-center">
-                  <img
-                    src="/asset/car1.png"
-                    alt="car"
-                    className="w-[250px] h-auto object-contain"
-                  />
-                  <p>Saloon</p>
                 </div>
               </div>
             </div>
