@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "../Element/Rating";
+import { IoInformationOutline } from "react-icons/io5";
 
 const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
+  const [isPriceInfoHovered, setIsPriceInfoHovered] = useState(false);
   const {
     dateAndTime,
     bookingStatus,
@@ -38,7 +40,46 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
         </p>
         <p className="text-slate-500 text-[13px]">{dateAndTime}</p>
         <p className="text-slate-500 text-[13px]">{distance}</p>
-        <p className="text-primary font-semibold">{price}</p>
+        <div className="relative flex items-center gap-[5px]">
+          <p className="text-primary font-semibold">{price}</p>
+          <div
+            onMouseEnter={() => setIsPriceInfoHovered(true)}
+            onMouseLeave={() => setIsPriceInfoHovered(false)}
+            className="w-[26px] h-[26px] cursor-pointer rounded-full bg-slate-200 flex items-center justify-center "
+          >
+            <IoInformationOutline />
+          </div>
+
+          {isPriceInfoHovered && (
+            <div className="w-[200px] flex flex-col gap-[5px] absolute top-full right-0 bg-smoke/[90%] backdrop-blur-sm border border-slate-300 p-[10px] rounded-[5px]">
+              <div className="flex items-center justify-between w-full">
+                <h3 className="font-semibold text-[15px]">Base Fare:</h3>
+                <p>
+                  <span className="text-[14px] text-primary font-semibold">$56.46</span>
+                </p>
+              </div>
+              <div>
+              <div className="flex items-center justify-between w-full">
+                <h3 className="font-semibold text-[15px]">Additional Fare:</h3>
+                <p>
+                  <span className="text-[14px] text-primary font-semibold">$15</span>
+                </p>
+              </div>
+                <ul className="pl-[5px]">
+                  <div className="flex items-center justify-between w-full">
+                    <p className="text-[14px]">Parking charge:</p>
+                    <p className="text-primary font-semibold text-[10px]">$4</p>
+                  </div>
+
+                  <div className="flex items-center justify-between w-full">
+                    <p className="text-[14px]">Waiting charge</p>
+                    <p className="text-primary font-semibold text-[10px]">$11</p>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="flex items-center justify-between">
