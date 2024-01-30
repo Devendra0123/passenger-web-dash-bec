@@ -3,6 +3,7 @@ import { navItems } from "../consts/navItems";
 import IconText from "./Element/IconText";
 import { Link, useLocation } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
+import { IoCallOutline } from "react-icons/io5";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -52,7 +53,8 @@ const Sidebar = () => {
         </button>
       </div>
 
-      <div className="w-full flex flex-col gap-[20px]">
+      <div className="w-full flex flex-col gap-[3px]">
+        {/* Account */}
         <Link
           to={`/account`}
           onClick={() => setActivePath(`/account`)}
@@ -62,6 +64,17 @@ const Sidebar = () => {
         >
           <VscAccount className="w-[15px] h-[15px]" />
           <p>Account</p>
+        </Link>
+        {/* Contact us */}
+        <Link
+          to={`/contact-us`}
+          onClick={() => setActivePath(`/contact-us`)}
+          className={`${
+            activeLink === "/contact-us" ? "bg-blue-500 text-white" : ""
+          } w-full rounded-[25px] hover:bg-blue-500 hover:text-white py-[10px] px-[10px] flex items-center gap-[10px]`}
+        >
+          <IoCallOutline className="w-[15px] h-[15px]" />
+          <p>Contact Us</p>
         </Link>
       </div>
     </div>
