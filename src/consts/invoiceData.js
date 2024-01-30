@@ -10,7 +10,7 @@ export const invoiceData = [
         date: "23/09/2023",
         invoiceId: "CFSD34JSR",
         amount: "$20",
-        status: "unpaid",
+        status: "pending",
         pdf: ""
     },
     {

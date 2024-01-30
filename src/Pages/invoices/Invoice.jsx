@@ -23,7 +23,7 @@ const Invoice = () => {
               <div className="text-lg font-semibold"> $ 65.00</div>
             </div>
             <div>
-              <label> Unpaid </label>
+              <label> Pending </label>
               <div className="text-lg font-semibold"> $ 20.00</div>
             </div>
           </div>
@@ -37,7 +37,7 @@ const Invoice = () => {
                 name="fromDateInput"
                 value={fromDate}
                 onChange={(e) => setFromDate(e.target.value)}
-                className=" bg-light_gray px-[15px] py-[8px] rounded-[5px] text-blue-500"
+                className=" bg-white px-[15px] py-[8px] rounded-[5px] text-blue-500"
               />
             </div>
             <div className=" flex flex-col gap-[5px] text-start">
@@ -48,7 +48,7 @@ const Invoice = () => {
                 name="toDateInput"
                 value={toDate}
                 onChange={(e) => setToDate(e.target.value)}
-                className=" bg-light_gray px-[15px] py-[8px] rounded-[5px] text-blue-500"
+                className=" bg-white px-[15px] py-[8px] rounded-[5px] text-blue-500"
               />
             </div>
           </div>
@@ -56,9 +56,9 @@ const Invoice = () => {
 
         {/* ------for-table----- */}
         <div className="table-section mt-[50px] w-full">
-          <table className="table-auto border-collapse border border-slate-400 w-full">
+          <table className="mt-[20px] table-auto border-collapse border border-slate-400 w-full">
             <thead>
-              <tr className="bg-light_gray text-[17px] font-semibold text-center">
+              <tr className="bg-orange-100 text-[16px] font-semibold text-center">
                 <td className="border border-slate-300 px-[5px] py-[10px]">
                   Date
                 </td>
@@ -95,7 +95,7 @@ const Invoice = () => {
                           className={`${
                             item.status == "paid"
                               ? "text-green-800"
-                              : item.status == "unpaid"
+                              : item.status == "pending"
                               ? "text-primary"
                               : null
                           }`}
@@ -109,20 +109,18 @@ const Invoice = () => {
                       className="max-w-[150px] text-center border border-slate-300 px-[5px] py-[10px]"
                     >
                       <div className="w-full h-full flex items-center justify-around gap-3 text-primary cursor-pointer">
-                        {item.status == "unpaid" ? (
-                          <button className="px-[12px] py-[8px] rounded-[5px] bg-blue-500 text-white ">
+                        {item.status == "pending" ? (
+                          <button className="grow px-[12px] py-[8px] rounded-[5px] underline underline-offset-8 decoration-blue-500 text-blue-500 ">
                             payment link
                           </button>
                         ) : (
-                          <button className="opacity-0 px-[12px] py-[8px] rounded-[5px] bg-blue-500 text-white ">
-                            payment link
+                          <button className="grow px-[12px] py-[8px] rounded-[5px] underline underline-offset-8 decoration-blue-500 text-blue-500 ">
+                            paid link
                           </button>
                         )}
-                        <div className="relative group">
+
+                        <div className="mr-[10px] ">
                           <LuDownload />
-                          <p className="w-max absolute top-full right-0 opacity-0 group-hover:opacity-100 text-black text-[13px] bg-light_gray p-[5px] rounded-[5px]">
-                            Download invoice
-                          </p>
                         </div>
                       </div>
                     </td>
