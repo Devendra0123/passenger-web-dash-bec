@@ -33,7 +33,7 @@ const SignInWithEmail = () => {
               <label>Email:</label>
               <input
                 type="email"
-                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border border-primary "
+                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
               />
             </div>
 
@@ -41,7 +41,7 @@ const SignInWithEmail = () => {
               <label>Password:</label>
               <input
                 type="password"
-                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border border-primary "
+                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
               />
             </div>
             <button
@@ -52,7 +52,7 @@ const SignInWithEmail = () => {
             </button>
           </form>
 
-          <div className="mt-[40px] w-full lex justify-end text-end">
+          <div className="mt-[40px] w-full flex justify-end text-end">
             <p>
               Don't have account?
               <span
@@ -67,12 +67,12 @@ const SignInWithEmail = () => {
 
         {/* Register form */}
         <div
-          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full h-full overflow-y-scroll p-[20px] pb-[30px]`}
+          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full h-[80%] overflow-y-auto p-[20px] pb-[30px]`}
         >
           <h2 className="text-[25px] text-start font-semibold">
             Register Account
           </h2>
-          <p className="mt-[20px]">Fill the details to register your account</p>
+          <p className="mt-[20px] text-[14px]">Fill the details to register your account</p>
           <RegisterViaEmail handleRegisterFormSubmit={()=> setIsAuthenticated(true)} />
         </div>
       </div>

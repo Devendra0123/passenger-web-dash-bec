@@ -39,7 +39,7 @@ const Auth = () => {
                 <IoChevronBackOutline />
                 <p>Go Back</p>
               </div>
-              <p className="text-end">Need help?</p>
+
             </div>
 
             {!clickedBtnId && (

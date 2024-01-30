@@ -23,6 +23,8 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Auth from "./components/Auth";
 import { useOverlayContext } from "./Context/OverlayContext";
+import TermsAndConditions from "./Pages/terms-and-conditions/TermsAndConditions";
+import PrivacyAndPolicy from "./Pages/privacy-policy/PrivacyAndPolicy";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -34,10 +36,20 @@ function WindowScrollTop() {
 }
 
 function App() {
+  const location = useLocation();
+  const pathname = location.pathname;
+
   const { isAuthenticated } = useAuthContext();
   const { overlay } = useOverlayContext();
-  
-  if (!isAuthenticated) {
+
+  if (!isAuthenticated && ((pathname == "/terms-and-conditions") || (pathname =="/privacy-policy"))) {
+    return (
+      <Routes>
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
+      </Routes>
+    );
+  } else if (!isAuthenticated) {
     return <Auth />;
   }
 
@@ -70,6 +82,13 @@ function App() {
                 path="/support/support-details"
                 element={<SupportDetails />}
               />
+
+              {/* Unprotected Route */}
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndConditions />}
+              />
+              <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
             </Routes>
           </div>
         </div>

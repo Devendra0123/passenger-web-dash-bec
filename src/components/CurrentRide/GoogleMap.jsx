@@ -21,7 +21,7 @@ const googleMapsLibraries = ["places"];
 
 const GoogleMapDirection = () => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+    googleMapsApiKey: 'AIzaSyCW4uEcxzMboANlqwcLeA870_MJakvfdxo',
     libraries: googleMapsLibraries,
   });
 

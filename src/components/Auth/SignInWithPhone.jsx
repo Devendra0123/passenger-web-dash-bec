@@ -69,7 +69,7 @@ const SignInWithPhone = () => {
 
         {/* Register form */}
         <div
-          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full p-[20px]`}
+          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full overflow-auto p-[20px]`}
         >
           <h2 className="text-[25px] text-start font-semibold">
             Register Account
