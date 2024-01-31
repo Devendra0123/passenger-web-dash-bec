@@ -19,7 +19,10 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-[20px]">
-        <Link to="/support" className="flex items-center gap-[10px] px-[13px] py-[8px] rounded-[25px] hover:bg-[#E2E2E2] cursor-pointer ">
+        <Link
+          to="/support"
+          className="flex items-center gap-[10px] px-[13px] py-[8px] rounded-[25px] hover:bg-[#E2E2E2] cursor-pointer "
+        >
           <img
             src="/asset/icons/support.svg"
             alt="account"
@@ -27,7 +30,10 @@ const Header = () => {
           />
           <p>Support</p>
         </Link>
-        <Link to="notice" className="cursor-pointer relative w-[40px] h-[40px] rounded-full bg-[#F2F2F2] hover:bg-[#E2E2E2] flex items-center justify-center ">
+        <Link
+          to="notice"
+          className="cursor-pointer relative w-[40px] h-[40px] rounded-full bg-[#F2F2F2] hover:bg-[#E2E2E2] flex items-center justify-center "
+        >
           <img src="/asset/icons/bell.svg" alt="notification-icon" />
           <div className="absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full flex items-center justify-center bg-primary text-white">
             <span className="text-[12px]">3</span>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { scheduledBookingData } from "../consts/servicesData";
 import Rating from "../components/Element/Rating";
+import GoogleMapDirection from "../components/CurrentRide/GoogleMap";
 
 // For Responsiveness to arrage boxes in correct order
 const RenderBoxes = () => {
@@ -50,45 +51,48 @@ const ServiceDetails = () => {
         <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
 
         <div className="mt-[10px] flex flex-col gap-[20px]">
-          <div className="w-full flex items-center justify-between">
-            <div className="w-full flex items-center justify-start gap-[15px]">
-              <div>
-                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                  Booking ID : <span>{data.bkid}</span>
-                </p>
+          <div className="relative w-full shadow-lg shadow-slate-400/50 rounded-[10px] overflow-hidden ">
+            <GoogleMapDirection />
+            <div className="absolute top-0 left-0 w-full h-max flex items-center justify-between flex-wrap bg-gradient-to-b from-white to-slate-300/50 p-[15px] border-b border-slate-200">
+              <div className="flex items-center justify-start gap-[15px]">
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    Booking ID : <span>{data.bkid}</span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    {data.dateAndTime}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    {data.distance}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    {data.duration}
+                  </p>
+                </div>
               </div>
 
               <div>
-                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                  {data.dateAndTime}
+                <p
+                  className={`${
+                    data.bookingStatus == "confirmed"
+                      ? "bg-green-700"
+                      : data.bookingStatus == "pending"
+                      ? "bg-yellow-600"
+                      : "bg-primary/75"
+                  } w-max px-[15px] py-[6px] text-white rounded-[25px]`}
+                >
+                  Booking Status: {data.bookingStatus}
                 </p>
               </div>
-
-              <div>
-                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                  {data.distance}
-                </p>
-              </div>
-
-              <div>
-                <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                  {data.duration}
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <p
-                className={`${
-                  data.bookingStatus == "confirmed"
-                    ? "bg-green-700"
-                    : data.bookingStatus == "pending"
-                    ? "bg-yellow-600"
-                    : "bg-primary/75"
-                } w-max px-[15px] py-[6px] text-white rounded-[25px]`}
-              >
-                Booking Status: {data.bookingStatus}
-              </p>
             </div>
           </div>
 

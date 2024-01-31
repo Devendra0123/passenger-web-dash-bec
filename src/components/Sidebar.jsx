@@ -4,6 +4,7 @@ import IconText from "./Element/IconText";
 import { Link, useLocation } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
 import { IoCallOutline } from "react-icons/io5";
+import { LuLogOut } from "react-icons/lu";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -76,6 +77,11 @@ const Sidebar = () => {
           <IoCallOutline className="w-[15px] h-[15px]" />
           <p>Contact Us</p>
         </Link>
+
+        <div className="w-max flex items-center gap-1 px-[12px] py-[8px] rounded-[5px] bg-gray-300  ">
+          <LuLogOut />
+          <p>Logout</p>
+        </div>
       </div>
     </div>
   );
