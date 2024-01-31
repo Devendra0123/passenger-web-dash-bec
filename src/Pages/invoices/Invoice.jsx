@@ -108,20 +108,33 @@ const Invoice = () => {
                       style={{}}
                       className="max-w-[150px] text-center border border-slate-300 px-[5px] py-[10px]"
                     >
-                      <div className="w-full h-full flex items-center justify-around gap-3 text-primary cursor-pointer">
+                      <div className="w-full h-full flex items-center justify-between gap-3 cursor-pointer">
                         {item.status == "pending" ? (
-                          <button className="grow px-[12px] py-[8px] rounded-[5px] underline underline-offset-8 decoration-blue-500 text-blue-500 ">
-                            payment link
+                          <button className="grow text-start px-[12px] py-[8px] rounded-[5px] ">
+                            invoice raised{" "}
+                            <span className="underline underline-offset-8 decoration-blue-500 text-blue-500 ml-1">
+                              Pay now
+                            </span>
                           </button>
                         ) : (
-                          <button className="grow px-[12px] py-[8px] rounded-[5px] underline underline-offset-8 decoration-blue-500 text-blue-500 ">
-                            paid link
+                          <button className="grow text-start px-[12px] py-[8px] rounded-[5px] ">
+                            payment receipt
                           </button>
                         )}
 
-                        <div className="mr-[10px] ">
-                          <LuDownload />
-                        </div>
+                        <a
+                          href={
+                            item.status == "pending"
+                              ? "/asset/invoice_unpaid.pdf"
+                              : "/asset/invoice_paid.pdf"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <div className="cursor-pointer mr-[10px] w-[35px] h-[35px] rounded-full flex items-center justify-center hover:bg-light_gray text-primary ">
+                            <LuDownload />
+                          </div>
+                        </a>
                       </div>
                     </td>
                   </tr>
