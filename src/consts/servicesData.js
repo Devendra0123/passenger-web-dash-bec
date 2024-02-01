@@ -1,11 +1,11 @@
 export const currentRideData = {
   dateAndTime: "02/12/2024 Sun 12:55pm",
   bookingStatus: "pending",
-  price: "$71.46",
+  price: "£71.46",
   paymentStatus: "paid",
   duration: "1hrs 45mins",
   bkid: "10003",
-  distance: "4km",
+  distance: "4 miles",
   vehicle: {
     name: "Saloon",
     brand: "",
@@ -56,12 +56,12 @@ export const currentRideData = {
 export const scheduledBookingData = [
   {
     dateAndTime: "02/12/2024 Tue 12:55pm",
-    price: "$71.46",
+    price: "£71.46",
     paymentStatus: "paid",
     bookingStatus: "confirmed",
     duration: "11 hr 40 min ",
     bkid: "20203",
-    distance: "1,053.8 km",
+    distance: "1,053.8 miles",
     vehicle: {
       name: "Saloon",
       brand: "",
@@ -113,12 +113,12 @@ export const scheduledBookingData = [
 
   {
     dateAndTime: "02/12/2024 Mon 12:55pm",
-    price: "$71.46",
+    price: "£71.46",
     paymentStatus: "not paid",
     bookingStatus: "pending",
     duration: "1hrs 45mins",
     bkid: "10003",
-    distance: "20km",
+    distance: "20 miles",
     vehicle: {
       name: "Saloon",
       brand: "",
@@ -170,12 +170,12 @@ export const scheduledBookingData = [
 
   {
     dateAndTime: "02/12/2024 Wed 12:55pm",
-    price: "$71.46",
+    price: "£71.46",
     paymentStatus: "paid",
     duration: "1hrs 45mins",
     bookingStatus: "confirmed",
     bkid: "10003",
-    distance: "20km",
+    distance: "20 miles",
     vehicle: {
       name: "Saloon",
       brand: "",

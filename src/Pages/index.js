@@ -9,7 +9,6 @@ import ServiceHistory from "./service-history/ServiceHistory";
 import Faq from "./FAQ/Faq";
 import FaqDetails from "./FAQ-details/FaqDetails";
 import Account from "./account/Account";
-import PaymentCard from "./Payment-card/PaymentCard";
 import Support from "./support/Support";
 import SupportDetails from "./support-details/SupportDetails";
 import SignUp from "./AuthPage/SignUp";
@@ -25,7 +24,6 @@ export {
   Home,
   Invoice,
   Notice,
-  PaymentCard,
   ScheduledBooking,
   ServiceDetails,
   ServiceHistory,

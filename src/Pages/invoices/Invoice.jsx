@@ -16,15 +16,15 @@ const Invoice = () => {
           <div className="flex items-center gap-[30px]">
             <div>
               <label> Total Invoice </label>
-              <div className="text-xl font-semibold text-primary"> $ 85.00</div>
+              <div className="text-xl font-semibold text-primary"> £85.00</div>
             </div>
             <div>
               <label> Paid </label>
-              <div className="text-lg font-semibold"> $ 65.00</div>
+              <div className="text-lg font-semibold"> £65.00</div>
             </div>
             <div>
               <label> Pending </label>
-              <div className="text-lg font-semibold"> $ 20.00</div>
+              <div className="text-lg font-semibold"> £20.00</div>
             </div>
           </div>
 

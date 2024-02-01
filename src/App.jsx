@@ -10,7 +10,6 @@ import {
   Home,
   Invoice,
   Notice,
-  PaymentCard,
   ScheduledBooking,
   ServiceDetails,
   ServiceHistory,
@@ -26,6 +25,7 @@ import { useOverlayContext } from "./Context/OverlayContext";
 import TermsAndConditions from "./Pages/terms-and-conditions/TermsAndConditions";
 import PrivacyAndPolicy from "./Pages/privacy-policy/PrivacyAndPolicy";
 import ContactUs from "./Pages/ContactUs";
+import PaymentCardList from "./Pages/Payment-card/CardList";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -80,7 +80,7 @@ function App() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/faq/faq-details" element={<FaqDetails />} />
               <Route path="/account" element={<Account />} />
-              <Route path="/account/cards" element={<PaymentCard />} />
+              <Route path="/account/cards" element={<PaymentCardList />} />
               <Route path="/support" element={<Support />} />
               <Route
                 path="/support/support-details"

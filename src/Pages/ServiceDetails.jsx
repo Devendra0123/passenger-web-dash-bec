@@ -422,22 +422,22 @@ const ServiceDetails = () => {
                 <div className="w-[90%] flex flex-col items-center gap-[8px]">
                   <div className="w-full flex items-center justify-between">
                     <p>Fare</p>
-                    <p className="text-primary font-semibold">$71.46</p>
+                    <p className="text-primary font-semibold">£71.46</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">
                     <p>Parking Charge</p>
-                    <p className="text-primary font-semibold">$2.00</p>
+                    <p className="text-primary font-semibold">£2.00</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">
                     <p>Waiting Charge</p>
-                    <p className="text-primary font-semibold">$1.00</p>
+                    <p className="text-primary font-semibold">£1.00</p>
                   </div>
 
                   <div className="w-full flex items-center justify-between">
                     <p className="font-[500]">Total</p>
-                    <p className="text-primary font-semibold">$74.46</p>
+                    <p className="text-primary font-semibold">£74.46</p>
                   </div>
                 </div>
 

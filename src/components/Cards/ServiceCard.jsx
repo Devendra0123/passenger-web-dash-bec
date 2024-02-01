@@ -60,7 +60,7 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
                 <h3 className="font-semibold text-[15px]">Base Fare:</h3>
                 <p>
                   <span className="text-[14px] text-primary font-semibold">
-                    $56.46
+                    £56.46
                   </span>
                 </p>
               </div>
@@ -71,20 +71,20 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
                   </h3>
                   <p>
                     <span className="text-[14px] text-primary font-semibold">
-                      $15
+                      £15
                     </span>
                   </p>
                 </div>
                 <ul className="pl-[5px]">
                   <div className="flex items-center justify-between w-full">
                     <p className="text-[14px]">Parking charge:</p>
-                    <p className="text-primary font-semibold text-[10px]">$4</p>
+                    <p className="text-primary font-semibold text-[10px]">£4</p>
                   </div>
 
                   <div className="flex items-center justify-between w-full">
                     <p className="text-[14px]">Waiting charge</p>
                     <p className="text-primary font-semibold text-[10px]">
-                      $11
+                      £11
                     </p>
                   </div>
                 </ul>

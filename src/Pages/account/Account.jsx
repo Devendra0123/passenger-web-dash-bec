@@ -30,10 +30,6 @@ const Account = () => {
                 <div className="font-bold">Name</div>
                 <div>test name</div>
               </div>
-
-              <div className="ml-[200px]">
-                <EditProfileModal />
-              </div>
             </div>
 
             <div className="flex gap-3 ">
