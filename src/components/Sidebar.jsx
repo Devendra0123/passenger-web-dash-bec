@@ -25,7 +25,7 @@ const Sidebar = () => {
   }, [pathname]);
 
   return (
-    <div className="sticky top-[30px] w-full h-[90vh] bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
+    <div className="sticky top-[30px] w-full h-[90vh] overflow-auto bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">
         <Link to="/" className="w-full flex items-center justify-center">
           <img

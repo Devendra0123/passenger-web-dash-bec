@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "../Element/Rating";
-import { IoInformationOutline } from "react-icons/io5";
+import { IoCall, IoInformationOutline } from "react-icons/io5";
 import DriverInfo from "../modal/DriverInfo";
 import Overlay from "../Overlay";
 
@@ -38,8 +38,16 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
             }`
       } flex flex-col gap-[12px] p-[10px]`}
     >
+      <div className="flex justify-end">
+        <button onClick={(e)=>{
+          e.preventDefault();
+          e.stopPropagation()
+        }} className=" flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-green-800 text-white ">
+          <IoCall /> Call Driver
+        </button>
+      </div>
       <div className="w-full flex items-center justify-between">
-        <p className="px-[10px] py-[5px] rounded-[25px] bg-light_gray text-[14px] font-[400]">
+        <p className="px-[10px] py-[5px] rounded-[25px] bg-light_gray text-center text-[14px] font-[400]">
           BKID : <span>{bkid}</span>
         </p>
         <p className="text-slate-500 text-[13px]">{dateAndTime}</p>
@@ -190,11 +198,11 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
           </p>
         </div>
         {displayDriverPopup && (
-        <DriverInfo
-          handleCross={() => setDisplayDriverPopup(false)}
-          data={driver}
-        />
-      )}
+          <DriverInfo
+            handleCross={() => setDisplayDriverPopup(false)}
+            data={driver}
+          />
+        )}
       </div>
       {displayDriverPopup && <Overlay />}
     </Link>

@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { scheduledBookingData } from "../consts/servicesData";
 import Rating from "../components/Element/Rating";
 import GoogleMapDirection from "../components/CurrentRide/GoogleMap";
+import { IoCall } from "react-icons/io5";
+import CancelBookingConfirmation from "../components/modal/CancelBookingConfirmation";
 
 // For Responsiveness to arrage boxes in correct order
 const RenderBoxes = () => {
@@ -24,6 +26,7 @@ const RenderBoxes = () => {
 const ServiceDetails = () => {
   const { slug } = useParams();
 
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState();
   const [windowWidth, setWindowWidth] = useState();
 
@@ -45,15 +48,31 @@ const ServiceDetails = () => {
     return <span>No Data Found</span>;
   }
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <div>
       <div>
-        <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
+        <div className="flex items-center gap-[30px] ">
+          <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
+          <div className="flex items-center flex-wrap gap-[20px] ">
+            <button className=" flex items-center gap-[6px] px-[13px] py-[6px] rounded-[4px] bg-green-800 text-white ">
+              <IoCall /> Call Driver
+            </button>
+            <button onClick={handleOpen} className="px-[13px] py-[6px] rounded-[4px] bg-primary text-white ">
+              Cancel Booking
+            </button>
+          </div>
+
+          {/* Cancel booking popup */}
+          <CancelBookingConfirmation open={open} handleClose={handleClose} />
+        </div>
 
         <div className="mt-[10px] flex flex-col gap-[20px]">
           <div className="relative w-full shadow-lg shadow-slate-400/50 rounded-[10px] overflow-hidden ">
             <GoogleMapDirection />
-            <div className="absolute top-0 left-0 w-full h-max flex items-center justify-between flex-wrap bg-gradient-to-b from-white to-slate-300/50 p-[15px] border-b border-slate-200">
+            <div className="absolute top-0 left-0 w-full h-max flex items-center justify-between gap-[20px] flex-wrap bg-gradient-to-b from-white to-slate-300/50 p-[15px] border-b border-slate-200">
               <div className="flex items-center justify-start gap-[15px]">
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
@@ -84,9 +103,9 @@ const ServiceDetails = () => {
                 <p
                   className={`${
                     data.bookingStatus == "confirmed"
-                      ? "bg-green-700"
+                      ? "bg-green-700/75"
                       : data.bookingStatus == "pending"
-                      ? "bg-yellow-600"
+                      ? "bg-yellow-600/75"
                       : "bg-primary/75"
                   } w-max px-[15px] py-[6px] text-white rounded-[25px]`}
                 >
@@ -344,8 +363,16 @@ const ServiceDetails = () => {
                   />
                   <p>Saloon</p>
                   <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>Car Number:</p>
+                    <p>Registration Number:</p>
                     <p className="text-blue-500">03458</p>
+                  </div>
+                  <div className="w-full flex items-center justify-center gap-[10px]">
+                    <p>Make and Model:</p>
+                    <p className="text-blue-500">Escape</p>
+                  </div>
+                  <div className="w-full flex items-center justify-center gap-[10px]">
+                    <p>TFL License Number:</p>
+                    <p className="text-blue-500">95382</p>
                   </div>
                 </div>
               </div>
