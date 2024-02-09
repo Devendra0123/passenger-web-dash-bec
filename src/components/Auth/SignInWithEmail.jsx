@@ -1,11 +1,13 @@
 import React, { useRef, useState } from "react";
 import RegisterViaEmail from "./RegisterViaEmailForm";
 import { useAuthContext } from "../../Context/AuthContext";
+import AddCardFields from "./AddCardFields";
 
 const SignInWithEmail = () => {
   const { setIsAuthenticated } = useAuthContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
+  const [displayAddCard, setDisplayAddCard] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,8 +17,8 @@ const SignInWithEmail = () => {
     <div className="w-full flex flex-col items-start gap-[20px] mt-[50px]">
       <div
         style={{
-          transform: isRegisterBtnClicked
-            ? "translateX(-100%)"
+          transform: (isRegisterBtnClicked && !displayAddCard)
+            ? "translateX(-100%)" : (displayAddCard) ? "translateX(-200%)"
             : "translateX(0%)",
         }}
         className="w-[100%] flex transition duration-150 ease-in-out"
@@ -72,8 +74,26 @@ const SignInWithEmail = () => {
           <h2 className="text-[25px] text-start font-semibold">
             Register Account
           </h2>
-          <p className="mt-[20px] text-[14px]">Fill the details to register your account</p>
-          <RegisterViaEmail handleRegisterFormSubmit={()=> setIsAuthenticated(true)} />
+          <p className="mt-[20px] text-[14px]">
+            Fill the details to register your account
+          </p>
+          <RegisterViaEmail
+            handleRegisterFormSubmit={(e) => {
+              e.preventDefault()
+              setDisplayAddCard(true)
+              // setIsAuthenticated(true)
+            }}
+          />
+        </div>
+
+        {/* Add Card */}
+        <div
+          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full overflow-auto p-[20px]`}
+        >
+           <h2 className="text-[25px] text-start font-semibold">
+            Add Card Details
+          </h2>
+          <AddCardFields />
         </div>
       </div>
     </div>
