@@ -2,14 +2,16 @@ import "./App.css";
 
 import { useEffect } from "react";
 
-import { Routes, Route, useLocation, redirect } from "react-router-dom";
+import { Routes, Route, useLocation, redirect, useNavigate } from "react-router-dom";
 import {
   Account,
   Faq,
   FaqDetails,
   Home,
   Invoice,
+  Login,
   Notice,
+  Register,
   ScheduledBooking,
   ServiceDetails,
   ServiceHistory,
@@ -25,6 +27,8 @@ import TermsAndConditions from "./Pages/terms-and-conditions/TermsAndConditions"
 import PrivacyAndPolicy from "./Pages/privacy-policy/PrivacyAndPolicy";
 import ContactUs from "./Pages/ContactUs";
 import PaymentCardList from "./Pages/Payment-card/CardList";
+import Toast from "./components/Element/Toast";
+import { useToastContext } from "./Context/ToastContext";
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -36,29 +40,21 @@ function WindowScrollTop() {
 }
 
 function App() {
-  const location = useLocation();
-  const pathname = location.pathname;
+  const navigate = useNavigate();
 
   const { isAuthenticated } = useAuthContext();
-  const { overlay } = useOverlayContext();
+  const { toastMessage } = useToastContext();
 
-  if (
-    !isAuthenticated &&
-    (pathname == "/terms-and-conditions" || pathname == "/privacy-policy")
-  ) {
-    return (
-      <Routes>
-        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-        <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
-      </Routes>
-    );
-  } else if (!isAuthenticated) {
-    return <Auth />;
-  }
+  useEffect(() => {
+    if (!isAuthenticated) {
+    navigate("/login");
+    }
+  }, [isAuthenticated])
 
   return (
     <div className="w-full min-h-[100vh] flex justify-center">
       <WindowScrollTop />
+      <Toast message={toastMessage} />
       <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
         <div className="col-span-2 h-full">
           <Sidebar />
@@ -91,6 +87,10 @@ function App() {
                 element={<TermsAndConditions />}
               />
               <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
+
+              {/* Authentication route */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
             </Routes>
           </div>
         </div>

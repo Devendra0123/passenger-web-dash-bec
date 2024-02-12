@@ -1,18 +1,31 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const OTPVerification = ({verifyOtp}) => {
-
+const OTPVerification = ({ verifyOtp }) => {
   // Create an array to hold refs for each input box
   const inputRefs = Array(6)
     .fill(0)
     .map((_, i) => useRef(null));
 
+  const [otpValues, setOtpValues] = useState(Array(6).fill(""));
+
   // Function to move focus to the next input box
   const handleInputChange = (index, e) => {
+    const value = e.target.value;
+
+    setOtpValues((prevValues) => {
+      const newValues = [...prevValues];
+      newValues[index] = value;
+      return newValues;
+    });
+
     if (index < inputRefs.length - 1 && e.target.value !== "") {
       inputRefs[index + 1].current.focus();
     }
+  };
+
+  const getOtpString = () => {
+    return otpValues.join("");
   };
 
   return (
@@ -30,7 +43,13 @@ const OTPVerification = ({verifyOtp}) => {
         ))}
       </div>
       <button
-        onClick={verifyOtp}
+        onClick={() => {
+          const enteredOtp = getOtpString();
+          console.log(enteredOtp)
+          if (enteredOtp) {
+            verifyOtp(enteredOtp);
+          }
+        }}
         className="w-full px-[20px] py-[10px] bg-blue-500 text-white "
       >
         Submit

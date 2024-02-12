@@ -5,10 +5,13 @@ import { Link, useLocation } from "react-router-dom";
 import { VscAccount } from "react-icons/vsc";
 import { IoCallOutline } from "react-icons/io5";
 import { LuLogOut } from "react-icons/lu";
+import { useAuthContext } from "../Context/AuthContext";
 
 const Sidebar = () => {
   const location = useLocation();
   const pathname = location.pathname;
+
+  const { isAuthenticated } = useAuthContext();
 
   const [activeLink, setActiveLink] = useState();
 
@@ -24,6 +27,9 @@ const Sidebar = () => {
     }
   }, [pathname]);
 
+  if(!isAuthenticated){
+    return null
+  }
   return (
     <div className="sticky top-[30px] w-full h-[90vh] overflow-auto bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">

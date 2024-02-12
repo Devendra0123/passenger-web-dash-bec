@@ -1,15 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CurrentRide from "../components/CurrentRide";
 import ScheduledBooking from "../components/ScheduledBooking";
 import Notice from "../components/Notice";
-import { useAuthContext } from "../Context/AuthContext";
 
 const Home = () => {
-  const { isAuthenticated } = useAuthContext();
-
-  if (!isAuthenticated) {
-    return redirect("/login");
-  }
 
   return (
     <div className="w-full flex justify-center">

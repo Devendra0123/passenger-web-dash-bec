@@ -2,8 +2,15 @@ import React from "react";
 import UserCard from "../Cards/UserCard";
 import { getCurrentDate } from "../../utils/getCurrentDate";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../Context/AuthContext";
 
 const Header = () => {
+  const { isAuthenticated } = useAuthContext();
+
+  if(!isAuthenticated){
+    return null
+  }
+
   return (
     <div className="z-10 sticky top-[0px] w-full flex items-center justify-between bg-white/75 backdrop-blur-sm rounded-[15px] p-[20px]">
       <div className="flex items-center gap-[20px]">

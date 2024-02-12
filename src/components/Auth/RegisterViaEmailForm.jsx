@@ -1,19 +1,22 @@
 import React, { useRef, useState } from "react";
-import { FaUser } from "react-icons/fa";
-import { IoMdEye } from "react-icons/io";
-import { IoMdEyeOff } from "react-icons/io";
-import { IoMailOutline } from "react-icons/io5";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { Link } from "react-router-dom";
 
-const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
+
+const RegisterViaEmail = ({ handleRegisterFormSubmit, errorMessage }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const fileInputRef = useRef(null);
 
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+  });
 
   function handleFileChange(event) {
     const selectedFile = event.target.files[0];
@@ -25,10 +28,25 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
       setUploadedImageUrl(imageUrl);
     }
   }
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
   return (
     <div className="w-[75%] mt-[20px] pb-[100px]">
       <form
-        onSubmit={handleRegisterFormSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleRegisterFormSubmit(formData);
+        }}
         className="flex flex-col gap-[15px]"
       >
         {/* Profile image upload */}
@@ -73,6 +91,9 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
             <label>First Name:</label>
             <input
               type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleOnChange}
               className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
             />
           </div>
@@ -80,6 +101,9 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
             <label>Last Name:</label>
             <input
               type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleOnChange}
               className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
             />
           </div>
@@ -89,6 +113,9 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
           <label>Phone Number:</label>
           <input
             type="number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleOnChange}
             className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
           />
         </div>
@@ -97,6 +124,10 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
           <label>Email:</label>
           <input
             type="email"
+            name="email"
+            required
+            value={formData.email}
+            onChange={handleOnChange}
             className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
           />
         </div>
@@ -105,15 +136,21 @@ const RegisterViaEmail = ({ handleRegisterFormSubmit }) => {
           <label>Password:</label>
           <input
             type="password"
+            name="password"
+            required
+            value={formData.password}
+            onChange={handleOnChange}
             className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
           />
         </div>
-
+        {errorMessage && (
+          <p className="text-primary text-[15px] font-[500]">{errorMessage}</p>
+        )}
         <button
           type="submit"
           className="mt-[20px] w-full px-[20px] py-[10px] bg-blue-500 text-white "
         >
-          Next
+          Submit
         </button>
       </form>
     </div>

@@ -9,6 +9,7 @@ import VerifyOTP from "./VerifyOTP";
 const EnterPhoneNumber = () => {
   const [value, setValue] = useState();
   const [confirmationResult, setConfirmationResult] = useState();
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
 
   useEffect(() => {
     setupRecaptcha();
@@ -28,7 +29,7 @@ const EnterPhoneNumber = () => {
 
   const sendOTP = async () => {
     const appVerifier = await window.recaptchaVerifier;
-    await signInWithPhoneNumber(auth, value, appVerifier)
+    await signInWithPhoneNumber(auth, enteredPhoneNumber, appVerifier)
       .then((confirmationResult) => {
         setConfirmationResult(confirmationResult);
       })
@@ -52,8 +53,8 @@ const EnterPhoneNumber = () => {
       <div id="recaptcha-container"></div>
       <PhoneInput
         country={"us"}
-        value={value}
-        onChange={(phone) => setValue("+" + phone)}
+        value={enteredPhoneNumber}
+        onChange={(phone) => setEnteredPhoneNumber("+" + phone)}
       />
       <button onClick={sendOTP}>Send OTP</button>
 
