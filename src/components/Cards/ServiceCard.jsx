@@ -4,13 +4,21 @@ import Rating from "../Element/Rating";
 import { IoCall, IoInformationOutline } from "react-icons/io5";
 import DriverInfo from "../modal/DriverInfo";
 import Overlay from "../Overlay";
+import CancelBookingConfirmation from "../modal/CancelBookingConfirmation";
 
-const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
+const ServiceCard = ({
+  data,
+  serviceType,
+  doNotShowHoverEffect,
+  isHistory,
+}) => {
   const [isPriceInfoHovered, setIsPriceInfoHovered] = useState(false);
   const [displayDriverPopup, setDisplayDriverPopup] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const {
     dateAndTime,
+    bookingType,
     bookingStatus,
     paymentStatus,
     price,
@@ -20,7 +28,15 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
     location,
     distance,
     driver,
+    dropOffTime
   } = data;
+
+  const handleClose = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setOpen(false);
+  };
+
   return (
     <Link
       to={
@@ -38,20 +54,52 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
             }`
       } flex flex-col gap-[12px] p-[10px]`}
     >
-      <div className="flex justify-end">
-        <button onClick={(e)=>{
-          e.preventDefault();
-          e.stopPropagation()
-        }} className=" flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-green-800 text-white ">
-          <IoCall /> Call Driver
-        </button>
+      <div className="flex justify-between">
+        <div>
+          <p className="text-primary font-[500] tracking-wider text-[14px] px-[10px] py-[6px] bg-white rounded-[4px] ">
+            {bookingType == "one-way"
+              ? "One Way"
+              : bookingType == "return"
+              ? "Return"
+              : null}
+          </p>
+        </div>
+
+        {!isHistory && (
+          <div className="flex items-center gap-[10px]">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              className=" flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-green-800 text-white "
+            >
+              <IoCall /> Call Driver
+            </button>
+
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setOpen(true);
+              }}
+              className="flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-primary text-white"
+            >
+              Cancel Booking
+            </button>
+          </div>
+        )}
       </div>
-      <div className="w-full flex items-center justify-between">
-        <p className="px-[10px] py-[5px] rounded-[25px] bg-light_gray text-center text-[14px] font-[400]">
+
+      {/* Cancel booking popup */}
+      <CancelBookingConfirmation open={open} handleClose={handleClose} />
+
+      <div className="w-full flex items-center justify-between gap-[5px]">
+        <p className="px-[5px] py-[5px] rounded-[25px] bg-white text-center text-[14px] font-[400]">
           BKID : <span>{bkid}</span>
         </p>
-        <p className="text-slate-500 text-[13px]">{dateAndTime}</p>
-        <p className="text-slate-500 text-[13px]">{distance}</p>
+        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">{dateAndTime}</p>
+        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">{distance}</p>
         <div className="relative flex items-center gap-[5px]">
           <p className="text-primary font-semibold">{price}</p>
           <div
@@ -101,6 +149,14 @@ const ServiceCard = ({ data, serviceType, doNotShowHoverEffect }) => {
           )}
         </div>
       </div>
+
+      {
+        dropOffTime && <div>
+          <p className="w-max text-[14px] px-[10px] py-[6px] rounded-[25px] bg-white ">
+            Drop Off Time : <span>{dropOffTime}</span>
+          </p>
+        </div>
+      }
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[10px] text-[14px]">

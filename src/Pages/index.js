@@ -11,12 +11,12 @@ import FaqDetails from "./FAQ-details/FaqDetails";
 import Account from "./account/Account";
 import Support from "./support/Support";
 import SupportDetails from "./support-details/SupportDetails";
-import SignUp from "./AuthPage/SignUp";
-import SignIn from "./AuthPage/SignIn"
+import Login from "./AuthPage/Login";
+import Register from "./AuthPage/Register";
 
 export {
-  SignIn,
-  SignUp,
+  Login,
+  Register,
   Account,
   Faq,
   FaqDetails,

@@ -2,8 +2,15 @@ import React from "react";
 import CurrentRide from "../components/CurrentRide";
 import ScheduledBooking from "../components/ScheduledBooking";
 import Notice from "../components/Notice";
+import { useAuthContext } from "../Context/AuthContext";
 
 const Home = () => {
+  const { isAuthenticated } = useAuthContext();
+
+  if (!isAuthenticated) {
+    return redirect("/login");
+  }
+
   return (
     <div className="w-full flex justify-center">
       <div className="w-full grid grid-cols-2 gap-[20px]">

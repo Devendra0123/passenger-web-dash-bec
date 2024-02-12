@@ -13,7 +13,6 @@ import {
   ScheduledBooking,
   ServiceDetails,
   ServiceHistory,
-  SignIn,
   Support,
   SupportDetails,
 } from "./Pages";

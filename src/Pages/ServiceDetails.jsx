@@ -60,7 +60,10 @@ const ServiceDetails = () => {
             <button className=" flex items-center gap-[6px] px-[13px] py-[6px] rounded-[4px] bg-green-800 text-white ">
               <IoCall /> Call Driver
             </button>
-            <button onClick={handleOpen} className="px-[13px] py-[6px] rounded-[4px] bg-primary text-white ">
+            <button
+              onClick={handleOpen}
+              className="px-[13px] py-[6px] rounded-[4px] bg-primary text-white "
+            >
               Cancel Booking
             </button>
           </div>
@@ -72,8 +75,18 @@ const ServiceDetails = () => {
         <div className="mt-[10px] flex flex-col gap-[20px]">
           <div className="relative w-full shadow-lg shadow-slate-400/50 rounded-[10px] overflow-hidden ">
             <GoogleMapDirection />
-            <div className="absolute top-0 left-0 w-full h-max flex items-center justify-between gap-[20px] flex-wrap bg-gradient-to-b from-white to-slate-300/50 p-[15px] border-b border-slate-200">
+            <div className="absolute top-0 left-0 w-full h-max flex items-center justify-start gap-[20px] flex-wrap bg-gradient-to-b from-white to-slate-300/50 p-[15px] border-b border-slate-200">
               <div className="flex items-center justify-start gap-[15px]">
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    {data?.bookingType == "one-way"
+                      ? "One Way"
+                      : data?.bookingType == "return"
+                      ? "Return"
+                      : null}
+                  </p>
+                </div>
+
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
                     Booking ID : <span>{data.bkid}</span>
@@ -98,7 +111,13 @@ const ServiceDetails = () => {
                   </p>
                 </div>
               </div>
-
+              {data?.dropOffTime && (
+                <div>
+                  <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
+                    Drop Off Time : <span>{data?.dropOffTime}</span>
+                  </p>
+                </div>
+              )}
               <div>
                 <p
                   className={`${
@@ -230,11 +249,7 @@ const ServiceDetails = () => {
                   </div>
                   <div className="w-full flex items-center justify-between">
                     <p>Name:</p>
-                    <p>{data.driver?.name}</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Email:</p>
-                    <p>{data.driver?.email}</p>
+                    <p>{data.driver?.fName}</p>
                   </div>
                   <div className="w-full flex items-center justify-between">
                     <p>Phone Number:</p>
@@ -369,10 +384,6 @@ const ServiceDetails = () => {
                   <div className="w-full flex items-center justify-center gap-[10px]">
                     <p>Make and Model:</p>
                     <p className="text-blue-500">Escape</p>
-                  </div>
-                  <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>TFL License Number:</p>
-                    <p className="text-blue-500">95382</p>
                   </div>
                 </div>
               </div>
