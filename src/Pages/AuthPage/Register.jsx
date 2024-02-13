@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import RegisterViaEmail from "../../components/Auth/RegisterViaEmailForm";
 import { IoChevronBackOutline } from "react-icons/io5";
@@ -11,6 +11,7 @@ import AddCardFields from "../../components/Auth/AddCardFields";
 const Register = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const scrollableContainerRef = useRef(null);
 
   const { setShowToast, setToastMessage } = useToastContext();
   const registerVia = searchParams.get("registerVia");
@@ -20,6 +21,9 @@ const Register = () => {
   const [registerViaQuery, setRegisterViaQuery] = useState("");
   const [showAddCardFields, setShowAddCardFields] = useState(false);
 
+  const [registerStatus, setRegisterStatus] = useState({
+    pending: false
+  })
   useEffect(() => {
     if (registerVia) {
       setRegisterViaQuery(registerVia);
@@ -32,29 +36,45 @@ const Register = () => {
     }
   }, [step]);
 
-  console.log(showAddCardFields)
+  useEffect(() => {
+    if (step === "add-card-details" && scrollableContainerRef.current) {
+      scrollableContainerRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  }, [step]);
+
 
   // Handle firebase User Register
   const handleFirebaseRegister = async (formData) => {
     const { email, password } = formData;
     setAuthErrorMessage("");
-    await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        setAuthErrorMessage("");
-        setShowToast(true);
-        setToastMessage("User registered successfully.");
-        navigate("/login?loginWith=email");
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-        setAuthErrorMessage(errorMessage);
-        // ..
-      });
+    setRegisterStatus({
+      pending: true
+    });
+      await createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          setRegisterStatus({
+            pending: false
+          });
+          setAuthErrorMessage("");
+          setShowToast(true);
+          setToastMessage("User registered successfully.");
+          navigate(`/register?registerVia=email&step=add-card-details`);
+          // navigate("/login?loginWith=email");
+        })
+        .catch((error) => {
+          setRegisterStatus({
+            pending: false
+          });
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode, errorMessage);
+          setAuthErrorMessage(errorMessage);
+          // ..
+        });
   };
 
   return (
@@ -76,11 +96,11 @@ const Register = () => {
               </p>
             </div>
           </div>
-          <div className="relative col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px]">
+          <div ref={scrollableContainerRef} className="relative col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px]">
             <div className="z-10 sticky top-[0px] w-full flex items-center justify-between p-[20px]">
               <div
                 onClick={() => {
-                  navigate(-1);
+                  navigate("/login");
                 }}
                 className={`cursor-pointer flex items-center gap-[5px] bg-[#1BCD73] text-white px-[20px] py-[8px] rounded-[25px]`}
               >
@@ -104,11 +124,8 @@ const Register = () => {
                   <RegisterViaEmail
                     handleRegisterFormSubmit={(formData) => {
                       handleFirebaseRegister(formData);
-                      navigate(
-                        `/register?registerVia=email&step=add-card-details`
-                      );
-                      // setIsAuthenticated(true)
                     }}
+                    isPending={registerStatus.pending}
                     errorMessage={authErrorMessage}
                   />
                 </div>
@@ -117,7 +134,7 @@ const Register = () => {
 
             {/* Register via phone */}
             {!showAddCardFields && registerViaQuery == "phone" && (
-              <div className="w-full min-h-full overflow-y-auto">
+              <div className="w-full">
                 <div
                   className={`pl-[50px] mt-[0px] flex flex-col min-w-full h-max p-[20px] pb-[30px]`}
                 >

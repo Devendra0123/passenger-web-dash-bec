@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 
 const OTPVerification = ({ verifyOtp }) => {
@@ -8,6 +8,12 @@ const OTPVerification = ({ verifyOtp }) => {
     .map((_, i) => useRef(null));
 
   const [otpValues, setOtpValues] = useState(Array(6).fill(""));
+
+  // useEffect(() => {
+  //   if(inputRefs[0].current){
+  //     inputRefs[0].current.focus();
+  //   }
+  // }, []);
 
   // Function to move focus to the next input box
   const handleInputChange = (index, e) => {
@@ -38,7 +44,7 @@ const OTPVerification = ({ verifyOtp }) => {
             type="text"
             maxLength="1"
             onInput={(e) => handleInputChange(index, e)}
-            className="w-[40px] h-[40px] rounded-[5px] bg-light_gray text-center border border-primary "
+            className="w-[40px] h-[40px] rounded-[5px] bg-blue-200 text-center"
           />
         ))}
       </div>

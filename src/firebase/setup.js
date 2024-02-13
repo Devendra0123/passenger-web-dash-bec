@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAXaItmmVim0OeOIkMRBhipe6opUOVsRyo",
-  authDomain: "test-3eda8.firebaseapp.com",
-  projectId: "test-3eda8",
-  storageBucket: "test-3eda8.appspot.com",
-  messagingSenderId: "219606668435",
-  appId: "1:219606668435:web:6eb31389d688c2ef3aa966",
-  measurementId: "G-T25YGBHGHQ"
+  apiKey: "AIzaSyChDuLtc-pZBgBQnrIfZLGyqXXEq3PbG50",
+  authDomain: "britishexpresscars-dev.firebaseapp.com",
+  projectId: "britishexpresscars-dev",
+  storageBucket: "britishexpresscars-dev.appspot.com",
+  messagingSenderId: "901350777917",
+  appId: "1:901350777917:web:3191207cb28088b228b654",
+  measurementId: "G-CXPJ7HRR5B"
 };
 
 const app = initializeApp(firebaseConfig);

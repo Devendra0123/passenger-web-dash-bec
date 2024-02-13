@@ -1,7 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useTransition } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from "firebase/auth";
+import {
+  getAuth,
+  setPersistence,
+  signInWithEmailAndPassword,
+  browserSessionPersistence,
+} from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { useToastContext } from "../../Context/ToastContext";
 
@@ -17,6 +22,9 @@ const SignInWithEmail = () => {
     email: "",
     password: "",
   });
+  const [signInStatus, setSignInStatus] = useState({
+    pending: false,
+  })
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -34,24 +42,34 @@ const SignInWithEmail = () => {
     const { email, password } = formData;
     console.log(email, password);
     setAuthErrorMessage("");
-    
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        setIsAuthenticated(true);
-        setShowToast(true);
-        setAuthErrorMessage("");
-        setToastMessage("Logged in successfully!");
-        navigate("/");
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setAuthErrorMessage(errorMessage);
-        console.log(errorCode, errorMessage);
-      });
+
+    setSignInStatus({
+      pending: true
+    });
+
+      await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          setSignInStatus({
+            pending: false
+          });
+          setIsAuthenticated(true);
+          setShowToast(true);
+          setAuthErrorMessage("");
+          setToastMessage("Logged in successfully!");
+          navigate("/");
+          console.log(user);
+        })
+        .catch((error) => {
+          setSignInStatus({
+            pending: false
+          });
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setAuthErrorMessage(errorMessage);
+          console.log(errorCode, errorMessage);
+        });
   };
 
   return (
@@ -103,9 +121,23 @@ const SignInWithEmail = () => {
             )}
             <button
               type="submit"
+              disabled={signInStatus.pending}
               className="w-full px-[20px] py-[10px] bg-blue-500 text-white "
             >
-              Sign in
+              {signInStatus.pending ? (
+                <span className="flex items-center gap-[3px] justify-center ">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 ..."
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                  >
+                    <path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z" />
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                "Sign in"
+              )}
             </button>
           </form>
 

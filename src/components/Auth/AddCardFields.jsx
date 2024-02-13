@@ -26,7 +26,7 @@ const AddCardFields = () => {
         </div>
 
         {/* Accept Terms and condition */}
-        <div className="flex items-start gap-1">
+        <div className="w-full flex justify-start items-start gap-1">
           <input id="checkbox" type="checkbox" className="mt-[5px]" />
           <label htmlFor="checkbox">
             I agree to the{" "}

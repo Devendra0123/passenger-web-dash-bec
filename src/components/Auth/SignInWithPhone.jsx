@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import OTPVerification from "./OTPVerificationInput";
 import { useAuthContext } from "../../Context/AuthContext";
 import RegisterViaPhoneForm from "./RegisterViaPhoneForm";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
 import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../../firebase/setup";
@@ -17,6 +17,10 @@ const SignInWithPhone = () => {
   const [confirmationResult, setConfirmationResult] = useState();
   const [hasOtpBeenSent, setHasOtpBeenSent] = useState(false);
   const [isNewUser, setIsNewUser] = useState(true);
+  const [phoneNumberSubmitStatus, setPhoneNumberSubmitStatus] = useState({
+    pending: false,
+  });
+  const [phoneNumberSubmitError, setPhoneNumberSubmitError] = useState("");
 
   // Handle Phone number submit
   const handlePhoneNumberSubmit = async (e) => {
@@ -26,14 +30,28 @@ const SignInWithPhone = () => {
     const appVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
       size: "invisible",
     });
+    setPhoneNumberSubmitStatus({
+      pending: true,
+    });
 
+    console.log(enteredPhoneNumber)
     await signInWithPhoneNumber(auth, enteredPhoneNumber, appVerifier)
       .then((confirmationResult) => {
+        setPhoneNumberSubmitStatus({
+          pending: false,
+        });
         setConfirmationResult(confirmationResult);
         setHasOtpBeenSent(true);
       })
       .catch((error) => {
         console.log(error);
+        setPhoneNumberSubmitStatus({
+          pending: false,
+        });
+
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setPhoneNumberSubmitError(errorMessage);
         setHasOtpBeenSent(false);
       });
   };
@@ -76,21 +94,44 @@ const SignInWithPhone = () => {
             onSubmit={handlePhoneNumberSubmit}
             className="mt-[20px] flex flex-col"
           >
-            <label>Enter your phone number:</label>
-            <PhoneInput
-              country={"us"}
-              value={enteredPhoneNumber}
-              onChange={(phone) => setEnteredPhoneNumber("+" + phone)}
-              className="w-[300px] bg-light_gray border border-primary mt-[5px] rounded-[4px]"
-            />
-
+            <div>
+              <label>Enter your phone number:</label>
+              <PhoneInput
+                defaultCountry="gb"
+                value={enteredPhoneNumber}
+                onChange={(phone) => setEnteredPhoneNumber(phone)}
+                className="w-[300px] mt-[5px] rounded-[4px] bg-white"
+                inputStyle={{
+                  border: "none"
+                }}
+              />
+            </div>
+            {phoneNumberSubmitError && (
+              <p className="text-primary text-[15px] font-[500]">
+                {phoneNumberSubmitError}
+              </p>
+            )}
             <button
               onClick={() => {
                 navigate(`/login?loginWith=phone&step=verify-otp`);
               }}
-              className="w-[300px] mt-[20px] bg-blue-500 text-white text-[19px] font-semibold px-[20px] py-[8px] "
+              disabled={phoneNumberSubmitStatus.pending | (enteredPhoneNumber?.length < 5)}
+              className="w-[300px] mt-[20px] bg-blue-500 text-white text-[17px] font-semibold px-[20px] py-[8px] "
             >
-              Send OTP
+              {phoneNumberSubmitStatus.pending ? (
+                <span className="flex items-center gap-[3px] justify-center ">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 ..."
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                  >
+                    <path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z" />
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                "Send OTP"
+              )}
             </button>
           </form>
 
@@ -100,7 +141,7 @@ const SignInWithPhone = () => {
         </div>
 
         {/* Otp verification */}
-        <div className={`pl-[50px] min-w-full p-[20px]`}>
+        <div className={`${!hasOtpBeenSent && "hidden"} pl-[50px] min-w-full p-[20px]`}>
           <h2 className="text-[25px] text-start font-semibold">
             OTP Verification
           </h2>

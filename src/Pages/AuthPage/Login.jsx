@@ -42,11 +42,11 @@ const Login = () => {
             </div>
           </div>
           <div className="col-span-2 h-full bg-smoke/75 flex flex-col items-center gap-[20px]">
-            <div className="w-full flex items-center justify-between p-[20px]">
+            <div className={`${!clickedBtnId && "hidden"} w-full flex items-center justify-between p-[20px]`}>
               <div
                 onClick={() => {
                   setClickedBtnId("")
-                  navigate(-1);
+                  navigate('/login');
                 }}
                 className={`cursor-pointer flex items-center gap-[5px] bg-[#1BCD73] text-white px-[20px] py-[8px] rounded-[25px]`}
               >
