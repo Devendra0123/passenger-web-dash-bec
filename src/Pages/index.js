@@ -13,6 +13,7 @@ import Support from "./support/Support";
 import SupportDetails from "./support-details/SupportDetails";
 import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
+import AddProfileDetails from "./account/AddProfileDetails";  
 
 export {
   Login,
@@ -29,4 +30,5 @@ export {
   ServiceHistory,
   Support,
   SupportDetails,
+  AddProfileDetails
 };

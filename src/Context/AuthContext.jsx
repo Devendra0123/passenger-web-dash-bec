@@ -1,77 +1,38 @@
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 
-const INITIAL_STATE = {
-  user: null,
-  token: "",
-  isLoading: false,
-  isAuthenticated: false,
-  setUser: () => {},
-  setIsAuthenticated: () => {},
-  checkAuthUser: async () => false,
-};
-
-const AuthContext = createContext(INITIAL_STATE);
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [authToken, setAuthToken] = useState("");
 
   // Check and set User
-  const checkAndSetUser = ()=>{
-    const currentAccount = localStorage.getItem("user");
+  const checkAndSetAuthToken = () => {
+    const auth_token = localStorage.getItem("auth_Token");
 
-    if (currentAccount === "undefined") {
-      localStorage.removeItem("user");
-      setUser();
+    if ((auth_token == "undefined") | (auth_token == "") | (auth_token == null)) {
+      setAuthToken();
       setIsAuthenticated(false);
+    } else {
+      setAuthToken(auth_token);
+      setIsAuthenticated(true);
     }
-    if (currentAccount && currentToken) {
-      setUser(JSON.parse(currentAccount));
-      setIsAuthenticated(true)
-    };
-  }
-  
+  };
+
   useEffect(() => {
-    checkAndSetUser()
+    checkAndSetAuthToken();
   }, []);
 
-  // Check auth user
-  const checkAuthUser = () => {
-    setIsLoading(true);
-    try {
-      const currentAccount = localStorage.getItem("user");
-
-      if (currentAccount && currentToken) {
-        const user = JSON.parse(currentAccount);
-        setUser(user);
-        setIsAuthenticated(true);
-        return true;
-      }
-
-      return false;
-    } catch (error) {
-      console.error(error);
-      return false;
-    }
-  };
-
-  // Logout user
-  const removeUser = async () => {
-    localStorage.removeItem("user");
-    setUser();
-    setIsAuthenticated(false);
-  };
+  console.log(authToken, isAuthenticated);
 
   const value = {
-    user,
-    setUser,
     isLoading,
     isAuthenticated,
     setIsAuthenticated,
-    checkAuthUser,
-    removeUser,
+    authToken,
+    setAuthToken,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

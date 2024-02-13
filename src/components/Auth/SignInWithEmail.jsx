@@ -1,18 +1,14 @@
 import React, { useRef, useState, useTransition } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import {
-  getAuth,
-  setPersistence,
-  signInWithEmailAndPassword,
-  browserSessionPersistence,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { useToastContext } from "../../Context/ToastContext";
+import { loginPassenger } from "../../query/AuthQuery";
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken } = useAuthContext();
   const { setShowToast, setToastMessage } = useToastContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
@@ -24,7 +20,7 @@ const SignInWithEmail = () => {
   });
   const [signInStatus, setSignInStatus] = useState({
     pending: false,
-  })
+  });
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -40,36 +36,49 @@ const SignInWithEmail = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
-    console.log(email, password);
     setAuthErrorMessage("");
 
-    setSignInStatus({
-      pending: true
-    });
+    try {
+      setSignInStatus({ pending: true });
 
-      await signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          setSignInStatus({
-            pending: false
-          });
-          setIsAuthenticated(true);
-          setShowToast(true);
-          setAuthErrorMessage("");
-          setToastMessage("Logged in successfully!");
-          navigate("/");
-          console.log(user);
-        })
-        .catch((error) => {
-          setSignInStatus({
-            pending: false
-          });
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setAuthErrorMessage(errorMessage);
-          console.log(errorCode, errorMessage);
-        });
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      const credential = {
+        uid: user.uid,
+        email,
+      };
+
+      // Backend Login logic after successful firebase sign-in
+      const res = await loginPassenger(credential);
+
+      const { auth_token, profile_status } = res.data;
+      console.log(res);
+      setAuthToken(auth_token);
+      // Save the auth token in localStorage
+      localStorage.setItem("auth_Token", auth_token);
+
+      if (profile_status == "required_profile") {
+        navigate(`/account/add-profile-details?login-type=email`);
+      }
+      setSignInStatus({ pending: false });
+      // setIsAuthenticated(true);
+      // setShowToast(true);
+      // setToastMessage("Logged in successfully!");
+      // navigate("/");
+      // console.log(user);
+    } catch (error) {
+      setSignInStatus({ pending: false });
+
+      const errorCode = error.code || "unknown";
+      const errorMessage = error.message || "An error occurred";
+      setAuthErrorMessage(errorMessage);
+      console.error(errorCode, errorMessage);
+    }
   };
 
   return (

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation, redirect, useNavigate } from "react-router-dom";
 import {
   Account,
+  AddProfileDetails,
   Faq,
   FaqDetails,
   Home,
@@ -76,6 +77,7 @@ function App() {
               <Route path="/faq/faq-details" element={<FaqDetails />} />
               <Route path="/account" element={<Account />} />
               <Route path="/account/cards" element={<PaymentCardList />} />
+              <Route path="/account/add-profile-details" element={<AddProfileDetails />} />
               <Route path="/support" element={<Support />} />
               <Route
                 path="/support/support-details"
