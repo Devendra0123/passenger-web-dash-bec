@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import OTPVerification from "./OTPVerificationInput";
 import { useAuthContext } from "../../Context/AuthContext";
 import RegisterViaPhoneForm from "./RegisterViaPhoneForm";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+
 
 const SignInWithPhone = () => {
   const { setIsAuthenticated } = useAuthContext();
-  const [value, setValue] = useState();
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [otp, setOtp] = useState();
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
@@ -38,11 +39,15 @@ const SignInWithPhone = () => {
           >
             <label>Enter your phone number:</label>
             <PhoneInput
-              country={"us"}
-              value={value}
-              onChange={(phone) => setValue("+" + phone)}
-              className="w-[300px] bg-light_gray border border-primary mt-[5px] rounded-[4px]"
-            />
+                defaultCountry="gb"
+                value={enteredPhoneNumber}
+                onChange={(phone) => setEnteredPhoneNumber(phone)}
+                className="w-[300px] mt-[5px] rounded-[4px] bg-white"
+                inputStyle={{
+                  border: "none"
+                }}
+              />
+
             <button
               onClick={() => setOtp(123456)}
               className="w-[300px] mt-[20px] bg-blue-500 text-white text-[19px] font-semibold px-[20px] py-[8px] "
