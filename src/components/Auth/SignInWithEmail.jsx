@@ -8,7 +8,7 @@ import { loginPassenger } from "../../query/AuthQuery";
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, setAuthToken } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
   const { setShowToast, setToastMessage } = useToastContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
@@ -58,6 +58,7 @@ const SignInWithEmail = () => {
 
       const { auth_token, profile_status } = res.data;
       console.log(res);
+      setUid(user.uid)
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);

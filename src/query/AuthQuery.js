@@ -29,7 +29,10 @@ export const registerPassenger = async (passengerInfo, authToken) => {
   const formData = new FormData();
   formData.append("first_name", first_name);
   formData.append("last_name", last_name);
-  formData.append("email", email);
+  if(email){
+    formData.append("email", email);
+  }
+
   formData.append("mobile", mobile);
   formData.append("profile_image", profile_image);
 

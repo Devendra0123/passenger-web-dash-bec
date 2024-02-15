@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useTransition } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import RegisterViaEmail from "../../components/Auth/RegisterViaEmailForm";
 import { IoChevronBackOutline } from "react-icons/io5";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { useToastContext } from "../../Context/ToastContext";
 import RegisterViaPhoneForm from "../../components/Auth/RegisterViaPhoneForm";
@@ -13,17 +12,11 @@ const Register = () => {
   const [searchParams] = useSearchParams();
   const scrollableContainerRef = useRef(null);
 
-  const { setShowToast, setToastMessage } = useToastContext();
   const registerVia = searchParams.get("registerVia");
   const step = searchParams.get("step");
-
-  const [authErrorMessage, setAuthErrorMessage] = useState("");
   const [registerViaQuery, setRegisterViaQuery] = useState("");
   const [showAddCardFields, setShowAddCardFields] = useState(false);
 
-  const [registerStatus, setRegisterStatus] = useState({
-    pending: false
-  })
   useEffect(() => {
     if (registerVia) {
       setRegisterViaQuery(registerVia);
@@ -40,42 +33,10 @@ const Register = () => {
     if (step === "add-card-details" && scrollableContainerRef.current) {
       scrollableContainerRef.current.scrollTo({
         top: 0,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   }, [step]);
-
-
-  // Handle firebase User Register
-  const handleFirebaseRegister = async (formData) => {
-    const { email, password } = formData;
-    setAuthErrorMessage("");
-    setRegisterStatus({
-      pending: true
-    });
-      await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setRegisterStatus({
-            pending: false
-          });
-          setAuthErrorMessage("");
-          setShowToast(true);
-          setToastMessage("User registered successfully.");
-          navigate(`/register?registerVia=email&step=add-card-details`);
-          // navigate("/login?loginWith=email");
-        })
-        .catch((error) => {
-          setRegisterStatus({
-            pending: false
-          });
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
-          setAuthErrorMessage(errorMessage);
-          // ..
-        });
-  };
 
   return (
     <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full min-h-[100vh] flex flex-col items-center">
@@ -96,7 +57,10 @@ const Register = () => {
               </p>
             </div>
           </div>
-          <div ref={scrollableContainerRef} className="relative col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px]">
+          <div
+            ref={scrollableContainerRef}
+            className="relative col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px]"
+          >
             <div className="z-10 sticky top-[0px] w-full flex items-center justify-between p-[20px]">
               <div
                 onClick={() => {
@@ -121,13 +85,7 @@ const Register = () => {
                   <p className="mt-[20px] text-[14px]">
                     Fill the details to register your account
                   </p>
-                  <RegisterViaEmail
-                    handleRegisterFormSubmit={(formData) => {
-                      handleFirebaseRegister(formData);
-                    }}
-                    isPending={registerStatus.pending}
-                    errorMessage={authErrorMessage}
-                  />
+                  <RegisterViaEmail />
                 </div>
               </div>
             )}

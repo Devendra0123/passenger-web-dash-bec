@@ -2,11 +2,11 @@ import React, { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useAuthContext } from "../../Context/AuthContext";
-import { registerPassenger } from "../../query/AuthQuery";
+import { loginPassenger, registerPassenger } from "../../query/AuthQuery";
 
 const AddProfileDetails = () => {
   const fileInputRef = useRef(null);
-  const { authToken } = useAuthContext();
+  const { authToken, uid } = useAuthContext();
 
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
@@ -43,24 +43,25 @@ const AddProfileDetails = () => {
 
   // Handle Add profile details
   const handleAddProfileDetails = async () => {
-    setErrorMessage("")
+    setErrorMessage("");
     if (!formData?.first_name | !formData.last_name) return;
     const userCredential = {
+      uid: uid,
       ...formData,
       profile_image: file,
     };
     console.log(userCredential);
-    try {
-      setIsPending(true)
-      const data = await registerPassenger(userCredential, authToken);
-      console.log(data);
-      setIsPending(false)
-    } catch (error) {
-      setIsPending(false)
-      const errorCode = error.code || "unknown";
-      const errorMessage = error.message || "An error occurred";
-      setErrorMessage(errorMessage);
-    }
+    // try {
+    //   setIsPending(true);
+    //   const data = await loginPassenger(userCredential);
+    //   console.log(data);
+    //   setIsPending(false);
+    // } catch (error) {
+    //   setIsPending(false);
+    //   const errorCode = error.code || "unknown";
+    //   const errorMessage = error.message || "An error occurred";
+    //   setErrorMessage(errorMessage);
+    // }
   };
 
   return (
