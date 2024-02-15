@@ -4,7 +4,7 @@ import { createContext } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState("");
   const [uid, setUid] = useState("");
