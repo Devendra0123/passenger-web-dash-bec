@@ -127,7 +127,7 @@ const AddCardModal = (props) => {
               <h2 className="text-[17px] font-[600]">Billing Address</h2>
 
               <div className="w-full grid grid-cols-2 gap-[20px] mt-[20px]">
-                <div className="col-span-1">
+                {/* <div className="col-span-1">
                   <input
                     className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
                     placeholder="First Name"
@@ -143,7 +143,7 @@ const AddCardModal = (props) => {
                     name="last-name"
                     type="text"
                   />
-                </div>
+                </div> */}
 
                 <div className="col-span-1">
                   <input
@@ -168,6 +168,24 @@ const AddCardModal = (props) => {
                     className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
                     placeholder="Address Line 2"
                     name="address-line-2"
+                    type="text"
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <input
+                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                    placeholder="Town or City"
+                    name="Town or City"
+                    type="text"
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <input
+                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                    placeholder="Postal Code"
+                    name="Postal Code"
                     type="text"
                   />
                 </div>

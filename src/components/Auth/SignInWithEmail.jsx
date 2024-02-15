@@ -88,7 +88,7 @@ const SignInWithEmail = () => {
 
         {/* Add Card */}
         <div
-          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full overflow-auto p-[20px]`}
+          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full h-[70%] overflow-y-auto p-[20px] pb-[30px]`}
         >
            <h2 className="text-[25px] text-start font-semibold">
             Add Card Details

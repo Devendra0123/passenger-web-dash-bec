@@ -259,6 +259,10 @@ const ServiceDetails = () => {
                     <p>Driver ID:</p>
                     <p>003</p>
                   </div>
+                  <div className="w-full flex items-center justify-between">
+                    <p>TFL License Number:</p>
+                    <p>95382</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -382,8 +386,12 @@ const ServiceDetails = () => {
                     <p className="text-blue-500">03458</p>
                   </div>
                   <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>Make and Model:</p>
-                    <p className="text-blue-500">Escape</p>
+                    <p>Make:</p>
+                    <p className="text-blue-500">Ford</p>
+                  </div>
+                  <div className="w-full flex items-center justify-center gap-[10px]">
+                    <p>Model:</p>
+                    <p className="text-blue-500">Mustang</p>
                   </div>
                 </div>
               </div>
