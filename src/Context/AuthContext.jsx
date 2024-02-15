@@ -21,7 +21,6 @@ export function AuthProvider({ children }) {
       setIsAuthenticated(false);
     } else {
       setAuthToken(auth_token);
-      setIsAuthenticated(true);
     }
   };
 

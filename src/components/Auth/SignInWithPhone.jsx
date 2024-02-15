@@ -7,10 +7,11 @@ import "react-international-phone/style.css";
 import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../../firebase/setup";
+import { loginPassenger } from "../../query/AuthQuery";
 
 const SignInWithPhone = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [otp, setOtp] = useState();
   const [isOtpVerified, setIsOtpVerified] = useState(false);
@@ -20,6 +21,9 @@ const SignInWithPhone = () => {
   const [phoneNumberSubmitStatus, setPhoneNumberSubmitStatus] = useState({
     pending: false,
   });
+  const [otpVerificationStatus, setOtpVerificationStatus] = useState({
+    pending: false
+  })
   const [phoneNumberSubmitError, setPhoneNumberSubmitError] = useState("");
 
   // Handle Phone number submit
@@ -34,9 +38,9 @@ const SignInWithPhone = () => {
       pending: true,
     });
 
-    console.log(enteredPhoneNumber)
     await signInWithPhoneNumber(auth, enteredPhoneNumber, appVerifier)
       .then((confirmationResult) => {
+        console.log(confirmationResult);
         setPhoneNumberSubmitStatus({
           pending: false,
         });
@@ -60,13 +64,27 @@ const SignInWithPhone = () => {
   const verifyOTP = async (value) => {
     console.log(value);
     try {
-      await confirmationResult.confirm(value).then((res) => {
-        console.log("verified");
-        if (isNewUser) {
-          navigate(`/register?registerVia=phone`);
-        }
-      });
+      setOtpVerificationStatus({pending: true})
+      const userCredential = await confirmationResult.confirm(value);
+      const { uid } = userCredential.user;
+
+      const credential = {
+        uid: uid,
+        mobile: enteredPhoneNumber,
+      };
+      const res = await loginPassenger(credential);
+      const { auth_token, profile_status } = res.data;
+      console.log(res);
+      setUid(uid);
+      setAuthToken(auth_token);
+      // Save the auth token in localStorage
+      localStorage.setItem("auth_Token", auth_token);
+      setOtpVerificationStatus({pending: false})
+      if (profile_status == "required_profile") {
+        navigate(`/account/add-profile-details?login-type=mobile`);
+      }
     } catch (err) {
+      setOtpVerificationStatus({pending: false})
       console.log(err);
     }
   };
@@ -102,7 +120,7 @@ const SignInWithPhone = () => {
                 onChange={(phone) => setEnteredPhoneNumber(phone)}
                 className="w-[300px] mt-[5px] rounded-[4px] bg-white"
                 inputStyle={{
-                  border: "none"
+                  border: "none",
                 }}
               />
             </div>
@@ -115,7 +133,10 @@ const SignInWithPhone = () => {
               onClick={() => {
                 navigate(`/login?loginWith=phone&step=verify-otp`);
               }}
-              disabled={phoneNumberSubmitStatus.pending | (enteredPhoneNumber?.length < 5)}
+              disabled={
+                phoneNumberSubmitStatus.pending |
+                (enteredPhoneNumber?.length < 5)
+              }
               className="w-[300px] mt-[20px] bg-blue-500 text-white text-[17px] font-semibold px-[20px] py-[8px] "
             >
               {phoneNumberSubmitStatus.pending ? (
@@ -141,14 +162,18 @@ const SignInWithPhone = () => {
         </div>
 
         {/* Otp verification */}
-        <div className={`${!hasOtpBeenSent && "hidden"} pl-[50px] min-w-full p-[20px]`}>
+        <div
+          className={`${
+            !hasOtpBeenSent && "hidden"
+          } pl-[50px] min-w-full p-[20px]`}
+        >
           <h2 className="text-[25px] text-start font-semibold">
             OTP Verification
           </h2>
           <p className="mt-[20px]">
             Enter the OTP code send to your phone number
           </p>
-          <OTPVerification verifyOtp={(otpValue) => verifyOTP(otpValue)} />
+          <OTPVerification verifyOtp={(otpValue) => verifyOTP(otpValue)} isPending={otpVerificationStatus.pending} />
         </div>
 
         {/* Register form */}

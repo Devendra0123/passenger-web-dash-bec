@@ -3,10 +3,14 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useAuthContext } from "../../Context/AuthContext";
 import { loginPassenger, registerPassenger } from "../../query/AuthQuery";
+import { useSearchParams } from "react-router-dom";
 
 const AddProfileDetails = () => {
   const fileInputRef = useRef(null);
+  const [searchParams] = useSearchParams();
   const { authToken, uid } = useAuthContext();
+
+  const loginType = searchParams.get("login-type");
 
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
@@ -50,18 +54,18 @@ const AddProfileDetails = () => {
       ...formData,
       profile_image: file,
     };
-    console.log(userCredential);
-    // try {
-    //   setIsPending(true);
-    //   const data = await loginPassenger(userCredential);
-    //   console.log(data);
-    //   setIsPending(false);
-    // } catch (error) {
-    //   setIsPending(false);
-    //   const errorCode = error.code || "unknown";
-    //   const errorMessage = error.message || "An error occurred";
-    //   setErrorMessage(errorMessage);
-    // }
+
+    try {
+      setIsPending(true);
+      const data = await registerPassenger(userCredential,authToken);
+      console.log(data);
+      setIsPending(false);
+    } catch (error) {
+      setIsPending(false);
+      const errorCode = error.code || "unknown";
+      const errorMessage = error.message || "An error occurred";
+      setErrorMessage(errorMessage);
+    }
   };
 
   return (
@@ -153,28 +157,31 @@ const AddProfileDetails = () => {
                 />
               </div>
             </div>
+            {loginType != "mobile" && (
+              <div className="flex flex-col gap-[5px]">
+                <label>Phone Number:</label>
+                <input
+                  type="number"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleOnChange}
+                  className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+                />
+              </div>
+            )}
 
-            <div className="flex flex-col gap-[5px]">
-              <label>Phone Number:</label>
-              <input
-                type="number"
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleOnChange}
-                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
-              />
-            </div>
-
-            <div className="flex flex-col gap-[5px]">
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleOnChange}
-                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
-              />
-            </div>
+            {loginType != "email" && (
+              <div className="flex flex-col gap-[5px]">
+                <label>Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleOnChange}
+                  className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+                />
+              </div>
+            )}
 
             {errorMessage && (
               <p className="text-primary text-[15px] font-[500]">

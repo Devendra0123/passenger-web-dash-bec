@@ -8,9 +8,12 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { loginPassenger, registerPassenger } from "../../query/AuthQuery";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
+import { useNavigate } from "react-router";
 
 const RegisterViaEmail = () => {
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+
   const { setShowToast, setToastMessage } = useToastContext();
   const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
 
@@ -89,15 +92,15 @@ const RegisterViaEmail = () => {
         mobile: enteredPhoneNumber,
         profile_image: file,
       };
-
-      const response = await registerPassenger(passengerInfo, auth_token);
-
-      console.log(response);
+      if (profile_status == "required_profile") {
+        const response = await registerPassenger(passengerInfo, auth_token);
+        console.log(response);
+        navigate(`/account/add-card-details`);
+      }
 
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
-      if (profile_status == "required_profile") {
-      }
+
       setRegisterStatus({
         pending: false,
       });

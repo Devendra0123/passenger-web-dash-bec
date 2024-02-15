@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation, redirect, useNavigate } from "react-router-dom";
 import {
   Account,
+  AddCardDetails,
   AddProfileDetails,
   Faq,
   FaqDetails,
@@ -43,7 +44,7 @@ function WindowScrollTop() {
 function App() {
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, authToken } = useAuthContext();
   const { toastMessage } = useToastContext();
 
   useEffect(() => {
@@ -78,6 +79,7 @@ function App() {
               <Route path="/account" element={<Account />} />
               <Route path="/account/cards" element={<PaymentCardList />} />
               <Route path="/account/add-profile-details" element={<AddProfileDetails />} />
+              <Route path="/account/add-card-details" element={<AddCardDetails />} />
               <Route path="/support" element={<Support />} />
               <Route
                 path="/support/support-details"

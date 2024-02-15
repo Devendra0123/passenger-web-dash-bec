@@ -1,52 +1,157 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
+import { FaLock, FaTimes, FaUser } from "react-icons/fa";
+import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 const AddCardFields = () => {
+  const navigate = useNavigate()
   const { setIsAuthenticated } = useAuthContext();
   return (
-    <div>
-      <div className="w-full flex flex-col items-center gap-[20px]">
-        {/* Credit card Image */}
-        <div className="w-full flex justify-start">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="104"
-            height="104"
-            viewBox="0 0 24 24"
-          >
-            <path d="M0 8v-3c0-1.105.895-2 2-2h20c1.104 0 2 .895 2 2v3h-24zm24 3v8c0 1.104-.896 2-2 2h-20c-1.105 0-2-.896-2-2v-8h24zm-15 6h-6v1h6v-1zm3-2h-9v1h9v-1zm9 0h-3v1h3v-1z" />
-          </svg>
+    <div className="w-full flex flex-col items-start">
+      <div className="w-[80%]">
+        <div className="input-group flex mt-3 flex-col gap-4">
+          <div className="relative">
+            <input
+              className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+              placeholder="Enter Card Number"
+              name="card-number"
+              type="text"
+            />
+            <IoCardOutline
+              size={20}
+              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
+            />
+          </div>
+          <div className="flex relative  gap-2">
+            <input
+              className="w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] "
+              type="text"
+              id="expiryDate"
+              name="expiry-date"
+              placeholder="mm/yy"
+            />
+            <input
+              className="w-[50%] p-2  pr-10 border-[1px] border-gray-300 outline-none rounded-[8px] "
+              placeholder="CVC"
+              name="cvc"
+              type="text"
+            />
+            <IoInformationCircleOutline
+              size={20}
+              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
+            />
+          </div>
+          <div className="relative">
+            <input
+              className="w-full p-2 pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+              placeholder="Name on Card"
+              type="text"
+            />
+            <FaUser
+              size={20}
+              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
+            />
+          </div>
         </div>
-        <div className="w-full grid grid-cols-2 gap-[20px] ">
-          <input type="number" placeholder="Card Number" className="col-span-2 p-[5px] rounded-[4px] bg-light_gray " />
-          <input type="text" placeholder="Cardholder Name" className="col-span-2 p-[5px] rounded-[4px] bg-light_gray " />
-          <input type="text" placeholder="Expiry Date" className="col-span-1 p-[5px] rounded-[4px] bg-light_gray " />
-          <input type="number" placeholder="CVC" className="col-span-1 p-[5px] rounded-[4px] bg-light_gray " />
+        {/* Billing Address */}
+        <div className="mt-[20px] ">
+          <h2 className="text-[17px] font-[600]">Billing Address</h2>
+
+          <div className="w-full grid grid-cols-2 gap-[20px] mt-[20px]">
+            {/* <div className="col-span-1">
+                  <input
+                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                    placeholder="First Name"
+                    name="first-name"
+                    type="text"
+                  />
+                </div>
+
+                <div className="col-span-1">
+                  <input
+                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                    placeholder="last Name"
+                    name="last-name"
+                    type="text"
+                  />
+                </div> */}
+
+            <div className="col-span-1">
+              <input
+                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                placeholder="Country"
+                name="country"
+                type="text"
+              />
+            </div>
+
+            <div className="col-span-1">
+              <input
+                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                placeholder="Address Line 1"
+                name="address-line-1"
+                type="text"
+              />
+            </div>
+
+            <div className="col-span-1">
+              <input
+                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                placeholder="Address Line 2"
+                name="address-line-2"
+                type="text"
+              />
+            </div>
+
+            <div className="col-span-1">
+              <input
+                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                placeholder="Town or City"
+                name="Town or City"
+                type="text"
+              />
+            </div>
+
+            <div className="col-span-1">
+              <input
+                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
+                placeholder="Postal Code"
+                name="Postal Code"
+                type="text"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex mt-5 justify-center items-center gap-4">
+          <FaLock className="text-green-500" />
+          <p className="text-fontSize_sm">
+            {" "}
+            Your payment info will be stored securely
+          </p>
         </div>
 
-        {/* Accept Terms and condition */}
-        <div className="w-full flex justify-start items-start gap-1">
-          <input id="checkbox" type="checkbox" className="mt-[5px]" />
-          <label htmlFor="checkbox">
-            I agree to the{" "}
-            <Link to="/terms-and-conditions" className="text-blue-500">
-              terms and condition
-            </Link>{" "}
-            and{" "}
-            <Link to="/privacy-policy" className="text-blue-500">
-              privacy policy
-            </Link>
-            .
-          </label>
-        </div>
       </div>
-
+      <div className="flex items-center gap-1">
+        <input id="checkbox" type="checkbox" />
+        <label htmlFor="checkbox">
+          I agree to the{" "}
+          <Link to="/terms-and-conditions" className="text-blue-500">
+            terms and condition
+          </Link>{" "}
+          and{" "}
+          <Link to="/privacy-policy" className="text-blue-500">
+            privacy policy
+          </Link>
+          .
+        </label>
+      </div>
       <button
         onClick={() => {
           setIsAuthenticated(true);
+          navigate('/')
         }}
-        className="mt-[20px] w-full px-[20px] py-[10px] bg-blue-500 text-white "
+        className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
       >
         Continue
       </button>
