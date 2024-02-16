@@ -58,7 +58,7 @@ const SignInWithEmail = () => {
 
       const { auth_token, profile_status } = res.data;
       console.log(res);
-      setUid(user.uid)
+      setUid(user.uid);
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
@@ -66,6 +66,10 @@ const SignInWithEmail = () => {
       if (profile_status == "required_profile") {
         navigate(`/account/add-profile-details?login-type=email`);
       }
+      if (profile_status == "required_card") {
+        navigate(`/account/add-card-details`);
+      }
+      
       setSignInStatus({ pending: false });
       // setIsAuthenticated(true);
       // setShowToast(true);

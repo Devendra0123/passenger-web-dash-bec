@@ -83,6 +83,9 @@ const SignInWithPhone = () => {
       if (profile_status == "required_profile") {
         navigate(`/account/add-profile-details?login-type=mobile`);
       }
+      if(profile_status == "required_card"){
+        navigate(`/account/add-card-details`);
+      }
     } catch (err) {
       setOtpVerificationStatus({pending: false})
       console.log(err);
