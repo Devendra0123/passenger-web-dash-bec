@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
 import { FaLock, FaTimes, FaUser } from "react-icons/fa";
 import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
+import { FaLock, FaTimes, FaUser } from "react-icons/fa";
+import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 const AddCardFields = () => {
   const navigate = useNavigate()
