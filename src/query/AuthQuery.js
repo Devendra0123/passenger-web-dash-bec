@@ -46,3 +46,16 @@ export const registerPassenger = async (passengerInfo, authToken) => {
 
   return data;
 };
+
+// Get Profile Status
+export const getProfileStatus = async(authToken)=>{
+ const data = await fetch(`${apiUrl}/passenger/status`, {
+    method: "GET",
+    headers: {
+      AppToken: `${appToken}`,
+      Authorization: `Bearer ${authToken}`,
+    }
+  }).then(res => res.json());
+
+  return data;
+}

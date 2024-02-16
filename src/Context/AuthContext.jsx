@@ -4,7 +4,7 @@ import { createContext } from "react";
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [authToken, setAuthToken] = useState("");
   const [uid, setUid] = useState("");
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
       (auth_token == null)
     ) {
       setAuthToken();
-      setIsAuthenticated(false);
+      // setIsAuthenticated(false);
     } else {
       setAuthToken(auth_token);
     }
@@ -27,8 +27,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     checkAndSetAuthToken();
   }, []);
-
-  console.log(authToken, isAuthenticated);
 
   const value = {
     isLoading,

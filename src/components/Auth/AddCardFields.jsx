@@ -1,14 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
-import { FaLock, FaTimes, FaUser } from "react-icons/fa";
 import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { FaLock, FaTimes, FaUser } from "react-icons/fa";
-import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
 
 const AddCardFields = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { setIsAuthenticated } = useAuthContext();
+
+  const [cardNumber, setCardNumber] = useState("");
+  const [exp_date, setExp_date] = useState();
+  const [cvc, setCvc] = useState("");
+  const [expMonth, setExpMonth] = useState(""); // New state for exp_month
+  const [expYear, setExpYear] = useState("");
+
+  const expriy_format = (value) => {
+    const expdate = value;
+
+    const formattedDate =
+      expdate.replace(/\//g, "").substring(0, 4);
+
+    const expDateFormatter =
+      expdate.replace(/\//g, "").substring(0, 2) +
+      (expdate.length > 2 ? "/" : "") +
+      expdate.replace(/\//g, "").substring(2, 4);
+
+    // setExpMonth(formattedDate.substring(0, 2)); // Set exp_month
+    // setExpYear(formattedDate.substring(2, 4));
+
+    return expDateFormatter;
+  };
+
+  console.log(exp_date, expMonth, expYear);
   return (
     <div className="w-full flex flex-col items-start">
       <div className="w-[80%]">
@@ -26,12 +49,20 @@ const AddCardFields = () => {
             />
           </div>
           <div className="flex relative  gap-2">
-            <input
+            {/* <input
               className="w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] "
               type="text"
               id="expiryDate"
               name="expiry-date"
               placeholder="mm/yy"
+            /> */}
+            <input
+              type="text"
+              name="expiry-data"
+              className="w-[50%] p-2 border-[1px] border-gray-300 outline-none rounded-[8px]"
+              placeholder="mm / yy"
+              onChange={(e) => setExp_date(e.target.value)}
+              value={exp_date ? expriy_format(exp_date) : ""}
             />
             <input
               className="w-[50%] p-2  pr-10 border-[1px] border-gray-300 outline-none rounded-[8px] "
@@ -132,7 +163,6 @@ const AddCardFields = () => {
             Your payment info will be stored securely
           </p>
         </div>
-
       </div>
       <div className="flex items-center gap-1">
         <input id="checkbox" type="checkbox" />
@@ -151,7 +181,7 @@ const AddCardFields = () => {
       <button
         onClick={() => {
           setIsAuthenticated(true);
-          navigate('/')
+          navigate("/");
         }}
         className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
       >

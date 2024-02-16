@@ -2,16 +2,25 @@ import React, { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useAuthContext } from "../../Context/AuthContext";
-import { loginPassenger, registerPassenger } from "../../query/AuthQuery";
-import { useSearchParams } from "react-router-dom";
+import {
+  getProfileStatus,
+  loginPassenger,
+  registerPassenger,
+} from "../../query/AuthQuery";
+import { PhoneInput } from "react-international-phone";
+import "react-international-phone/style.css";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
 
 const AddProfileDetails = () => {
+  const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [searchParams] = useSearchParams();
   const { authToken, uid } = useAuthContext();
 
   const loginType = searchParams.get("login-type");
 
+  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -20,7 +29,6 @@ const AddProfileDetails = () => {
     first_name: "",
     last_name: "",
     email: "",
-    mobile: "",
   });
 
   function handleFileChange(event) {
@@ -50,16 +58,23 @@ const AddProfileDetails = () => {
     setErrorMessage("");
     if (!formData?.first_name | !formData.last_name) return;
     const userCredential = {
-      uid: uid,
       ...formData,
+      mobile: enteredPhoneNumber,
       profile_image: file,
     };
 
     try {
       setIsPending(true);
-      const data = await registerPassenger(userCredential,authToken);
-      console.log(data);
+      const data = await registerPassenger(userCredential, authToken);
+      const status = await getProfileStatus(authToken);
+
+      const { profile_status } = status.data;
+
       setIsPending(false);
+
+      if (profile_status == "required_card") {
+        navigate(`/account/add-card-details`);
+      }
     } catch (error) {
       setIsPending(false);
       const errorCode = error.code || "unknown";
@@ -88,7 +103,8 @@ const AddProfileDetails = () => {
         </div>
 
         <div className="col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px] p-[20px]">
-          <h2 className="w-full text-start font-semibold text-[25px] ">
+          <StepWiseAuthenticationTab activeTab="required_profile" />
+          <h2 className="w-full text-start font-semibold text-[25px] mt-[50px] ">
             Add Profile Details
           </h2>
           <form
@@ -160,12 +176,15 @@ const AddProfileDetails = () => {
             {loginType != "mobile" && (
               <div className="flex flex-col gap-[5px]">
                 <label>Phone Number:</label>
-                <input
-                  type="number"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleOnChange}
+                <PhoneInput
+                  defaultCountry="gb"
+                  value={enteredPhoneNumber}
+                  onChange={(phone) => setEnteredPhoneNumber(phone)}
                   className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+                  inputStyle={{
+                    border: "none",
+                    background: "transparent"
+                  }}
                 />
               </div>
             )}

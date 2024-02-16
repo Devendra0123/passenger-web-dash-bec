@@ -224,7 +224,8 @@ const ServiceCard = ({
             className="w-[37px] h-[37px] rounded-full border border-blue-400 "
           />
           <div>
-            <p className="text-slate-500 text-[13px]">{driver?.name}</p>
+            {/* Make sure to use only first name */}
+            <p className="text-slate-500 text-[13px]">Ben</p>
             <Rating
               ratingValue={driver.rating?.value}
               NumberOfRating={driver.rating.numberofRating}

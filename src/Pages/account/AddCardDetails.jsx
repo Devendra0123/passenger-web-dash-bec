@@ -1,7 +1,11 @@
 import React from "react";
 import AddCardFields from "../../components/Auth/AddCardFields";
+import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
+import { PaymentElement } from "@stripe/react-stripe-js";
+import {Elements} from '@stripe/react-stripe-js';
 
 const AddCardDetails = () => {
+
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen flex flex-col items-center justify-center p-[20px]">
       <div className="w-[80%] h-[600px] grid grid-cols-3 shadow-md rounded-lg overflow-hidden ">
@@ -22,9 +26,11 @@ const AddCardDetails = () => {
         </div>
 
         <div className="col-span-2 h-[95%] overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px] p-[20px]">
-          <h2 className="w-full text-start font-semibold text-[25px] ">
+          <StepWiseAuthenticationTab activeTab="required_card" />
+          <h2 className="w-full text-start font-semibold text-[25px] mt-[50px]">
             Add Card Details
           </h2>
+
           <AddCardFields />
         </div>
       </div>
