@@ -42,78 +42,7 @@ const AddCardFields = () => {
     <div className="w-full flex flex-col items-start">
       <div className="w-[80%]">
         <CardForm />
-        <div className="input-group flex mt-3 flex-col gap-4">
-          <button>Get Card Token</button>
-        </div>
-        {/* Billing Address */}
-        <div className="mt-[20px] ">
-          <h2 className="text-[17px] font-[600]">Billing Address</h2>
 
-          <div className="w-full grid grid-cols-2 gap-[20px] mt-[20px]">
-            {/* <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="First Name"
-                    name="first-name"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="last Name"
-                    name="last-name"
-                    type="text"
-                  />
-                </div> */}
-
-            <div className="col-span-1">
-              <input
-                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                placeholder="Country"
-                name="country"
-                type="text"
-              />
-            </div>
-
-            <div className="col-span-1">
-              <input
-                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                placeholder="Address Line 1"
-                name="address-line-1"
-                type="text"
-              />
-            </div>
-
-            <div className="col-span-1">
-              <input
-                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                placeholder="Address Line 2"
-                name="address-line-2"
-                type="text"
-              />
-            </div>
-
-            <div className="col-span-1">
-              <input
-                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                placeholder="Town or City"
-                name="Town or City"
-                type="text"
-              />
-            </div>
-
-            <div className="col-span-1">
-              <input
-                className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                placeholder="Postal Code"
-                name="Postal Code"
-                type="text"
-              />
-            </div>
-          </div>
-        </div>
         <div className="flex mt-5 justify-center items-center gap-4">
           <FaLock className="text-green-500" />
           <p className="text-fontSize_sm">

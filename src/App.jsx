@@ -60,10 +60,6 @@ function App() {
   const { isAuthenticated, authToken } = useAuthContext();
   const { toastMessage } = useToastContext();
 
-  const cardElementOpts = {
- mode: ''
-  };
-
   useEffect(() => {
     if (!isAuthenticated) {
       navigate("/login");

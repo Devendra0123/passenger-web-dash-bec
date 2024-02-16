@@ -6,7 +6,7 @@ import {
   CardNumberElement,
   CardCvcElement,
   CardExpiryElement,
-  ShippingAddressElementComponent,
+  AddressElement,
 } from "@stripe/react-stripe-js";
 
 const useOptions = () => {
@@ -115,11 +115,15 @@ const CardForm = () => {
         />
       </label>
       <label>
-        <ShippingAddressElementComponent />
+        <AddressElement
+          options={{
+            mode: "shipping",
+          }}
+        />
       </label>
-      <button type="submit" disabled={!stripe}>
+      {/* <button type="submit" disabled={!stripe}>
         Pay
-      </button>
+      </button> */}
     </form>
   );
 };
