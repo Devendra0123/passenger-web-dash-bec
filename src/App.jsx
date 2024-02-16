@@ -2,7 +2,13 @@ import "./App.css";
 
 import { useEffect } from "react";
 
-import { Routes, Route, useLocation, redirect, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  redirect,
+  useNavigate,
+} from "react-router-dom";
 import {
   Account,
   AddCardDetails,
@@ -32,6 +38,13 @@ import PaymentCardList from "./Pages/Payment-card/CardList";
 import Toast from "./components/Element/Toast";
 import { useToastContext } from "./Context/ToastContext";
 
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(
+  "pk_test_U2ccGGRSYmHlR0WPL70VyKGr00k3zFk6bN"
+);
+
 // Scroll to top on page navigation
 function WindowScrollTop() {
   const location = useLocation();
@@ -47,59 +60,74 @@ function App() {
   const { isAuthenticated, authToken } = useAuthContext();
   const { toastMessage } = useToastContext();
 
+  const cardElementOpts = {
+ mode: ''
+  };
+
   useEffect(() => {
     if (!isAuthenticated) {
-    navigate("/login");
+      navigate("/login");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   return (
-    <div className="w-full min-h-[100vh] flex justify-center">
-      <WindowScrollTop />
-      <Toast message={toastMessage} />
-      <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
-        <div className="col-span-2 h-full">
-          <Sidebar />
-        </div>
-        <div className="col-span-5 h-full">
-          <Header />
-          <div className="mt-[20px] h-full">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/service-details/:slug"
-                element={<ServiceDetails />}
-              />
-              <Route path="/scheduled-booking" element={<ScheduledBooking />} />
-              <Route path="/notice" element={<Notice />} />
-              <Route path="/invoice" element={<Invoice />} />
-              <Route path="/service-history" element={<ServiceHistory />} />
-              <Route path="/faq" element={<Faq />} />
-              <Route path="/faq/faq-details" element={<FaqDetails />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/account/cards" element={<PaymentCardList />} />
-              <Route path="/account/add-profile-details" element={<AddProfileDetails />} />
-              <Route path="/account/add-card-details" element={<AddCardDetails />} />
-              <Route path="/support" element={<Support />} />
-              <Route
-                path="/support/support-details"
-                element={<SupportDetails />}
-              />
-              <Route path="/contact-us" element={<ContactUs />} />
-              <Route
-                path="/terms-and-conditions"
-                element={<TermsAndConditions />}
-              />
-              <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
+    <Elements stripe={stripePromise}>
+      <div className="w-full min-h-[100vh] flex justify-center">
+        <WindowScrollTop />
+        <Toast message={toastMessage} />
+        <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
+          <div className="col-span-2 h-full">
+            <Sidebar />
+          </div>
+          <div className="col-span-5 h-full">
+            <Header />
+            <div className="mt-[20px] h-full">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/service-details/:slug"
+                  element={<ServiceDetails />}
+                />
+                <Route
+                  path="/scheduled-booking"
+                  element={<ScheduledBooking />}
+                />
+                <Route path="/notice" element={<Notice />} />
+                <Route path="/invoice" element={<Invoice />} />
+                <Route path="/service-history" element={<ServiceHistory />} />
+                <Route path="/faq" element={<Faq />} />
+                <Route path="/faq/faq-details" element={<FaqDetails />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/account/cards" element={<PaymentCardList />} />
+                <Route
+                  path="/account/add-profile-details"
+                  element={<AddProfileDetails />}
+                />
+                <Route
+                  path="/account/add-card-details"
+                  element={<AddCardDetails />}
+                />
+                <Route path="/support" element={<Support />} />
+                <Route
+                  path="/support/support-details"
+                  element={<SupportDetails />}
+                />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route
+                  path="/terms-and-conditions"
+                  element={<TermsAndConditions />}
+                />
+                <Route path="/privacy-policy" element={<PrivacyAndPolicy />} />
 
-              {/* Authentication route */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
+                {/* Authentication route */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Elements>
   );
 }
 

@@ -1,91 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
 import { IoCardOutline, IoInformationCircleOutline } from "react-icons/io5";
 import { FaLock, FaTimes, FaUser } from "react-icons/fa";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
+import CardForm from "../Stripe/CardForm";
 
 const AddCardFields = () => {
   const navigate = useNavigate();
   const { setIsAuthenticated } = useAuthContext();
 
-  const [cardNumber, setCardNumber] = useState("");
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const [number, setNumber] = useState("");
   const [exp_date, setExp_date] = useState();
   const [cvc, setCvc] = useState("");
-  const [expMonth, setExpMonth] = useState(""); // New state for exp_month
-  const [expYear, setExpYear] = useState("");
+  const [exp_month, setExp_month] = useState(""); // New state for exp_month
+  const [exp_year, setExp_year] = useState("");
 
+  useEffect(() => {
+    if (exp_date) {
+      setExp_month(exp_date.replace(/\//g, "").substring(0, 2));
+      setExp_year(exp_date.replace(/\//g, "").substring(2, 4));
+    }
+  }, [exp_date]);
+
+  // expiry date format
   const expriy_format = (value) => {
     const expdate = value;
-
-    const formattedDate =
-      expdate.replace(/\//g, "").substring(0, 4);
 
     const expDateFormatter =
       expdate.replace(/\//g, "").substring(0, 2) +
       (expdate.length > 2 ? "/" : "") +
       expdate.replace(/\//g, "").substring(2, 4);
 
-    // setExpMonth(formattedDate.substring(0, 2)); // Set exp_month
-    // setExpYear(formattedDate.substring(2, 4));
-
     return expDateFormatter;
   };
 
-  console.log(exp_date, expMonth, expYear);
   return (
     <div className="w-full flex flex-col items-start">
       <div className="w-[80%]">
+        <CardForm />
         <div className="input-group flex mt-3 flex-col gap-4">
-          <div className="relative">
-            <input
-              className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-              placeholder="Enter Card Number"
-              name="card-number"
-              type="text"
-            />
-            <IoCardOutline
-              size={20}
-              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-            />
-          </div>
-          <div className="flex relative  gap-2">
-            {/* <input
-              className="w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] "
-              type="text"
-              id="expiryDate"
-              name="expiry-date"
-              placeholder="mm/yy"
-            /> */}
-            <input
-              type="text"
-              name="expiry-data"
-              className="w-[50%] p-2 border-[1px] border-gray-300 outline-none rounded-[8px]"
-              placeholder="mm / yy"
-              onChange={(e) => setExp_date(e.target.value)}
-              value={exp_date ? expriy_format(exp_date) : ""}
-            />
-            <input
-              className="w-[50%] p-2  pr-10 border-[1px] border-gray-300 outline-none rounded-[8px] "
-              placeholder="CVC"
-              name="cvc"
-              type="text"
-            />
-            <IoInformationCircleOutline
-              size={20}
-              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-            />
-          </div>
-          <div className="relative">
-            <input
-              className="w-full p-2 pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-              placeholder="Name on Card"
-              type="text"
-            />
-            <FaUser
-              size={20}
-              className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-            />
-          </div>
+          <button>Get Card Token</button>
         </div>
         {/* Billing Address */}
         <div className="mt-[20px] ">
