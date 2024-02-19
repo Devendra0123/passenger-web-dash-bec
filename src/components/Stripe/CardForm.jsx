@@ -1,13 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   useStripe,
-  CardElement,
   useElements,
   CardNumberElement,
   CardCvcElement,
   CardExpiryElement,
   AddressElement,
 } from "@stripe/react-stripe-js";
+import { Link, useNavigate } from "react-router-dom";
+import { FaLock } from "react-icons/fa";
+import { useAuthContext } from "../../Context/AuthContext";
+import { getCardToken } from "../../query/StripeQuery";
 
 const useOptions = () => {
   const options = useMemo(
@@ -32,32 +35,72 @@ const useOptions = () => {
 };
 
 const CardForm = () => {
+  const { authToken, setIsAuthenticated } = useAuthContext();
+
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
   const options = useOptions();
 
+  const [billing_details, setBilling_details] = useState({});
+  const [hasAgreedToTerms, setHasAgreedToTerms] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isPending, setIsPending] = useState(false);
+
+  // Handle Stripe form submit
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet. Make sure to disable
-      // form submission until Stripe.js has loaded.
       return;
     }
+    const cardElement = elements.getElement(CardNumberElement);
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardNumberElement),
-    });
-    console.log("[PaymentMethod]", paymentMethod);
+    if (!cardElement) return;
 
-    if (paymentMethod) {
-      const cardElement = elements.getElement(CardNumberElement);
-      let token = await stripe.createToken(cardElement);
-      console.log(token);
+    if (!hasAgreedToTerms) {
+      setErrorMessage(
+        "You must agree with our terms and conditions to proceed further."
+      );
+      return;
+    }
+    setIsPending(true);
+    setErrorMessage("");
+    try {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: billing_details,
+      });
+
+      if(error) {
+        setErrorMessage(error.message);
+        return
+      }
+      console.log("[PaymentMethod]", paymentMethod);
+
+      if (paymentMethod) {
+        let token = await stripe
+          .createToken(cardElement)
+          .then((res) => res.token);
+        console.log(token);
+        if (token?.id) {
+          const apiTokenResponse = await getCardToken(authToken, token.id);
+          console.log(apiTokenResponse);
+          setIsAuthenticated(true);
+          navigate(`/`);
+          setIsPending(false);
+        }
+      }
+    } catch (error) {
+      setIsPending(false);
+      const errorCode = error.code || "unknown";
+      const errorMessage = error.message || "An error occurred";
+      setErrorMessage(errorMessage);
     }
   };
 
+  console.log(billing_details);
   return (
     <form onSubmit={handleSubmit}>
       <label>
@@ -119,9 +162,72 @@ const CardForm = () => {
           options={{
             mode: "shipping",
           }}
+          onReady={() => {
+            console.log("CardNumberElement [ready]");
+          }}
+          onChange={(event) => {
+            console.log("Address element [change]", event);
+            setBilling_details(event.value);
+          }}
+          onBlur={() => {
+            console.log("CardNumberElement [blur]");
+          }}
+          onFocus={() => {
+            console.log("CardNumberElement [focus]");
+          }}
         />
       </label>
-      {/* <button type="submit" disabled={!stripe}>
+
+      <div className="flex mt-5 justify-center items-center gap-4">
+        <FaLock className="text-green-500" />
+        <p className="w-full text-start text-fontSize_sm">
+          {" "}
+          Your payment info will be stored securely
+        </p>
+      </div>
+
+      <div className="flex items-start gap-2 mt-[20px]">
+        <input
+          id="checkbox"
+          type="checkbox"
+          checked={hasAgreedToTerms}
+          value={hasAgreedToTerms}
+          onClick={() => setHasAgreedToTerms((prev) => !prev)}
+          className="mt-[4px]"
+        />
+        <label htmlFor="checkbox">
+          I agree to the{" "}
+          <Link to="/terms-and-conditions" className="text-blue-500">
+            terms and condition
+          </Link>{" "}
+          and{" "}
+          <Link to="/privacy-policy" className="text-blue-500">
+            privacy policy
+          </Link>
+          .
+        </label>
+      </div>
+      <button
+        type="submit"
+        disabled={!stripe | isPending}
+        className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
+      >
+        {isPending ? (
+          <span className="flex items-center gap-[3px] justify-center ">
+            <svg
+              className="animate-spin h-5 w-5 mr-3 ..."
+              viewBox="0 0 24 24"
+              fill="#fff"
+            >
+              <path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z" />
+            </svg>
+            Processing...
+          </span>
+        ) : (
+          "Continue"
+        )}
+      </button>
+      {/* <button>
         Pay
       </button> */}
     </form>

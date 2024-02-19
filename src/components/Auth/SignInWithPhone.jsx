@@ -85,6 +85,9 @@ const SignInWithPhone = () => {
       }
       if(profile_status == "required_card"){
         navigate(`/account/add-card-details`);
+      }if(profile_status == "completed"){
+        setIsAuthenticated(true)
+        navigate("/")
       }
     } catch (err) {
       setOtpVerificationStatus({pending: false})

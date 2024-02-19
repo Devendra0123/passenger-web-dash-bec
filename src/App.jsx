@@ -40,6 +40,7 @@ import { useToastContext } from "./Context/ToastContext";
 
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
+import LoadingPage from "./components/LoadingPage";
 
 const stripePromise = loadStripe(
   "pk_test_U2ccGGRSYmHlR0WPL70VyKGr00k3zFk6bN"
@@ -57,14 +58,20 @@ function WindowScrollTop() {
 function App() {
   const navigate = useNavigate();
 
-  const { isAuthenticated, authToken } = useAuthContext();
+  const { isAuthenticated, authToken, isLoading } = useAuthContext();
   const { toastMessage } = useToastContext();
 
+  console.log(isAuthenticated,isLoading)
+
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !isLoading) {
       navigate("/login");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
+
+  if(isLoading){
+    return <LoadingPage />
+  }
 
   return (
     <Elements stripe={stripePromise}>
