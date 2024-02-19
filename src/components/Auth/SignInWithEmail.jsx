@@ -115,6 +115,7 @@ const SignInWithEmail = () => {
               <input
                 type="email"
                 name="email"
+                required
                 value={formData.email}
                 onChange={handleOnChange}
                 className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
@@ -126,6 +127,7 @@ const SignInWithEmail = () => {
               <input
                 type="password"
                 name="password"
+                required
                 value={formData.password}
                 onChange={handleOnChange}
                 className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "

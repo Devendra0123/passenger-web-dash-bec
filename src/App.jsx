@@ -29,8 +29,6 @@ import {
 import { useAuthContext } from "./Context/AuthContext";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
-import Auth from "./components/Auth";
-import { useOverlayContext } from "./Context/OverlayContext";
 import TermsAndConditions from "./Pages/terms-and-conditions/TermsAndConditions";
 import PrivacyAndPolicy from "./Pages/privacy-policy/PrivacyAndPolicy";
 import ContactUs from "./Pages/ContactUs";
