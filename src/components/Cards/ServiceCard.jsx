@@ -28,7 +28,7 @@ const ServiceCard = ({
     location,
     distance,
     driver,
-    dropOffTime
+    dropOffTime,
   } = data;
 
   const handleClose = (e) => {
@@ -42,6 +42,8 @@ const ServiceCard = ({
       to={
         doNotShowHoverEffect || serviceType == "current"
           ? ""
+          : isHistory
+          ? `/service-details/${bkid}?service-type=history`
           : `/service-details/${bkid}`
       }
       className={`cursor-pointer w-full ${
@@ -98,10 +100,14 @@ const ServiceCard = ({
         <p className="px-[5px] py-[5px] rounded-[25px] bg-white text-center text-[14px] font-[400]">
           BKID : <span>{bkid}</span>
         </p>
-        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">{dateAndTime}</p>
-        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">{distance}</p>
+        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
+          {dateAndTime}
+        </p>
+        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
+          {distance}
+        </p>
         <div className="relative flex items-center gap-[5px]">
-          <p className="text-primary font-semibold">{price}</p>
+          <p className="text-primary font-semibold">£76.46</p>
           <div
             onMouseEnter={() => setIsPriceInfoHovered(true)}
             onMouseLeave={() => setIsPriceInfoHovered(false)}
@@ -111,7 +117,7 @@ const ServiceCard = ({
           </div>
 
           {isPriceInfoHovered && (
-            <div className="w-[200px] flex flex-col gap-[5px] absolute top-full right-0 bg-smoke/[90%] backdrop-blur-sm border border-slate-300 p-[10px] rounded-[5px]">
+            <div className="z-10 w-[200px] flex flex-col gap-[5px] absolute top-full right-0 bg-smoke/[90%] backdrop-blur-sm border border-slate-300 p-[10px] rounded-[5px]">
               <div className="flex items-center justify-between w-full">
                 <h3 className="font-semibold text-[15px]">Base Fare:</h3>
                 <p>
@@ -143,6 +149,15 @@ const ServiceCard = ({
                       £11
                     </p>
                   </div>
+
+                  {isHistory && (
+                    <div className="flex items-center justify-between w-full">
+                      <p className="text-[14px]">Tips</p>
+                      <p className="text-primary font-semibold text-[10px]">
+                        £5
+                      </p>
+                    </div>
+                  )}
                 </ul>
               </div>
             </div>
@@ -150,13 +165,13 @@ const ServiceCard = ({
         </div>
       </div>
 
-      {
-        dropOffTime && <div>
+      {dropOffTime && (
+        <div>
           <p className="w-max text-[14px] px-[10px] py-[6px] rounded-[25px] bg-white ">
             Drop Off Time : <span>{dropOffTime}</span>
           </p>
         </div>
-      }
+      )}
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[10px] text-[14px]">
