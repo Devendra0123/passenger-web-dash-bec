@@ -53,11 +53,22 @@ const SignInWithPhone = () => {
     e.preventDefault();
     setIsButtonDisabled(true);
     setOtpResendTime();
-    
-    const appVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
-      size: "invisible",
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+        }
+      );
+    }
+
+    const appVerifier = window.recaptchaVerifier;
+
+    recaptchaVerifier.render().then((widgetId) => {
+      window.recaptchaWidgetId = widgetId;
     });
-    
+
     setPhoneNumberSubmitStatus({
       pending: true,
     });
@@ -70,8 +81,9 @@ const SignInWithPhone = () => {
         });
         setConfirmationResult(confirmationResult);
         setHasOtpBeenSent(true);
-        setOtpResendTime(40);
+        setOtpResendTime(70);
         startCountdown();
+        // grecaptcha.reset(window.recaptchaWidgetId);
         navigate(`/login?loginWith=phone&step=verify-otp`);
       })
       .catch((error) => {

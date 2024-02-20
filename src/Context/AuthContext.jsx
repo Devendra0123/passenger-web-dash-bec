@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   const location = useLocation();
 
   const pathname = location.pathname;
-  console.log(pathname);
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [authToken, setAuthToken] = useState("");
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
       (auth_token == "undefined") |
       (auth_token == "") |
       (auth_token == null) |
-      !authToken
+      !auth_token
     ) {
       setAuthToken();
     } else {

@@ -6,8 +6,8 @@ import { MdDelete } from "react-icons/md";
 
 import PaymentCard from "../../components/Cards/PaymentCard";
 import { getPassengerCardData } from "../../query/FirestoreQuery";
-
-// import Modal from '@mui/material/Modal';
+import { deleteCard } from "../../query/BackendPostQuery";
+import { useAuthContext } from "../../Context/AuthContext";
 
 const style = {
   position: "absolute",
@@ -22,26 +22,43 @@ const style = {
 };
 
 const PaymentCardList = () => {
+  const { authToken } = useAuthContext();
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [cardData, setCardData] = useState();
 
-  useEffect(() => {
-    getPassengerCardData().then((res) => {
+  const fetchCardData = async () => {
+    await getPassengerCardData().then((res) => {
       setCardData(res);
     });
+  };
+  useEffect(() => {
+    fetchCardData()
   }, []);
 
   useEffect(() => {
-   if(cardData?.length > 0){
-    const activeCard = cardData.filter(item=> item.data.is_active);
-    console.log(activeCard)
-   }
-  }, [cardData])
-  
-  console.log(cardData)
+    if (cardData?.length > 0) {
+      const activeCard = cardData.filter((item) => item.data.is_active);
+      console.log(activeCard);
+    }
+  }, [cardData]);
+
+  console.log(cardData);
+
+  const handleDeleteCard = async (cardId) => {
+    console.log(authToken, cardId)
+    if(!cardId | !authToken) return;
+    try{
+      await deleteCard(authToken, cardId)
+      fetchCardData()
+    }catch(err){
+      console.log(err)
+    }
+  };
+
   return (
     <>
       <div className="  bg-white/75 min-h-[70vh] backdrop-blur-sm w-full p-[15px] rounded-[15px]">
@@ -78,7 +95,7 @@ const PaymentCardList = () => {
           <h2 className="font-medium my-5 text-fontSize_lg ">Cards List</h2>
           <div className="flex flex-col gap-6">
             {cardData?.length > 0 &&
-              cardData.map(({data}, index) => (
+              cardData.map(({ data }, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <PaymentCard
                     cardNumber={data.card_masked}
@@ -93,7 +110,10 @@ const PaymentCardList = () => {
                     leaveDelay={0}
                     title="Delete this payment card"
                   >
-                    <div className="cursor-pointer w-[40px] h-[40px] rounded-full bg-light_gray text-primary flex items-center justify-center ">
+                    <div
+                      onClick={() => handleDeleteCard(data?.id)}
+                      className="cursor-pointer w-[40px] h-[40px] rounded-full bg-light_gray text-primary flex items-center justify-center "
+                    >
                       <MdDelete />
                     </div>
                   </Tooltip>

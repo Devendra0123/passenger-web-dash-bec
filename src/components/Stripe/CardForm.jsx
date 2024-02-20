@@ -10,7 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 import { useAuthContext } from "../../Context/AuthContext";
-import { getCardToken } from "../../query/StripeQuery";
+import { addCard } from "../../query/BackendPostQuery";
 
 const useOptions = () => {
   const options = useMemo(
@@ -54,6 +54,7 @@ const CardForm = () => {
     if (!stripe || !elements) {
       return;
     }
+
     const cardElement = elements.getElement(CardNumberElement);
 
     if (!cardElement) return;
@@ -73,9 +74,9 @@ const CardForm = () => {
         billing_details: billing_details,
       });
 
-      if(error) {
+      if (error) {
         setErrorMessage(error.message);
-        return
+        return;
       }
       console.log("[PaymentMethod]", paymentMethod);
 
@@ -85,7 +86,7 @@ const CardForm = () => {
           .then((res) => res.token);
         console.log(token);
         if (token?.id) {
-          const apiTokenResponse = await getCardToken(authToken, token.id);
+          const apiTokenResponse = await addCard(authToken, token.id);
           console.log(apiTokenResponse);
           setIsAuthenticated(true);
           navigate(`/`);
@@ -158,9 +159,10 @@ const CardForm = () => {
         />
       </label>
       <label>
+        Billing Address
         <AddressElement
           options={{
-            mode: "shipping",
+            mode: "shipping"
           }}
           onReady={() => {
             console.log("CardNumberElement [ready]");

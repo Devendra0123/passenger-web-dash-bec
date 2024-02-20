@@ -6,8 +6,12 @@ import { auth } from "../../firebase/setup";
 import { useToastContext } from "../../Context/ToastContext";
 import RegisterViaPhoneForm from "../../components/Auth/RegisterViaPhoneForm";
 import AddCardFields from "../../components/Auth/AddCardFields";
+import { useAuthContext } from "../../Context/AuthContext";
 
 const Register = () => {
+
+  const { isAuthenticated } = useAuthContext();
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const scrollableContainerRef = useRef(null);
@@ -38,6 +42,10 @@ const Register = () => {
     }
   }, [step]);
 
+  if(isAuthenticated){
+    return navigate('/');
+  }
+  
   return (
     <div className="fixed top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] w-full min-h-[100vh] flex flex-col items-center">
       <div className="w-full h-screen flex flex-col items-center justify-center p-[20px]">

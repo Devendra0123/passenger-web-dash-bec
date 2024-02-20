@@ -8,6 +8,7 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
+import { IconButton } from "@mui/material";
 
 const center = { lat: 48.8584, lng: 2.2945 };
 
@@ -56,8 +57,8 @@ const GetARide = () => {
   }
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center">
-      <div className="z-[-1] absolute top-0 left-0 right-0 bottom-0">
+    <div className=" flex flex-col items-center">
+      <div className="">
         {/* Google Map Box */}
         <GoogleMap
           center={center}
@@ -85,7 +86,7 @@ const GetARide = () => {
           </Autocomplete>
 
           <Autocomplete>
-            <Input type="text" placeholder="Destination" ref={destiantionRef} />
+            <input type="text" placeholder="Destination" ref={destiantionRef} />
           </Autocomplete>
         </div>
 

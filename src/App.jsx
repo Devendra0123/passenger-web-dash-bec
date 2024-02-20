@@ -63,6 +63,7 @@ function App() {
 
   const [data, setData] = useState();
   const [notificationData, setNotificationData] = useState();
+const [notificationCount, setNotificationCount] = useState();
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -79,6 +80,7 @@ function App() {
     // Get notification data
     getPassengerNotificationData().then((res) => {
       setNotificationData(res);
+      setNotificationCount(res.length)
     });
   }, []);
 
@@ -96,7 +98,7 @@ function App() {
             <Sidebar />
           </div>
           <div className="col-span-5 h-full">
-            <Header data={data} />
+            <Header data={data} notificationCount={notificationCount} />
             <div className="mt-[20px] h-full">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -108,7 +110,7 @@ function App() {
                   path="/scheduled-booking"
                   element={<ScheduledBooking />}
                 />
-                <Route path="/notice" element={<Notice />} />
+                <Route path="/notification" element={<Notice data={notificationData} />} />
                 <Route path="/invoice" element={<Invoice />} />
                 <Route path="/service-history" element={<ServiceHistory />} />
                 <Route path="/faq" element={<Faq />} />

@@ -17,8 +17,8 @@ export const navItems = [
         icon: GrSchedule
     },
     {
-        name: 'Notice',
-        slug: "notice",
+        name: 'Notification',
+        slug: "notification",
         icon: AiOutlineNotification
     },
     {

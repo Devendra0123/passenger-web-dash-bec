@@ -4,7 +4,17 @@ import { FaTimes } from "react-icons/fa";
 import { IoCardOutline } from "react-icons/io5";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement,
+  AddressElement,
+} from "@stripe/react-stripe-js";
+import { useAuthContext } from "../../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -19,36 +29,66 @@ const style = {
   p: 4,
 };
 
+const useOptions = () => {
+  const options = useMemo(
+    () => ({
+      style: {
+        base: {
+          color: "#424770",
+          letterSpacing: "0.025em",
+          "::placeholder": {
+            color: "#aab7c4",
+          },
+        },
+        invalid: {
+          color: "#9e2146",
+        },
+      },
+    }),
+    []
+  );
+
+  return options;
+};
+
 const AddCardModal = (props) => {
   const { handleClose, handleOpen, open } = props;
   const [expiryDate, setExpiryDate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Handle Expiry date change
-  const handleExpiryDateChange = (event) => {
-    let value = event.target.value;
+  const { authToken, setIsAuthenticated } = useAuthContext();
 
-    // Remove non-numeric characters
-    value = value.replace(/\D/g, "");
-    // Ensure the first two characters (month) are not greater than 12
-    if (value.length >= 2) {
-      const month = parseInt(value.substring(0, 2), 10);
-      if (month > 12) {
-        setErrorMessage("Expiry month can not be greater than 12.");
-        return;
-      }
-    }
-    // Ensure the year does not exceed 4 digits
-    if (value.length > 4) {
-      value = value.substring(0, 4);
-    }
-    // Add a slash after the first two characters
-    if (value.length > 2) {
-      value = value.replace(/^(.{2})/, "$1/");
-    }
-    // Update the state
-    setExpiryDate(value);
-  };
+  const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
+  const options = useOptions();
+
+  const [isPending, setIsPending] = useState(false);
+  // // Handle Expiry date change
+  // const handleExpiryDateChange = (event) => {
+  //   let value = event.target.value;
+
+  //   // Remove non-numeric characters
+  //   value = value.replace(/\D/g, "");
+  //   // Ensure the first two characters (month) are not greater than 12
+  //   if (value.length >= 2) {
+  //     const month = parseInt(value.substring(0, 2), 10);
+  //     if (month > 12) {
+  //       setErrorMessage("Expiry month can not be greater than 12.");
+  //       return;
+  //     }
+  //   }
+  //   // Ensure the year does not exceed 4 digits
+  //   if (value.length > 4) {
+  //     value = value.substring(0, 4);
+  //   }
+  //   // Add a slash after the first two characters
+  //   if (value.length > 2) {
+  //     value = value.replace(/^(.{2})/, "$1/");
+  //   }
+  //   // Update the state
+  //   setExpiryDate(value);
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,145 +106,115 @@ const AddCardModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className="">
-            <h2 className="text-titleSize text-center font-titleFontWeight text-titleColor ">
-              Add Cards{" "}
-            </h2>
-            <button
-              onClick={handleClose}
-              className="absolute top-[20px] right-[20px]"
-            >
-              <FaTimes className="text-primary" size={20} />
-            </button>
-            <div className="input-group flex mt-3 flex-col gap-4">
-              <div className="relative">
-                <input
-                  className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                  placeholder="Enter Card Number"
-                  name="card-number"
-                  type="text"
-                />
-                <IoCardOutline
-                  size={20}
-                  className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-                />
-              </div>
-              <div className="flex relative  gap-2">
-                <input
-                  className="w-[50%] p-2   border-[1px] border-gray-300 outline-none rounded-[8px] "
-                  type="text"
-                  id="expiryDate"
-                  name="expiry-date"
-                  placeholder="mm/yy"
-                  value={expiryDate}
-                  onChange={handleExpiryDateChange}
-                />
-                <input
-                  className="w-[50%] p-2  pr-10 border-[1px] border-gray-300 outline-none rounded-[8px] "
-                  placeholder="CVC"
-                  name="cvc"
-                  type="text"
-                />
-                <IoInformationCircleOutline
-                  size={20}
-                  className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-                />
-              </div>
-              <div className="relative">
-                <input
-                  className="w-full p-2 pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                  placeholder="Name on Card"
-                  type="text"
-                />
-                <FaUser
-                  size={20}
-                  className="absolute text-gray-500 right-[10px] top-[50%] translate-y-[-50%] "
-                />
-              </div>
-            </div>
-            {/* Billing Address */}
-            <div className="mt-[20px] ">
-              <h2 className="text-[17px] font-[600]">Billing Address</h2>
+          <form onSubmit={handleSubmit} className="max-h-[85vh] overflow-y-auto">
+            <label>
+              Card number
+              <CardNumberElement
+                options={options}
+                onReady={() => {
+                  console.log("CardNumberElement [ready]");
+                }}
+                onChange={(event) => {
+                  console.log("CardNumberElement [change]", event);
+                }}
+                onBlur={() => {
+                  console.log("CardNumberElement [blur]");
+                }}
+                onFocus={() => {
+                  console.log("CardNumberElement [focus]");
+                }}
+              />
+            </label>
+            <label>
+              Expiration date
+              <CardExpiryElement
+                options={options}
+                onReady={() => {
+                  console.log("CardNumberElement [ready]");
+                }}
+                onChange={(event) => {
+                  console.log("CardNumberElement [change]", event);
+                }}
+                onBlur={() => {
+                  console.log("CardNumberElement [blur]");
+                }}
+                onFocus={() => {
+                  console.log("CardNumberElement [focus]");
+                }}
+              />
+            </label>
+            <label>
+              CVC
+              <CardCvcElement
+                options={options}
+                onReady={() => {
+                  console.log("CardNumberElement [ready]");
+                }}
+                onChange={(event) => {
+                  console.log("CardNumberElement [change]", event);
+                }}
+                onBlur={() => {
+                  console.log("CardNumberElement [blur]");
+                }}
+                onFocus={() => {
+                  console.log("CardNumberElement [focus]");
+                }}
+              />
+            </label>
+            <label>
+              Billing Address
+              <AddressElement
+                options={{
+                  mode: "shipping",
+                }}
+                onReady={() => {
+                  console.log("CardNumberElement [ready]");
+                }}
+                onChange={(event) => {
+                  console.log("Address element [change]", event);
+                  setBilling_details(event.value);
+                }}
+                onBlur={() => {
+                  console.log("CardNumberElement [blur]");
+                }}
+                onFocus={() => {
+                  console.log("CardNumberElement [focus]");
+                }}
+              />
+            </label>
 
-              <div className="w-full grid grid-cols-2 gap-[20px] mt-[20px]">
-                {/* <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="First Name"
-                    name="first-name"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="last Name"
-                    name="last-name"
-                    type="text"
-                  />
-                </div> */}
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="Country"
-                    name="country"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="Address Line 1"
-                    name="address-line-1"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="Address Line 2"
-                    name="address-line-2"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="Town or City"
-                    name="Town or City"
-                    type="text"
-                  />
-                </div>
-
-                <div className="col-span-1">
-                  <input
-                    className=" w-full p-2  pr-10  border-[1px] border-gray-300 outline-none rounded-[8px] "
-                    placeholder="Postal Code"
-                    name="Postal Code"
-                    type="text"
-                  />
-                </div>
-
-              </div>
-            </div>
             <div className="flex mt-5 justify-center items-center gap-4">
               <FaLock className="text-green-500" />
-              <p className="text-fontSize_sm">
+              <p className="w-full text-start text-fontSize_sm">
                 {" "}
                 Your payment info will be stored securely
               </p>
             </div>
-            <div className="my-5">
-              <Button sx={{ width: "100%" }} variant="contained">
-                save
-              </Button>
-            </div>
-          </div>
+
+            <button
+              type="submit"
+              disabled={!stripe | isPending}
+              className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
+            >
+              {isPending ? (
+                <span className="flex items-center gap-[3px] justify-center ">
+                  <svg
+                    className="animate-spin h-5 w-5 mr-3 ..."
+                    viewBox="0 0 24 24"
+                    fill="#fff"
+                  >
+                    <path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z" />
+                  </svg>
+                  Processing...
+                </span>
+              ) : (
+                "Continue"
+              )}
+            </button>
+            {/* <button>
+        Pay
+      </button> */}
+          </form>
         </Box>
       </Modal>
     </div>

@@ -4,7 +4,7 @@ import { getCurrentDate } from "../../utils/getCurrentDate";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const Header = ({data}) => {
+const Header = ({data, notificationCount}) => {
   const { isAuthenticated } = useAuthContext();
 
   if(!isAuthenticated){
@@ -38,12 +38,12 @@ const Header = ({data}) => {
           <p>Support</p>
         </Link>
         <Link
-          to="notice"
+          to="/notification"
           className="cursor-pointer relative w-[40px] h-[40px] rounded-full bg-[#F2F2F2] hover:bg-[#E2E2E2] flex items-center justify-center "
         >
           <img src="/asset/icons/bell.svg" alt="notification-icon" />
           <div className="absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full flex items-center justify-center bg-primary text-white">
-            <span className="text-[12px]">3</span>
+            <span className="text-[12px]">{notificationCount}</span>
           </div>
         </Link>
       </div>
