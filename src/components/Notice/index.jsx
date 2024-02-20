@@ -4,7 +4,8 @@ import NoticeCard from "./NoticeCard";
 import { Link } from "react-router-dom";
 import NoticeSlider from "../slider/NoticeSlider";
 
-const Notice = () => {
+const Notice = ({data}) => {
+  console.log(data)
   return (
     <div className="relative w-full overflow-hidden">
       <div className="bg-white/75 backdrop-blur-sm w-full p-[15px] rounded-[15px] ">
@@ -14,7 +15,7 @@ const Notice = () => {
         </div>
 
         <div className="mt-[10px] w-full flex flex-col">
-          <NoticeSlider data={noticeData} />
+          <NoticeSlider data={data} />
         </div>
       </div>
       <div className="gradient-circle z-[-1] absolute top-[-20px] left-[-20px] w-[200px] h-[200px] rounded-full " />

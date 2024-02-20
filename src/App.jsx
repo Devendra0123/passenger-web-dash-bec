@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Routes,
@@ -36,13 +36,15 @@ import PaymentCardList from "./Pages/Payment-card/CardList";
 import Toast from "./components/Element/Toast";
 import { useToastContext } from "./Context/ToastContext";
 
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import LoadingPage from "./components/LoadingPage";
+import {
+  getPassengerNotificationData,
+  getPassengerProfileData,
+} from "./query/FirestoreQuery";
 
-const stripePromise = loadStripe(
-  "pk_test_U2ccGGRSYmHlR0WPL70VyKGr00k3zFk6bN"
-);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
 
 // Scroll to top on page navigation
 function WindowScrollTop() {
@@ -59,7 +61,8 @@ function App() {
   const { isAuthenticated, authToken, isLoading } = useAuthContext();
   const { toastMessage } = useToastContext();
 
-  console.log(isAuthenticated,isLoading)
+  const [data, setData] = useState();
+  const [notificationData, setNotificationData] = useState();
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -67,8 +70,20 @@ function App() {
     }
   }, [isAuthenticated, isLoading]);
 
-  if(isLoading){
-    return <LoadingPage />
+  useEffect(() => {
+    // Get profile data
+    getPassengerProfileData().then((res) => {
+      setData(res);
+    });
+
+    // Get notification data
+    getPassengerNotificationData().then((res) => {
+      setNotificationData(res);
+    });
+  }, []);
+
+  if (isLoading) {
+    return <LoadingPage />;
   }
 
   return (
@@ -81,7 +96,7 @@ function App() {
             <Sidebar />
           </div>
           <div className="col-span-5 h-full">
-            <Header />
+            <Header data={data} />
             <div className="mt-[20px] h-full">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -98,7 +113,7 @@ function App() {
                 <Route path="/service-history" element={<ServiceHistory />} />
                 <Route path="/faq" element={<Faq />} />
                 <Route path="/faq/faq-details" element={<FaqDetails />} />
-                <Route path="/account" element={<Account />} />
+                <Route path="/account" element={<Account data={data} />} />
                 <Route path="/account/cards" element={<PaymentCardList />} />
                 <Route
                   path="/account/add-profile-details"

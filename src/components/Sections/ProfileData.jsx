@@ -33,7 +33,7 @@ const ProfileData = ({data}) => {
           </div>
           <div className="right">
             <div className="font-bold">Email</div>
-            <div>testname@gmail.com</div>
+            <div>{data?.email}</div>
           </div>
         </div>
 
@@ -43,19 +43,22 @@ const ProfileData = ({data}) => {
           </div>
           <div className="right">
             <div className="font-bold">Phone</div>
-            <div>+977 987654321</div>
+            <div>{data?.mobile}</div>
           </div>
         </div>
-
-        <div className="flex gap-3 items-center ">
-          <div className="left">
-            <FaRegStar size={30} className="" />
-          </div>
-          <div className="right">
-            <div className="font-bold">Rating</div>
-            <Rating NumberOfRating={12} ratingValue={4} />
-          </div>
-        </div>
+{
+  data?.rating && (
+    <div className="flex gap-3 items-center ">
+    <div className="left">
+      <FaRegStar size={30} className="" />
+    </div>
+    <div className="right">
+      <div className="font-bold">Rating</div>
+      <Rating NumberOfRating={data?.rating?.count} ratingValue={data?.rating?.average} />
+    </div>
+  </div>
+  )
+}
       </div>
 
       {/* ------user-Payment-card-info-------- */}

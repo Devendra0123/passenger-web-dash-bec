@@ -1,16 +1,21 @@
-import React from 'react'
+import React from "react";
 
-const UserCard = ({name, image}) => {
+const UserCard = ({ name, image }) => {
   return (
-    <div className='flex items-center gap-[10px]'>
+    <div className="flex items-center gap-[10px]">
+      {image && (
         <div>
-            <img src={image} alt="userImage" className='w-[40px] h-[40px] rounded-full' />
+          <img
+            src={image}
+            alt="userImage"
+            className="w-[40px] h-[40px] rounded-full"
+          />
         </div>
-        <p>
-            {name}
-        </p>
-    </div>
-  )
-}
+      )}
 
-export default UserCard
+      <p>{name}</p>
+    </div>
+  );
+};
+
+export default UserCard;

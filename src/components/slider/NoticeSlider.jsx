@@ -6,13 +6,14 @@ const NoticeSlider = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
 
+  console.log(data)
   const nextSlide = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % data.length);
+    setActiveIndex((prevIndex) => (prevIndex + 1) % data?.length);
   };
 
   const prevSlide = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? data.length - 1 : prevIndex - 1
+      prevIndex === 0 ? data?.length - 1 : prevIndex - 1
     );
   };
 
@@ -40,7 +41,7 @@ const NoticeSlider = ({ data }) => {
     const touchDiff = touchEndX - touchStartX;
 
     if (touchDiff > 50) {
-      const prevIndex = activeIndex === 0 ? data.length - 1 : activeIndex - 1;
+      const prevIndex = activeIndex === 0 ? data?.length - 1 : activeIndex - 1;
       setActiveIndex(prevIndex);
     } else if (touchDiff < -50) {
       nextSlide();
@@ -71,13 +72,13 @@ const NoticeSlider = ({ data }) => {
         className="slide-container"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
       >
-        {data.length > 0 &&
-          data.map(({ title, date, description }, index) => (
+        {data?.length > 0 &&
+          data.map(({id,data }, index) => (
             <div
               key={index}
               className={`min-w-[100%] slide ${index === activeIndex ? "active" : ""}`}
             >
-              <NoticeCard title={title} date={date} description={description} />
+              <NoticeCard title={data?.title} description={data?.message} />
             </div>
           ))}
       </div>

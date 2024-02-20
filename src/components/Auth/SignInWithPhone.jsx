@@ -13,27 +13,51 @@ const SignInWithPhone = () => {
   const navigate = useNavigate();
   const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
-  const [otp, setOtp] = useState();
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState();
   const [hasOtpBeenSent, setHasOtpBeenSent] = useState(false);
-  const [isNewUser, setIsNewUser] = useState(true);
   const [phoneNumberSubmitStatus, setPhoneNumberSubmitStatus] = useState({
     pending: false,
   });
   const [otpVerificationStatus, setOtpVerificationStatus] = useState({
-    pending: false
-  })
+    pending: false,
+  });
   const [phoneNumberSubmitError, setPhoneNumberSubmitError] = useState("");
+  const [otpResendTime, setOtpResendTime] = useState();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  // Start resend otp countdown
+  const startCountdown = () => {
+    const countdownInterval = setInterval(() => {
+      setOtpResendTime((prevCountdown) => {
+        if (prevCountdown === 1) {
+          // Reset the countdown and enable the button
+          clearInterval(countdownInterval);
+          setIsButtonDisabled(false);
+          return 0;
+        } else {
+          return prevCountdown - 1;
+        }
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearInterval(otpResendTime);
+    };
+  }, []);
 
   // Handle Phone number submit
   const handlePhoneNumberSubmit = async (e) => {
     e.preventDefault();
-    setHasOtpBeenSent(false);
-
+    setIsButtonDisabled(true);
+    setOtpResendTime();
+    
     const appVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
       size: "invisible",
     });
+    
     setPhoneNumberSubmitStatus({
       pending: true,
     });
@@ -46,6 +70,9 @@ const SignInWithPhone = () => {
         });
         setConfirmationResult(confirmationResult);
         setHasOtpBeenSent(true);
+        setOtpResendTime(40);
+        startCountdown();
+        navigate(`/login?loginWith=phone&step=verify-otp`);
       })
       .catch((error) => {
         console.log(error);
@@ -56,7 +83,7 @@ const SignInWithPhone = () => {
         const errorCode = error.code;
         const errorMessage = error.message;
         setPhoneNumberSubmitError(errorMessage);
-        setHasOtpBeenSent(false);
+        setOtpResendTime();
       });
   };
 
@@ -64,7 +91,7 @@ const SignInWithPhone = () => {
   const verifyOTP = async (value) => {
     console.log(value);
     try {
-      setOtpVerificationStatus({pending: true})
+      setOtpVerificationStatus({ pending: true });
       const userCredential = await confirmationResult.confirm(value);
       const { uid } = userCredential.user;
 
@@ -79,18 +106,19 @@ const SignInWithPhone = () => {
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
-      setOtpVerificationStatus({pending: false})
+      setOtpVerificationStatus({ pending: false });
       if (profile_status == "required_profile") {
         navigate(`/account/add-profile-details?login-type=mobile`);
       }
-      if(profile_status == "required_card"){
+      if (profile_status == "required_card") {
         navigate(`/account/add-card-details`);
-      }if(profile_status == "completed"){
-        setIsAuthenticated(true)
-        navigate("/")
+      }
+      if (profile_status == "completed") {
+        setIsAuthenticated(true);
+        navigate("/");
       }
     } catch (err) {
-      setOtpVerificationStatus({pending: false})
+      setOtpVerificationStatus({ pending: false });
       console.log(err);
     }
   };
@@ -136,14 +164,16 @@ const SignInWithPhone = () => {
               </p>
             )}
             <button
-              onClick={() => {
-                navigate(`/login?loginWith=phone&step=verify-otp`);
-              }}
               disabled={
                 phoneNumberSubmitStatus.pending |
-                (enteredPhoneNumber?.length < 5)
+                (enteredPhoneNumber?.length < 5) |
+                isButtonDisabled
               }
-              className="w-[300px] mt-[20px] bg-blue-500 text-white text-[17px] font-semibold px-[20px] py-[8px] "
+              className={`w-[300px] mt-[20px] ${
+                isButtonDisabled | phoneNumberSubmitStatus.pending
+                  ? "bg-blue-500/50"
+                  : "bg-blue-500"
+              } text-white text-[17px] font-semibold px-[20px] py-[8px] `}
             >
               {phoneNumberSubmitStatus.pending ? (
                 <span className="flex items-center gap-[3px] justify-center ">
@@ -179,7 +209,13 @@ const SignInWithPhone = () => {
           <p className="mt-[20px]">
             Enter the OTP code send to your phone number
           </p>
-          <OTPVerification verifyOtp={(otpValue) => verifyOTP(otpValue)} isPending={otpVerificationStatus.pending} />
+          <OTPVerification
+            verifyOtp={(otpValue) => verifyOTP(otpValue)}
+            isPending={otpVerificationStatus.pending}
+            otpResendTime={otpResendTime}
+            isBtnDisabled={isButtonDisabled}
+            resendOTP={handlePhoneNumberSubmit}
+          />
         </div>
 
         {/* Register form */}

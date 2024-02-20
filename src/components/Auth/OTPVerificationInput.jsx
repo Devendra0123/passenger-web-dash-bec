@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 
-const OTPVerification = ({ verifyOtp, isPending }) => {
+const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, resendOTP }) => {
   // Create an array to hold refs for each input box
   const inputRefs = Array(6)
     .fill(0)
@@ -66,10 +66,21 @@ const OTPVerification = ({ verifyOtp, isPending }) => {
           "Verify OTP"
         )}
       </button>
-
-      <p className="mt-[20px] ">
-        Resend OTP in <span className="text-primary">35 sec.</span>
-      </p>
+      {(otpResendTime || otpResendTime == 0) && (
+        <div className="mt-[20px] flex items-center gap-[10px]">
+        <p className=" ">
+          Resend OTP in{" "}
+          <span className="text-primary">{otpResendTime} sec.</span>
+        </p>
+        {
+          !isBtnDisabled && (
+            <button className="text-blue-500" onClick={resendOTP}>
+            Resend OTP
+          </button>
+          )
+        }
+        </div>
+      )}
     </div>
   );
 };
