@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { scheduledBookingData } from "../consts/servicesData";
 import Rating from "../components/Element/Rating";
 import GoogleMapDirection from "../components/CurrentRide/GoogleMap";
@@ -25,6 +25,8 @@ const RenderBoxes = () => {
 
 const ServiceDetails = () => {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const serviceType = searchParams.get("service-type");
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
@@ -480,10 +482,15 @@ const ServiceDetails = () => {
                     <p>Waiting Charge</p>
                     <p className="text-primary font-semibold">£1.00</p>
                   </div>
-
+                  {serviceType == "history" && (
+                    <div className="w-full flex items-center justify-between">
+                      <p>Tips</p>
+                      <p className="text-primary font-semibold">£5.00</p>
+                    </div>
+                  )}
                   <div className="w-full flex items-center justify-between">
                     <p className="font-[500]">Total</p>
-                    <p className="text-primary font-semibold">£74.46</p>
+                    <p className="text-primary font-semibold">£79.46</p>
                   </div>
                 </div>
 
