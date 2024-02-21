@@ -27,7 +27,7 @@ const StepWiseAuthenticationTab = ({ activeTab }) => {
         <div className="relative">
           {activeTab == "required_profile" ? (
             <GoDot className="text-gray-500 text-[21px]" />
-          ) : activeTab == "required_profile" ? (
+          ) : activeTab == "required_card" ? (
             <GoDotFill className="text-blue-500 text-[21px]" />
           ) : null}
           <div className="absolute top-[20px] left-0 w-max">

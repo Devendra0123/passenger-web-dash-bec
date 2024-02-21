@@ -11,6 +11,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 import { useAuthContext } from "../../Context/AuthContext";
 import { addCard } from "../../query/BackendPostQuery";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const useOptions = () => {
   const options = useMemo(
@@ -89,6 +91,7 @@ const CardForm = () => {
           const apiTokenResponse = await addCard(authToken, token.id);
           console.log(apiTokenResponse);
           setIsAuthenticated(true);
+          toast.success(apiTokenResponse.message)
           navigate(`/`);
           setIsPending(false);
         }
@@ -98,12 +101,13 @@ const CardForm = () => {
       const errorCode = error.code || "unknown";
       const errorMessage = error.message || "An error occurred";
       setErrorMessage(errorMessage);
+      toast.error(errorMessage)
     }
   };
 
-  console.log(billing_details);
   return (
     <form onSubmit={handleSubmit}>
+      <ToastContainer />
       <label>
         Card number
         <CardNumberElement
@@ -214,8 +218,8 @@ const CardForm = () => {
       </div>
       <button
         type="submit"
-        disabled={!stripe | isPending}
-        className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
+        disabled={!stripe | isPending | !hasAgreedToTerms}
+        className={`mt-[20px] w-[80%] px-[20px] py-[10px] ${(!stripe | isPending | !hasAgreedToTerms) ? "bg-blue-500/50" : "bg-blue-500"} text-white `}
       >
         {isPending ? (
           <span className="flex items-center gap-[3px] justify-center ">

@@ -229,7 +229,7 @@ const RegisterViaEmail = () => {
         <button
           type="submit"
           disabled={registerStatus.pending}
-          className="mt-[20px] w-full px-[20px] py-[10px] bg-blue-500 text-white "
+          className={`mt-[20px] w-full px-[20px] py-[10px] ${registerStatus.pending ? "bg-blue-500/50" : "bg-blue-500"} text-white `}
         >
           {registerStatus.pending ? (
             <span className="flex items-center gap-[3px] justify-center ">

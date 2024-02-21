@@ -1,9 +1,5 @@
 import { Box, Button, Modal } from "@mui/material";
 import { FaLock } from "react-icons/fa";
-import { FaTimes } from "react-icons/fa";
-import { IoCardOutline } from "react-icons/io5";
-import { IoInformationCircleOutline } from "react-icons/io5";
-import { FaUser } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import {
   useStripe,
@@ -15,6 +11,9 @@ import {
 } from "@stripe/react-stripe-js";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { addCard } from "../../query/BackendPostQuery";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const style = {
   position: "absolute",
@@ -115,6 +114,8 @@ const AddCardModal = (props) => {
 
       if (error) {
         setErrorMessage(error.message);
+        toast.error(error.message);
+        setIsPending(false);
         return;
       }
 
@@ -126,8 +127,9 @@ const AddCardModal = (props) => {
         if (token?.id) {
           const apiTokenResponse = await addCard(authToken, token.id);
           setIsAuthenticated(true);
-          navigate(`/`);
+
           setIsPending(false);
+          toast.success(apiTokenResponse.message);
         }
       }
     } catch (error) {
@@ -135,6 +137,7 @@ const AddCardModal = (props) => {
       const errorCode = error.code || "unknown";
       const errorMessage = error.message || "An error occurred";
       setErrorMessage(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -151,6 +154,7 @@ const AddCardModal = (props) => {
             onSubmit={handleSubmit}
             className="max-h-[85vh] overflow-y-auto"
           >
+            <ToastContainer />
             <label>
               Card number
               <CardNumberElement
@@ -240,7 +244,9 @@ const AddCardModal = (props) => {
             <button
               type="submit"
               disabled={!stripe | isPending}
-              className="mt-[20px] w-[80%] px-[20px] py-[10px] bg-blue-500 text-white "
+              className={`mt-[20px] w-[100%] px-[20px] py-[10px] ${
+                !stripe | isPending ? "bg-blue-500/50" : "bg-blue-500"
+              } text-white `}
             >
               {isPending ? (
                 <span className="flex items-center gap-[3px] justify-center ">

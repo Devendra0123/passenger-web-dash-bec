@@ -1,8 +1,6 @@
 import React from "react";
 import AddCardFields from "../../components/Auth/AddCardFields";
 import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
-import { PaymentElement } from "@stripe/react-stripe-js";
-import {Elements} from '@stripe/react-stripe-js';
 
 const AddCardDetails = () => {
 
