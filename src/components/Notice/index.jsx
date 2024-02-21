@@ -2,7 +2,7 @@ import React from "react";
 import NoticeSlider from "../slider/NoticeSlider";
 
 const Notice = ({data}) => {
-  console.log(data)
+
   return (
     <div className="relative w-full overflow-hidden">
       <div className="bg-white/75 backdrop-blur-sm w-full p-[15px] rounded-[15px] ">

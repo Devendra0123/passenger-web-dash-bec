@@ -3,13 +3,11 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
-import { useToastContext } from "../../Context/ToastContext";
 import { loginPassenger } from "../../query/AuthQuery";
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
   const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
-  const { setShowToast, setToastMessage } = useToastContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
   const [displayAddCard, setDisplayAddCard] = useState(false);
@@ -57,7 +55,7 @@ const SignInWithEmail = () => {
       const res = await loginPassenger(credential);
 
       const { auth_token, profile_status } = res.data;
-      console.log(res);
+
       setUid(user.uid);
       setAuthToken(auth_token);
       // Save the auth token in localStorage

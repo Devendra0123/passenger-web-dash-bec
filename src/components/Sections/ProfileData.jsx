@@ -10,7 +10,6 @@ import { IoMailOutline } from "react-icons/io5";
 
 const ProfileData = ({data}) => {
 
-    console.log(data)
   return (
     <div>
       <p className="font-medium my-5 text-fontSize_lg ">Personal Information</p>

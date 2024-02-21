@@ -33,14 +33,14 @@ import TermsAndConditions from "./Pages/terms-and-conditions/TermsAndConditions"
 import PrivacyAndPolicy from "./Pages/privacy-policy/PrivacyAndPolicy";
 import ContactUs from "./Pages/ContactUs";
 import PaymentCardList from "./Pages/Payment-card/CardList";
-import Toast from "./components/Element/Toast";
-import { useToastContext } from "./Context/ToastContext";
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import LoadingPage from "./components/LoadingPage";
 import { db } from "./firebase/setup";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
 
@@ -57,11 +57,10 @@ function App() {
   const navigate = useNavigate();
 
   const { isAuthenticated, authToken, isLoading } = useAuthContext();
-  const { toastMessage } = useToastContext();
 
   const [data, setData] = useState();
   const [notificationData, setNotificationData] = useState();
-const [notificationCount, setNotificationCount] = useState();
+  const [notificationCount, setNotificationCount] = useState();
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
@@ -79,13 +78,12 @@ const [notificationCount, setNotificationCount] = useState();
       "profile"
     );
     onSnapshot(docRef, (doc) => {
-      console.log(doc.data());
-      setData(doc.data())
+      setData(doc.data());
     });
   }
 
   // Get Notification
-function getPassengerNotificationData() {
+  function getPassengerNotificationData() {
     try {
       const q = query(
         collection(
@@ -95,15 +93,14 @@ function getPassengerNotificationData() {
           "notifications"
         )
       );
-  
+
       onSnapshot(q, (querySnapshot) => {
         const notifications = [];
         querySnapshot.forEach((doc) => {
           notifications.push(doc.data());
         });
-        console.log(notifications);
         setNotificationData(notifications);
-        setNotificationCount(notifications.length)
+        setNotificationCount(notifications.length);
       });
     } catch (error) {
       console.error("Error fetching document:", error);
@@ -112,8 +109,8 @@ function getPassengerNotificationData() {
 
   useEffect(() => {
     getProfileData();
-    getPassengerNotificationData()
-  }, [])
+    getPassengerNotificationData();
+  }, []);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -123,7 +120,7 @@ function getPassengerNotificationData() {
     <Elements stripe={stripePromise}>
       <div className="w-full min-h-[100vh] flex justify-center">
         <WindowScrollTop />
-        <Toast message={toastMessage} />
+
         <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
           <div className="col-span-2 h-full">
             <Sidebar />
@@ -141,7 +138,10 @@ function getPassengerNotificationData() {
                   path="/scheduled-booking"
                   element={<ScheduledBooking />}
                 />
-                <Route path="/notification" element={<Notice data={notificationData} />} />
+                <Route
+                  path="/notification"
+                  element={<Notice data={notificationData} />}
+                />
                 <Route path="/invoice" element={<Invoice />} />
                 <Route path="/service-history" element={<ServiceHistory />} />
                 <Route path="/faq" element={<Faq />} />

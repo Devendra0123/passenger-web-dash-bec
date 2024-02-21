@@ -77,7 +77,6 @@ const SignInWithPhone = () => {
 
     await signInWithPhoneNumber(auth, enteredPhoneNumber, appVerifier)
       .then((confirmationResult) => {
-        console.log(confirmationResult);
         setPhoneNumberSubmitStatus({
           pending: false,
         });
@@ -88,7 +87,6 @@ const SignInWithPhone = () => {
         navigate(`/login?loginWith=phone&step=verify-otp`);
       })
       .catch((error) => {
-        console.log(error);
         setPhoneNumberSubmitStatus({
           pending: false,
         });
@@ -102,7 +100,6 @@ const SignInWithPhone = () => {
 
   // Verify OTP
   const verifyOTP = async (value) => {
-    console.log(value);
     setOtpVerificationError("");
     try {
       setOtpVerificationStatus({ pending: true });
@@ -115,7 +112,6 @@ const SignInWithPhone = () => {
       };
       const res = await loginPassenger(credential);
       const { auth_token, profile_status } = res.data;
-      console.log(res);
       setUid(uid);
       setAuthToken(auth_token);
       // Save the auth token in localStorage
@@ -139,7 +135,6 @@ const SignInWithPhone = () => {
     }
   };
 
-  console.log(isResendingOtp);
   return (
     <div className="w-full flex flex-col items-start gap-[20px] mt-[50px]">
       <div id="recaptcha-container"></div>

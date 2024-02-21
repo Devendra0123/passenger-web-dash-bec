@@ -6,7 +6,6 @@ const NoticeSlider = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchStartX, setTouchStartX] = useState(null);
 
-  console.log(data)
   const nextSlide = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % data?.length);
   };

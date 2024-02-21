@@ -37,6 +37,7 @@ const Header = ({data, notificationCount}) => {
           />
           <p>Support</p>
         </Link>
+
         <Link
           to="/notification"
           className="cursor-pointer relative w-[40px] h-[40px] rounded-full bg-[#F2F2F2] hover:bg-[#E2E2E2] flex items-center justify-center "

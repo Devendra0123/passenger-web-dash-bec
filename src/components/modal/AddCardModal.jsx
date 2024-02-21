@@ -117,16 +117,14 @@ const AddCardModal = (props) => {
         setErrorMessage(error.message);
         return;
       }
-      console.log("[PaymentMethod]", paymentMethod);
 
       if (paymentMethod) {
         let token = await stripe
           .createToken(cardElement)
           .then((res) => res.token);
-        console.log(token);
+
         if (token?.id) {
           const apiTokenResponse = await addCard(authToken, token.id);
-          console.log(apiTokenResponse);
           setIsAuthenticated(true);
           navigate(`/`);
           setIsPending(false);

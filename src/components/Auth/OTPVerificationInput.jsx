@@ -38,7 +38,6 @@ const OTPVerification = ({
     return otpValues.join("");
   };
 
-  console.log(isResendingOTP)
   return (
     <div className="w-[370px] flex flex-col gap-[20px]">
       <div className="w-full flex items-center justify-between gap-[20px] mt-[10px]">
@@ -64,7 +63,6 @@ const OTPVerification = ({
       <button
         onClick={() => {
           const enteredOtp = getOtpString();
-          console.log(enteredOtp);
           if (enteredOtp) {
             verifyOtp(enteredOtp);
           }

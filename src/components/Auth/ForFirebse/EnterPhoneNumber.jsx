@@ -39,7 +39,7 @@ const EnterPhoneNumber = () => {
   };
 
   const verifyOTP = async (value) => {
-    console.log(value);
+
     try {
       await confirmationResult.confirm(value).then((res) => {
         console.log("verified");

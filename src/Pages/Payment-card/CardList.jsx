@@ -43,7 +43,6 @@ const PaymentCardList = () => {
         querySnapshot.forEach((doc) => {
           cards.push(doc.data());
         });
-        console.log(cards);
         setCardData(cards);
       });
     } catch (error) {

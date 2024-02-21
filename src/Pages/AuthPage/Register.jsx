@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import RegisterViaEmail from "../../components/Auth/RegisterViaEmailForm";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { auth } from "../../firebase/setup";
-import { useToastContext } from "../../Context/ToastContext";
 import RegisterViaPhoneForm from "../../components/Auth/RegisterViaPhoneForm";
 import AddCardFields from "../../components/Auth/AddCardFields";
 import { useAuthContext } from "../../Context/AuthContext";

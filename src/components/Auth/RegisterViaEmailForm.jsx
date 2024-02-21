@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import { useToastContext } from "../../Context/ToastContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { useAuthContext } from "../../Context/AuthContext";
@@ -14,7 +13,6 @@ const RegisterViaEmail = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const { setShowToast, setToastMessage } = useToastContext();
   const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
 
   const [file, setFile] = useState();
@@ -79,13 +77,12 @@ const RegisterViaEmail = () => {
       const res = await loginPassenger(credential);
 
       const { auth_token, profile_status } = res.data;
-      console.log(res);
+
       setUid(user.uid);
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
 
-      console.log(user);
       const passengerInfo = {
         first_name,
         last_name,
@@ -94,7 +91,7 @@ const RegisterViaEmail = () => {
       };
       if (profile_status == "required_profile") {
         const response = await registerPassenger(passengerInfo, auth_token);
-        console.log(response);
+
         navigate(`/account/add-card-details`);
       }
 
@@ -110,7 +107,7 @@ const RegisterViaEmail = () => {
       });
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+
       setAuthErrorMessage(errorMessage);
     }
   };
