@@ -1,7 +1,4 @@
 import React from "react";
-import { noticeData } from "../../consts/noticeData";
-import NoticeCard from "./NoticeCard";
-import { Link } from "react-router-dom";
 import NoticeSlider from "../slider/NoticeSlider";
 
 const Notice = ({data}) => {

@@ -9,7 +9,7 @@ const Notice = ({data}) => {
         <div className="mt-[10px] flex flex-col gap-4 " >
           {
             data?.length > 0 && data.map((item,index)=>(
-              <NoticeCard key={index} data={item.data} />
+              <NoticeCard key={index} data={item} />
             ))
           }
         </div>

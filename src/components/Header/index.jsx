@@ -14,7 +14,7 @@ const Header = ({data, notificationCount}) => {
   return (
     <div className="z-10 sticky top-[0px] w-full flex items-center justify-between bg-white/75 backdrop-blur-sm rounded-[15px] p-[20px]">
       <div className="flex items-center gap-[20px]">
-        <div className="bg-[#F2F2F2] px-[6px] py-[6px] rounded-[25px] flex items-center justify-center border border-slate-300">
+        <div className="bg-[#F2F2F2] p-[6px] rounded-[25px] flex items-center justify-center border border-slate-300">
           <UserCard name={data?.first_name} image={data?.profile_picture_url ? data?.profile_picture_url : ""} />
         </div>
 

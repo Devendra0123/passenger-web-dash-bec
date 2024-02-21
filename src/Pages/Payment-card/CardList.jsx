@@ -5,9 +5,10 @@ import AddCardModal from "../../components/modal/AddCardModal";
 import { MdDelete } from "react-icons/md";
 
 import PaymentCard from "../../components/Cards/PaymentCard";
-import { getPassengerCardData } from "../../query/FirestoreQuery";
 import { deleteCard } from "../../query/BackendPostQuery";
 import { useAuthContext } from "../../Context/AuthContext";
+import { collection, onSnapshot, query } from "firebase/firestore";
+import { db } from "../../firebase/setup";
 
 const style = {
   position: "absolute",
@@ -30,34 +31,49 @@ const PaymentCardList = () => {
 
   const [cardData, setCardData] = useState();
 
-  const fetchCardData = async () => {
-    await getPassengerCardData().then((res) => {
-      setCardData(res);
-    });
-  };
+  // Get passenger card data
+  function getPassengerCardData() {
+    try {
+      const q = query(
+        collection(db, "passengers", "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73", "cards")
+      );
+
+      onSnapshot(q, (querySnapshot) => {
+        const cards = [];
+        querySnapshot.forEach((doc) => {
+          cards.push(doc.data());
+        });
+        console.log(cards);
+        setCardData(cards);
+      });
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  }
+
   useEffect(() => {
-    fetchCardData()
+    getPassengerCardData();
   }, []);
 
   useEffect(() => {
     if (cardData?.length > 0) {
-      const activeCard = cardData.filter((item) => item.data.is_active);
+      const activeCard = cardData.filter((item) => item.is_active);
       console.log(activeCard);
     }
   }, [cardData]);
 
   console.log(cardData);
 
-  const handleDeleteCard = async (cardId) => {
-    console.log(authToken, cardId)
-    if(!cardId | !authToken) return;
-    try{
-      await deleteCard(authToken, cardId)
-      fetchCardData()
-    }catch(err){
-      console.log(err)
-    }
-  };
+  // const handleDeleteCard = async (cardId) => {
+  //   console.log(authToken, cardId);
+  //   if (!cardId | !authToken) return;
+  //   try {
+  //     await deleteCard(authToken, cardId);
+  //     fetchCardData();
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <>
@@ -95,7 +111,7 @@ const PaymentCardList = () => {
           <h2 className="font-medium my-5 text-fontSize_lg ">Cards List</h2>
           <div className="flex flex-col gap-6">
             {cardData?.length > 0 &&
-              cardData.map(({ data }, index) => (
+              cardData.map((data, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <PaymentCard
                     cardNumber={data.card_masked}

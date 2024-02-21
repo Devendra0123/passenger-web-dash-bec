@@ -11,6 +11,7 @@ import { loginPassenger } from "../../query/AuthQuery";
 
 const SignInWithPhone = () => {
   const navigate = useNavigate();
+
   const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
@@ -23,15 +24,16 @@ const SignInWithPhone = () => {
     pending: false,
   });
   const [phoneNumberSubmitError, setPhoneNumberSubmitError] = useState("");
+  const [otpVerificationError, setOtpVerificationError] = useState("");
   const [otpResendTime, setOtpResendTime] = useState();
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [isResendingOtp, setIsResendingOtp] = useState(false);
 
   // Start resend otp countdown
   const startCountdown = () => {
     const countdownInterval = setInterval(() => {
       setOtpResendTime((prevCountdown) => {
         if (prevCountdown === 1) {
-          // Reset the countdown and enable the button
           clearInterval(countdownInterval);
           setIsButtonDisabled(false);
           return 0;
@@ -52,7 +54,7 @@ const SignInWithPhone = () => {
   const handlePhoneNumberSubmit = async (e) => {
     e.preventDefault();
     setIsButtonDisabled(true);
-    setOtpResendTime();
+    setPhoneNumberSubmitError();
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
         auth,
@@ -83,7 +85,6 @@ const SignInWithPhone = () => {
         setHasOtpBeenSent(true);
         setOtpResendTime(70);
         startCountdown();
-        // grecaptcha.reset(window.recaptchaWidgetId);
         navigate(`/login?loginWith=phone&step=verify-otp`);
       })
       .catch((error) => {
@@ -102,6 +103,7 @@ const SignInWithPhone = () => {
   // Verify OTP
   const verifyOTP = async (value) => {
     console.log(value);
+    setOtpVerificationError("");
     try {
       setOtpVerificationStatus({ pending: true });
       const userCredential = await confirmationResult.confirm(value);
@@ -129,12 +131,15 @@ const SignInWithPhone = () => {
         setIsAuthenticated(true);
         navigate("/");
       }
-    } catch (err) {
+    } catch (error) {
       setOtpVerificationStatus({ pending: false });
-      console.log(err);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setOtpVerificationError(errorMessage);
     }
   };
 
+  console.log(isResendingOtp);
   return (
     <div className="w-full flex flex-col items-start gap-[20px] mt-[50px]">
       <div id="recaptcha-container"></div>
@@ -226,7 +231,15 @@ const SignInWithPhone = () => {
             isPending={otpVerificationStatus.pending}
             otpResendTime={otpResendTime}
             isBtnDisabled={isButtonDisabled}
-            resendOTP={handlePhoneNumberSubmit}
+            resendOTP={async (e) => {
+              setIsResendingOtp(true);
+              setOtpVerificationError('');
+              setPhoneNumberSubmitError('')
+              await handlePhoneNumberSubmit(e);
+              setIsResendingOtp(false);
+            }}
+            isResendingOTP={isResendingOtp}
+            errorMessage={otpVerificationError ? otpVerificationError : phoneNumberSubmitError}
           />
         </div>
 

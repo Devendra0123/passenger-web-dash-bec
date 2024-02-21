@@ -8,7 +8,7 @@ const UserCard = ({ name, image }) => {
           <img
             src={image}
             alt="userImage"
-            className="w-[40px] h-[40px] rounded-full"
+            className="w-[30px] h-[30px] rounded-full"
           />
         </div>
       )}

@@ -162,7 +162,7 @@ const CardForm = () => {
         Billing Address
         <AddressElement
           options={{
-            mode: "shipping"
+            mode: "shipping",
           }}
           onReady={() => {
             console.log("CardNumberElement [ready]");
@@ -180,6 +180,9 @@ const CardForm = () => {
         />
       </label>
 
+      {errorMessage && (
+        <p className="text-red-500 text-[14px]">{errorMessage}</p>
+      )}
       <div className="flex mt-5 justify-center items-center gap-4">
         <FaLock className="text-green-500" />
         <p className="w-full text-start text-fontSize_sm">

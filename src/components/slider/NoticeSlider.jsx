@@ -73,7 +73,7 @@ const NoticeSlider = ({ data }) => {
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
       >
         {data?.length > 0 &&
-          data.map(({id,data }, index) => (
+          data.map((data, index) => (
             <div
               key={index}
               className={`min-w-[100%] slide ${index === activeIndex ? "active" : ""}`}

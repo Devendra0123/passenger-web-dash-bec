@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: "britishexpresscars-dev.appspot.com",
   messagingSenderId: "901350777917",
   appId: "1:901350777917:web:3191207cb28088b228b654",
-  measurementId: "G-CXPJ7HRR5B"
+  measurementId: "G-CXPJ7HRR5B",
 };
 
 const app = initializeApp(firebaseConfig);

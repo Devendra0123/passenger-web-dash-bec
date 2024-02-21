@@ -64,6 +64,8 @@ const AddCardModal = (props) => {
   const options = useOptions();
 
   const [isPending, setIsPending] = useState(false);
+  const [billing_details, setBilling_details] = useState({});
+
   // // Handle Expiry date change
   // const handleExpiryDateChange = (event) => {
   //   let value = event.target.value;
@@ -90,11 +92,52 @@ const AddCardModal = (props) => {
   //   setExpiryDate(value);
   // };
 
-  const handleSubmit = (event) => {
+  // Handle Stripe form submit
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Add logic for form submission here
-    console.log("Submitted:", expiryDate);
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const cardElement = elements.getElement(CardNumberElement);
+
+    if (!cardElement) return;
+
+    setIsPending(true);
+    setErrorMessage("");
+    try {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: billing_details,
+      });
+
+      if (error) {
+        setErrorMessage(error.message);
+        return;
+      }
+      console.log("[PaymentMethod]", paymentMethod);
+
+      if (paymentMethod) {
+        let token = await stripe
+          .createToken(cardElement)
+          .then((res) => res.token);
+        console.log(token);
+        if (token?.id) {
+          const apiTokenResponse = await addCard(authToken, token.id);
+          console.log(apiTokenResponse);
+          setIsAuthenticated(true);
+          navigate(`/`);
+          setIsPending(false);
+        }
+      }
+    } catch (error) {
+      setIsPending(false);
+      const errorCode = error.code || "unknown";
+      const errorMessage = error.message || "An error occurred";
+      setErrorMessage(errorMessage);
+    }
   };
 
   return (
@@ -106,7 +149,10 @@ const AddCardModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <form onSubmit={handleSubmit} className="max-h-[85vh] overflow-y-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="max-h-[85vh] overflow-y-auto"
+          >
             <label>
               Card number
               <CardNumberElement
@@ -182,7 +228,9 @@ const AddCardModal = (props) => {
                 }}
               />
             </label>
-
+            {errorMessage && (
+              <p className="text-red-500 text-[14px]">{errorMessage}</p>
+            )}
             <div className="flex mt-5 justify-center items-center gap-4">
               <FaLock className="text-green-500" />
               <p className="w-full text-start text-fontSize_sm">

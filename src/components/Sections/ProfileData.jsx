@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import Rating from "../Element/Rating";
 import { BsTelephone } from "react-icons/bs";
 import { IoMailOutline } from "react-icons/io5";
-import { getPassengerProfileData } from "../../query/FirestoreQuery";
 
 const ProfileData = ({data}) => {
 

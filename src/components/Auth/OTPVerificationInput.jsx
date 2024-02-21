@@ -1,14 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
+import Loader2 from "../Element/Loader2";
 
-const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, resendOTP }) => {
-  // Create an array to hold refs for each input box
+const OTPVerification = ({
+  verifyOtp,
+  isPending,
+  otpResendTime,
+  isBtnDisabled,
+  resendOTP,
+  isResendingOTP,
+  errorMessage
+}) => {
+
   const inputRefs = Array(6)
     .fill(0)
     .map((_, i) => useRef(null));
 
   const [otpValues, setOtpValues] = useState(Array(6).fill(""));
 
+  // Handle Input value change
   const handleInputChange = (index, e) => {
     const value = e.target.value;
 
@@ -23,10 +33,12 @@ const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, r
     }
   };
 
+  // Get OTP string
   const getOtpString = () => {
     return otpValues.join("");
   };
 
+  console.log(isResendingOTP)
   return (
     <div className="w-[370px] flex flex-col gap-[20px]">
       <div className="w-full flex items-center justify-between gap-[20px] mt-[10px]">
@@ -41,6 +53,14 @@ const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, r
           />
         ))}
       </div>
+
+      {
+        errorMessage && (
+          <p className="text-red-500 text-[14px]">
+            {errorMessage}
+          </p>
+        )
+      }
       <button
         onClick={() => {
           const enteredOtp = getOtpString();
@@ -49,7 +69,8 @@ const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, r
             verifyOtp(enteredOtp);
           }
         }}
-        className="w-full px-[20px] py-[10px] bg-blue-500 text-white "
+        disabled={isPending | !getOtpString()}
+        className={`w-full px-[20px] py-[10px] ${(isPending || !getOtpString()) ? "bg-blue-500/75" : "bg-blue-500"} text-white `}
       >
         {isPending ? (
           <span className="flex items-center gap-[3px] justify-center ">
@@ -68,17 +89,13 @@ const OTPVerification = ({ verifyOtp, isPending, otpResendTime, isBtnDisabled, r
       </button>
       {(otpResendTime || otpResendTime == 0) && (
         <div className="mt-[20px] flex items-center gap-[10px]">
-        <p className=" ">
-          Resend OTP in{" "}
-          <span className="text-primary">{otpResendTime} sec.</span>
-        </p>
-        {
-          !isBtnDisabled && (
-            <button className="text-blue-500" onClick={resendOTP}>
-            Resend OTP
-          </button>
-          )
-        }
+            <p className=" ">
+              Resend OTP in{" "}
+              <span className="text-primary">{otpResendTime} sec.</span>
+            </p>
+            <button disabled={isResendingOTP | isBtnDisabled} className={`${(isResendingOTP | isBtnDisabled) ? "text-blue-500/50" : "text-blue-500"} `} onClick={resendOTP}>
+              {isResendingOTP ? <Loader2 /> :`Resend OTP`}
+            </button>
         </div>
       )}
     </div>

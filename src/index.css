@@ -97,3 +97,35 @@ th {
 .StripeElement.PaymentRequestButton {
   height: 40px;
 }
+
+.loader-circle {
+  animation: bounce 1000ms ease-out infinite;
+}
+
+.loader-circle-1 {
+  animation-delay: 0ms;
+}
+
+.loader-circle-2 {
+  animation-delay: 300ms; /* Adjust the delay as needed */
+}
+
+.loader-circle-3 {
+  animation-delay: 600ms; /* Adjust the delay as needed */
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  25% {
+    transform: translateY(2px);
+  }
+  50% {
+    transform: translateY(0px);
+  }
+  75% {
+    transform: translateY(-2px);
+  }
+}

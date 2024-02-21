@@ -39,10 +39,8 @@ import { useToastContext } from "./Context/ToastContext";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import LoadingPage from "./components/LoadingPage";
-import {
-  getPassengerNotificationData,
-  getPassengerProfileData,
-} from "./query/FirestoreQuery";
+import { db } from "./firebase/setup";
+import { collection, doc, onSnapshot, query } from "firebase/firestore";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_API_KEY);
 
@@ -71,18 +69,51 @@ const [notificationCount, setNotificationCount] = useState();
     }
   }, [isAuthenticated, isLoading]);
 
-  useEffect(() => {
-    // Get profile data
-    getPassengerProfileData().then((res) => {
-      setData(res);
+  // Get Profile Data
+  function getProfileData() {
+    const docRef = doc(
+      db,
+      "passengers",
+      "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73",
+      "data",
+      "profile"
+    );
+    onSnapshot(docRef, (doc) => {
+      console.log(doc.data());
+      setData(doc.data())
     });
+  }
 
-    // Get notification data
-    getPassengerNotificationData().then((res) => {
-      setNotificationData(res);
-      setNotificationCount(res.length)
-    });
-  }, []);
+  // Get Notification
+function getPassengerNotificationData() {
+    try {
+      const q = query(
+        collection(
+          db,
+          "passengers",
+          "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73",
+          "notifications"
+        )
+      );
+  
+      onSnapshot(q, (querySnapshot) => {
+        const notifications = [];
+        querySnapshot.forEach((doc) => {
+          notifications.push(doc.data());
+        });
+        console.log(notifications);
+        setNotificationData(notifications);
+        setNotificationCount(notifications.length)
+      });
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  }
+
+  useEffect(() => {
+    getProfileData();
+    getPassengerNotificationData()
+  }, [])
 
   if (isLoading) {
     return <LoadingPage />;
