@@ -1,10 +1,14 @@
 import React from "react";
 
 const Capacity = ({
-    passenger_count,luggage_count,suitcase_count,baby_seat_count,baby_seats
+  passenger_count,
+  luggage_count,
+  suitcase_count,
+  baby_seat_count,
+  baby_seats,
 }) => {
   return (
-    <div className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
+    <div className="box h-[300px] bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
       <div>
         <img
           src="/asset/icons/capacity.svg"
@@ -87,7 +91,9 @@ const Capacity = ({
                   className=" flex flex-col items-center flex-wrap gap-[5px] text-[12px]"
                 >
                   <p className="text-center">{baby_seat_count}</p>
-                  <p>Rear facing, Forward facing, Booster</p>
+                  {baby_seats?.length > 0 && (
+                    <p>Rear facing, Forward facing, Booster</p>
+                  )}
                 </td>
               </tr>
             </tbody>

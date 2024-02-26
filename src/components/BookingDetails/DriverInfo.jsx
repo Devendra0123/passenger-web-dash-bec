@@ -4,7 +4,7 @@ import Rating from "../Element/Rating";
 const DriverInfo = ({ data }) => {
   return (
     <div
-      className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
+      className="box h-[300px] bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
     >
       <div>
         <img
