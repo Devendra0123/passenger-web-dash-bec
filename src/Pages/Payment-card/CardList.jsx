@@ -35,7 +35,7 @@ const PaymentCardList = () => {
   function getPassengerCardData() {
     try {
       const q = query(
-        collection(db, "passengers", "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73", "cards")
+        collection(db, "passengers", "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42", "cards")
       );
 
       onSnapshot(q, (querySnapshot) => {
@@ -51,7 +51,7 @@ const PaymentCardList = () => {
   }
 
   useEffect(() => {
-    getPassengerCardData();
+    // getPassengerCardData();
   }, []);
 
   useEffect(() => {

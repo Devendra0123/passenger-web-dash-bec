@@ -5,6 +5,13 @@ import Rating from "../components/Element/Rating";
 import GoogleMapDirection from "../components/CurrentRide/GoogleMap";
 import { IoCall } from "react-icons/io5";
 import CancelBookingConfirmation from "../components/modal/CancelBookingConfirmation";
+import { doc, onSnapshot } from "@firebase/firestore";
+import { db } from "../firebase/setup";
+import Passenger from "../components/BookingDetails/Passenger";
+import DriverInfo from "../components/BookingDetails/DriverInfo";
+import Capacity from "../components/BookingDetails/Capacity";
+import VehicleInfo from "../components/BookingDetails/VehicleInfo";
+import FlightInformation from "../components/BookingDetails/FlightInformation";
 
 // For Responsiveness to arrage boxes in correct order
 const RenderBoxes = () => {
@@ -31,6 +38,30 @@ const ServiceDetails = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState();
   const [windowWidth, setWindowWidth] = useState();
+  const [bookingDetailsData, setBookingDetailsData] = useState();
+
+  // Get Booking Details
+  function getBookingDetails() {
+    try {
+      const docRef = doc(
+        db,
+        "passengers",
+        "5mNt5etzeVb8GTM9BDtRTMDvSSR2-44",
+        "schedules",
+        "26"
+      );
+
+      onSnapshot(docRef, (doc) => {
+        setBookingDetailsData(doc.data());
+      });
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  }
+
+  useEffect(() => {
+    getBookingDetails();
+  }, []);
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -52,6 +83,8 @@ const ServiceDetails = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  console.log(bookingDetailsData);
 
   return (
     <div>
@@ -81,17 +114,15 @@ const ServiceDetails = () => {
               <div className="flex items-center justify-start gap-[15px]">
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                    {data?.bookingType == "one-way"
-                      ? "One Way"
-                      : data?.bookingType == "return"
-                      ? "Return"
+                    {bookingDetailsData?.trip_type
+                      ? bookingDetailsData?.trip_type
                       : null}
                   </p>
                 </div>
 
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                    Booking ID : <span>{data.bkid}</span>
+                    Booking ID : <span>{bookingDetailsData?.id}</span>
                   </p>
                 </div>
 
@@ -103,7 +134,7 @@ const ServiceDetails = () => {
 
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                    {data.distance}
+                    {bookingDetailsData?.distance}
                   </p>
                 </div>
 
@@ -113,24 +144,25 @@ const ServiceDetails = () => {
                   </p>
                 </div>
               </div>
-              {data?.dropOffTime && (
+              {bookingDetailsData?.drop_date_time && (
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-blue-400 text-white rounded-[25px]">
-                    Drop Off Time : <span>{data?.dropOffTime}</span>
+                    Drop Off Time :{" "}
+                    <span>{bookingDetailsData?.drop_date_time}</span>
                   </p>
                 </div>
               )}
               <div>
                 <p
                   className={`${
-                    data.bookingStatus == "confirmed"
+                    bookingDetailsData?.status_class == "confirmed"
                       ? "bg-green-700/75"
-                      : data.bookingStatus == "pending"
+                      : bookingDetailsData?.status_class == "pending"
                       ? "bg-yellow-600/75"
                       : "bg-primary/75"
                   } w-max px-[15px] py-[6px] text-white rounded-[25px]`}
                 >
-                  Booking Status: {data.bookingStatus}
+                  Booking Status: {bookingDetailsData?.status}
                 </p>
               </div>
             </div>
@@ -152,10 +184,11 @@ const ServiceDetails = () => {
                   {data.location.origin.place}
                   <span>, {data.location.origin.country.name}</span>
                 </p>
+                {/* Address line */}
                 <p className="text-[12px]">
                   Pickup Address:{" "}
                   <span className="text-blue-500">
-                    {data.location.origin.pickupLocation}
+                    {bookingDetailsData?.pickup_address_line}
                   </span>
                 </p>
               </div>
@@ -177,277 +210,35 @@ const ServiceDetails = () => {
                   {data.location.destination.place}
                   <span>, {data.location.destination.country.name}</span>
                 </p>
+                {/* Address line */}
                 <p className="text-[12px]">
                   Dropoff location:{" "}
                   <span className="text-blue-500">
-                    {data.location.destination.dropoffLocation}
+                    {bookingDetailsData?.drop_address_line}
                   </span>
                 </p>
               </div>
             </div>
+
             {/* Passenger Info */}
-            <div
-              data-id="2"
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <img
-                  src="/asset/icons/account.svg"
-                  alt="person-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Passenger</h2>
-                <div className=" w-[90%] flex flex-col justify-center items-center gap-[10px]">
-                  <div className="w-full flex items-center justify-between">
-                    <p>Name:</p>
-                    <p>Alex Smith</p>
-                  </div>
-
-                  <div className="w-full flex items-center justify-between">
-                    <p>Contact:</p>
-                    <p>+97713583503</p>
-                  </div>
-
-                  <div className="w-full flex items-center justify-between">
-                    <p>Email:</p>
-                    <p>alexsmith25@gmail.com</p>
-                  </div>
-
-                  <div className="w-full flex items-center justify-between">
-                    <p>Passenger ID:</p>
-                    <p>103</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Passenger passengerInfo={bookingDetailsData?.passenger} />
 
             {/* Driver Info */}
-            <div
-              data-id={windowWidth > 520 ? "3" : "6"}
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <img
-                  src="/asset/icons/account.svg"
-                  alt="person-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Driver Info</h2>
-                <div className=" w-[90%] flex flex-col justify-center items-center gap-[10px]">
-                  <div className="w-full flex items-center gap-[30px] justify-between">
-                    <img
-                      src="/asset/person1.webp"
-                      alt="driver-image"
-                      className="w-[50px] h-[50px] rounded-full border border-blue-500"
-                    />
-                    <Rating
-                      ratingValue={data.driver?.rating.value}
-                      NumberOfRating={data.driver?.rating?.numberofRating}
-                    />
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Name:</p>
-                    <p>{data.driver?.fName}</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Phone Number:</p>
-                    <p>{data.driver?.phoneNumber}</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Driver ID:</p>
-                    <p>003</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>TFL License Number:</p>
-                    <p>95382</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <DriverInfo data={data} />
             {/* capacity */}
-            <div
-              data-id={windowWidth > 520 ? "4" : "3"}
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <img
-                  src="/asset/icons/capacity.svg"
-                  alt="vehicle-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Capacity</h2>
-                <div className="w-[90%]">
-                  <table className="table w-full">
-                    <tr>
-                      <td>
-                        {/* passenger */}
-                        <div className="flex items-center gap-[5px]">
-                          <img
-                            src="/asset/icons/account.svg"
-                            alt=""
-                            className="w-[15px] h-[15px] "
-                          />
-                          <p>Passenger</p>
-                        </div>
-                      </td>
-                      <td>
-                        <span>1</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        {/* luggage */}
-                        <div className="flex items-center gap-[5px]">
-                          <img
-                            src="/asset/icons/luggage.svg"
-                            alt=""
-                            className="w-[15px] h-[15px] "
-                          />
-                          <p>Luggage</p>
-                        </div>
-                      </td>
-                      <td>
-                        <span>1</span>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        {/* hand luggage */}
-                        <div className="flex items-center gap-[5px]">
-                          <img
-                            src="/asset/icons/luggage.svg"
-                            alt=""
-                            className="w-[15px] h-[15px] "
-                          />
-                          <p>Hand Luggage</p>
-                        </div>
-                      </td>
-                      <td>
-                        <span>1</span>
-                      </td>
-                    </tr>
-
-                    <tr className="">
-                      <td>
-                        {/* Car Seat */}
-                        <div className="flex items-center gap-[5px]">
-                          <img
-                            src="/asset/icons/seat.svg"
-                            alt=""
-                            className="w-[15px] h-[15px] "
-                          />
-                          <p>Car Seat</p>
-                        </div>
-                      </td>
-                      <td
-                        style={{
-                          border: "none",
-                        }}
-                        className=" flex flex-col items-center flex-wrap gap-[5px] text-[12px]"
-                      >
-                        <p className="text-center">3</p>
-                        <p>Rear facing, Forward facing, Booster</p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
+            <Capacity
+              passenger_count={bookingDetailsData?.passenger_count}
+              luggage_count={bookingDetailsData?.luggage_count}
+              suitcase_count={bookingDetailsData?.suitcase_count}
+              baby_seat_count={bookingDetailsData?.baby_seat_count}
+              baby_seats={bookingDetailsData?.baby_seats}
+            />
 
             {/* Vehicle Info */}
-            <div
-              data-id={windowWidth > 520 ? "5" : "7"}
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <img
-                  src="/asset/icons/vehicle.svg"
-                  alt="vehicle-icon"
-                  className="w-[20px] h-[20px]"
-                />
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
-                <div className="flex flex-col items-center">
-                  <img
-                    src="/asset/car1.png"
-                    alt="car"
-                    className="w-[250px] h-auto object-contain"
-                  />
-                  <p>Saloon</p>
-                  <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>Registration Number:</p>
-                    <p className="text-blue-500">03458</p>
-                  </div>
-                  <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>Make:</p>
-                    <p className="text-blue-500">Ford</p>
-                  </div>
-                  <div className="w-full flex items-center justify-center gap-[10px]">
-                    <p>Model:</p>
-                    <p className="text-blue-500">Mustang</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <VehicleInfo vehicleInfo={bookingDetailsData?.fleet} />
 
             {/* Flight Information */}
-            <div
-              data-id={windowWidth > 520 ? "6" : "4"}
-              className="box bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]"
-            >
-              <div>
-                <svg
-                  width="24"
-                  height="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  className=""
-                >
-                  <path d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 2c5.519 0 10 4.481 10 10s-4.481 10-10 10-10-4.481-10-10 4.481-10 10-10zm-4.809 11.077l3.627-1.796-3.717-3.17 1.149-.569 6.017 2.031 2.874-1.423c.757-.38 2.009-.278 2.294.296.045.092.065.195.065.306-.002.586-.59 1.381-1.221 1.698l-2.874 1.423-2.031 6.016-1.15.569-.268-4.878-3.626 1.796-.749 1.802-.804.398-.281-2.724-1.996-1.874.804-.399 1.887.498z" />
-                </svg>
-              </div>
-              <div className="w-full flex flex-col items-center gap-[10px] text-center">
-                <h2 className="text-[17px] font-semibold">
-                  Flight Information
-                </h2>
-
-                <div className="w-[90%] flex flex-col items-center gap-[10px] ">
-                  <div className="w-full flex items-center justify-between">
-                    <p>Flight Number</p>
-                    <p className="text-[14px] text-blue-500">10004</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Landing date</p>
-                    <p className="text-[14px] text-blue-500">23/05/2024</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Landing time</p>
-                    <p className="text-[14px] text-blue-500">13:20</p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Coming from</p>
-                    <p className="text-[14px] text-blue-500">
-                      {data.location.origin.pickupLocation},{" "}
-                      {data.location.origin.country.name}
-                    </p>
-                  </div>
-                  <div className="w-full flex items-center justify-between">
-                    <p>Pickup time after landing</p>
-                    <p className="text-[14px] text-blue-500">after 15 mins.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <FlightInformation data={data} />
 
             {/* Total Spent */}
             <div
@@ -515,10 +306,10 @@ const ServiceDetails = () => {
             >
               <div>
                 <svg
-                  clip-rule="evenodd"
-                  fill-rule="evenodd"
-                  stroke-linejoin="round"
-                  stroke-miterlimit="2"
+                  clipRule="evenodd"
+                  fillRule="evenodd"
+                  strokeLinejoin="round"
+                  strokeMiterlimit="2"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -526,7 +317,7 @@ const ServiceDetails = () => {
                 >
                   <path
                     d="m2.179 10.201c.055-.298.393-.734.934-.59.377.102.612.476.543.86-.077.529-.141.853-.141 1.529 0 4.47 3.601 8.495 8.502 8.495 2.173 0 4.241-.84 5.792-2.284l-1.251-.341c-.399-.107-.636-.519-.53-.919.108-.4.52-.637.919-.53l3.225.864c.399.108.637.519.53.919l-.875 3.241c-.107.399-.519.636-.919.53-.399-.107-.638-.518-.53-.918l.477-1.77c-1.829 1.711-4.27 2.708-6.838 2.708-5.849 0-9.968-4.8-10.002-9.93-.003-.473.027-1.119.164-1.864zm9.839 6.293c-.552 0-1-.449-1-1 0-.552.448-1 1-1s1 .448 1 1c0 .551-.448 1-1 1zm9.833-2.693c-.054.298-.392.734-.933.59-.378-.102-.614-.476-.543-.86.068-.48.139-.848.139-1.53 0-4.479-3.609-8.495-8.5-8.495-2.173 0-4.241.841-5.794 2.285l1.251.341c.4.107.638.518.531.918-.108.4-.519.637-.919.53l-3.225-.864c-.4-.107-.637-.518-.53-.918l.875-3.241c.107-.4.518-.638.918-.531.4.108.638.518.531.919l-.478 1.769c1.83-1.711 4.272-2.708 6.839-2.708 5.865 0 10.002 4.83 10.002 9.995 0 .724-.081 1.356-.164 1.8zm-9.836-.307c.414 0 .75-.337.75-.75v-4.992c0-.414-.336-.75-.75-.75s-.75.336-.75.75v4.992c0 .413.336.75.75.75z"
-                    fill-rule="nonzero"
+                    fillRule="nonzero"
                   />
                 </svg>
               </div>

@@ -73,7 +73,7 @@ function App() {
     const docRef = doc(
       db,
       "passengers",
-      "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73",
+      "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42",
       "data",
       "profile"
     );
@@ -89,7 +89,7 @@ function App() {
         collection(
           db,
           "passengers",
-          "yvY1kbCCHDZLsJE8CB4r2RNWssf1-73",
+          "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42",
           "notifications"
         )
       );
@@ -109,7 +109,7 @@ function App() {
 
   useEffect(() => {
     getProfileData();
-    getPassengerNotificationData();
+    // getPassengerNotificationData();
   }, []);
 
   if (isLoading) {
