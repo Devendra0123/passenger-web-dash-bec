@@ -1,6 +1,6 @@
 import React from "react";
 
-const Logs = () => {
+const Logs = ({ logData }) => {
   return (
     <div className="box h-[300px] bg-[#F2F2F2]/75 flex flex-col items-center border border-slate-300 p-[15px] rounded-[10px]">
       <div>
@@ -22,19 +22,19 @@ const Logs = () => {
       </div>
       <div className="w-full flex flex-col items-center gap-[10px] text-center">
         <h2 className="text-[17px] font-semibold">Logs</h2>
-        <div className="w-[90%] flex flex-col items-center justify-between gap-[10px]">
-          <div className="w-full flex items-center justify-between">
-            <p>Cancelled at:</p>
-            <span className="ml-auto text-fontSize_md font-medium text-slate-800">
-              14/05/2023 12:30 pm
-            </span>
-          </div>
-          <div className="w-full flex items-center justify-between">
-            <p>Refund Infoice at:</p>
-            <span className="ml-auto text-fontSize_md font-medium text-slate-800">
-              16/05/2023 09:22 pm
-            </span>
-          </div>
+        <div className="w-[90%] flex flex-col items-center justify-between gap-[10px] text-[14px]">
+          {logData?.length > 0 &&
+            logData?.map(({ title, created_at_formatted }, index) => (
+              <div
+                key={index}
+                className="w-full flex items-center justify-between"
+              >
+                <p className="text-start font-[500]">{title}:</p>
+                <p className=" text-[14px] text-blue-500 text-end text-end">
+                  {created_at_formatted}
+                </p>
+              </div>
+            ))}
         </div>
       </div>
     </div>

@@ -21,9 +21,9 @@ const FareBreakdown = ({ data,payment_status }) => {
             data.map(({name, ref, value}, index) => (
               <div
                 key={index}
-                className="w-full flex items-center justify-between"
+                className="w-full flex items-center justify-between text-[14px]"
               >
-                <p>{name}</p>
+                <p className="font-[500]">{name}</p>
                 <p className="text-primary font-semibold">£{value}</p>
               </div>
             ))}

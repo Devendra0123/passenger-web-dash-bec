@@ -19,7 +19,7 @@ const Capacity = ({
       <div className="w-full flex flex-col items-center gap-[10px] text-center">
         <h2 className="text-[17px] font-semibold">Capacity</h2>
         <div className="w-[90%]">
-          <table className="table w-full">
+          <table className="table w-full text-[14px]">
             <tbody>
               <tr>
                 <td>
@@ -30,7 +30,7 @@ const Capacity = ({
                       alt=""
                       className="w-[15px] h-[15px] mt-[4px] "
                     />
-                    <p>Passenger</p>
+                    <p className="font-[500]">Passenger</p>
                   </div>
                 </td>
                 <td>
@@ -47,7 +47,7 @@ const Capacity = ({
                       alt=""
                       className="w-[15px] h-[15px] mt-[4px] "
                     />
-                    <p>Luggage</p>
+                    <p className="font-[500]">Luggage</p>
                   </div>
                 </td>
                 <td>
@@ -64,7 +64,7 @@ const Capacity = ({
                       alt=""
                       className="w-[15px] h-[15px] mt-[4px] "
                     />
-                    <p className="text-start">Hand Luggage</p>
+                    <p className="text-start font-[500]">Hand Luggage</p>
                   </div>
                 </td>
                 <td>
@@ -81,14 +81,14 @@ const Capacity = ({
                       alt=""
                       className="w-[15px] h-[15px] mt-[4px] "
                     />
-                    <p>Car Seat</p>
+                    <p className="font-[500]">Car Seat</p>
                   </div>
                 </td>
                 <td
                   style={{
                     border: "none",
                   }}
-                  className=" flex flex-col items-center flex-wrap gap-[5px] text-[12px]"
+                  className=" flex flex-col items-center flex-wrap gap-[5px] text-[14px]"
                 >
                   <p className="text-center">{baby_seat_count}</p>
                   {baby_seats?.length > 0 && (

@@ -12,7 +12,7 @@ const VehicleInfo = ({ vehicleInfo }) => {
       </div>
       <div className="w-full flex flex-col items-center gap-[10px] text-center">
         <h2 className="text-[17px] font-semibold">Vehicle Info</h2>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center text-[14px]">
           {vehicleInfo?.image_url && (
             <img
               src={vehicleInfo?.image_url}
@@ -21,23 +21,23 @@ const VehicleInfo = ({ vehicleInfo }) => {
             />
           )}
 
-          <p>{vehicleInfo?.name}</p>
+          <p className="font-[500]">{vehicleInfo?.name}</p>
 
           {vehicleInfo?.registration_no && (
             <div className="w-full flex items-center justify-center gap-[10px]">
-              <p>Registration Number:</p>
+              <p className="font-[500]">Registration Number:</p>
               <p className="text-blue-500">{vehicleInfo?.registration_no}</p>
             </div>
           )}
           {vehicleInfo?.make && (
             <div className="w-full flex items-center justify-center gap-[10px]">
-              <p>Make:</p>
+              <p className="font-[500]">Make:</p>
               <p className="text-blue-500">{vehicleInfo?.make}</p>
             </div>
           )}
           {vehicleInfo?.modal && (
             <div className="w-full flex items-center justify-center gap-[10px]">
-              <p>Model:</p>
+              <p className="font-[500]">Model:</p>
               <p className="text-blue-500">{vehicleInfo?.modal}</p>
             </div>
           )}

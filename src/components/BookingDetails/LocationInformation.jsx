@@ -31,10 +31,10 @@ const LocationInformation = ({ data }) => {
       <div className="w-full flex flex-col items-center gap-[10px] text-center">
         {title && <h2 className="text-[17px] font-semibold">{title}</h2>}
 
-        <div className="w-[90%] flex flex-col items-center gap-[10px] ">
+        <div className="w-[90%] flex flex-col items-center gap-[10px] text-[14px] ">
           {number_name && location_number && (
             <div className="w-full flex items-center justify-between">
-              <p className="text-start">{number_name}</p>
+              <p className="text-start font-[500]">{number_name}</p>
               <p className="text-[14px] text-blue-500 text-end">
                 {location_number}
               </p>
@@ -42,7 +42,7 @@ const LocationInformation = ({ data }) => {
           )}
           {date_name && location_date && (
             <div className="w-full flex items-center justify-between">
-              <p className="text-start">{date_name}</p>
+              <p className="text-start font-[500]">{date_name}</p>
               <p className="text-[14px] text-blue-500 text-end">
                 {location_date}
               </p>
@@ -51,7 +51,7 @@ const LocationInformation = ({ data }) => {
 
           {time_name && location_time && (
             <div className="w-full flex items-center justify-between">
-              <p className="text-start">{time_name}</p>
+              <p className="text-start font-[500]">{time_name}</p>
               <p className="text-[14px] text-blue-500 text-end">
                 {location_time}
               </p>
@@ -59,7 +59,7 @@ const LocationInformation = ({ data }) => {
           )}
           {from_name && location_from && (
             <div className="w-full flex items-center justify-between">
-              <p className="text-start">{from_name}</p>
+              <p className="text-start font-[500]">{from_name}</p>
               <p className="text-[14px] text-blue-500 text-end">
                 {location_from}
               </p>
@@ -67,7 +67,7 @@ const LocationInformation = ({ data }) => {
           )}
           {after_name && location_after && (
             <div className="w-full flex items-center justify-between">
-              <p className="text-start">{after_name}</p>
+              <p className="text-start font-[500]">{after_name}</p>
               <p className="text-[14px] text-blue-500 text-end">
                 {location_after}
               </p>

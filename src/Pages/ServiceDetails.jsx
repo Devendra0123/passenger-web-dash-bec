@@ -33,7 +33,7 @@ const ServiceDetails = () => {
         "passengers",
         "5mNt5etzeVb8GTM9BDtRTMDvSSR2-44",
         "schedules",
-        "26"
+        "27"
       );
 
       onSnapshot(docRef, (doc) => {
@@ -73,9 +73,12 @@ const ServiceDetails = () => {
         <div className="flex items-center gap-[30px] ">
           <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
           <div className="flex items-center flex-wrap gap-[20px] ">
-            <button className=" flex items-center gap-[6px] px-[13px] py-[6px] rounded-[4px] bg-green-800 text-white ">
-              <IoCall /> Call Driver
-            </button>
+            {bookingDetailsData?.driver && (
+              <button className=" flex items-center gap-[6px] px-[13px] py-[6px] rounded-[4px] bg-green-800 text-white ">
+                <IoCall /> Call Driver
+              </button>
+            )}
+
             <button
               onClick={handleOpen}
               className="px-[13px] py-[6px] rounded-[4px] bg-primary text-white "
@@ -93,7 +96,8 @@ const ServiceDetails = () => {
             <GoogleMapDirection
               pickup={bookingDetailsData?.pickup}
               drop={bookingDetailsData?.drop}
-              routes={bookingDetailsData?.routes}
+              via={bookingDetailsData?.via}
+              routes={bookingDetailsData?.route}
             />
             {/* Map Overlay */}
             <div className="h-[300px] w-[100px] absolute top-0 left-0 bg-gradient-to-r from-white/75 to-transparent" />
@@ -231,14 +235,16 @@ const ServiceDetails = () => {
               )}
 
               {/* Logs */}
-              {bookingDetailsData?.logs?.length > 0 && <Logs />}
+              {bookingDetailsData?.logs?.length > 0 && (
+                <Logs logData={bookingDetailsData?.logs} />
+              )}
             </div>
 
             {/* Right Section */}
             <div className="col-span-1 flex flex-col gap-[20px]">
               {/* Driver Info */}
-              {bookingDetailsData?.driver?.length > 0 && (
-                <DriverInfo data={data} />
+              {bookingDetailsData?.driver && (
+                <DriverInfo data={bookingDetailsData?.driver} />
               )}
 
               {/* Vehicle Info */}
