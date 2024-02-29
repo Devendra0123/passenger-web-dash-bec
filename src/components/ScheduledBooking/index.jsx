@@ -3,7 +3,8 @@ import { scheduledBookingData } from "../../consts/servicesData";
 import ServiceCard from "../Cards/ServiceCard";
 import { Link } from "react-router-dom";
 
-const ScheduledBooking = () => {
+const ScheduledBooking = ({ data }) => {
+  console.log(data);
   return (
     <div className="relative">
       <div className="bg-white/75 backdrop-blur-sm w-full p-[15px] rounded-[15px]">
@@ -11,12 +12,14 @@ const ScheduledBooking = () => {
           <h2 className="text-titleSize font-titleFontWeight text-titleColor">
             Schedule Booking
           </h2>
-          <Link to="/scheduled-booking" className="text-blue-500 text-[14px]">View more</Link>
+          <Link to="/scheduled-booking" className="text-blue-500 text-[14px]">
+            View more
+          </Link>
         </div>
 
         <div className="mt-[20px] flex flex-col gap-[20px]">
-          {scheduledBookingData?.length > 0 &&
-            scheduledBookingData
+          {data?.length > 0 &&
+            data
               .slice(0, 3)
               .map((item, index) => <ServiceCard key={index} data={item} />)}
         </div>

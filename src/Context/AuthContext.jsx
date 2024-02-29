@@ -15,6 +15,7 @@ export function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   const [authToken, setAuthToken] = useState("");
   const [uid, setUid] = useState("");
+  const [firebaseReferenceID, setFirebaseReferenceID] = useState();
   // Check and set User
   const checkAndSetAuthToken = async () => {
     const auth_token = localStorage.getItem("auth_Token");
@@ -34,7 +35,8 @@ export function AuthProvider({ children }) {
       setIsLoading(true);
       try {
         const status = await getProfileStatus(auth_token);
-        const { profile_status } = status.data;
+        const { profile_status, firebase_reference } = status.data;
+        setFirebaseReferenceID(firebase_reference);
         if (profile_status == "required_profile") {
           setIsLoading(false);
           navigate(`/account/add-profile-details?login-type=email`);
@@ -54,13 +56,13 @@ export function AuthProvider({ children }) {
         }
       } catch (error) {
         setIsLoading(false);
-        setIsAuthenticated(false)
-        localStorage.removeItem('auth_Token')
-        navigate('/login')
+        setIsAuthenticated(false);
+        localStorage.removeItem("auth_Token");
+        navigate("/login");
       }
     } else {
       setIsLoading(false);
-      setIsAuthenticated(false)
+      setIsAuthenticated(false);
     }
   };
 
@@ -76,6 +78,8 @@ export function AuthProvider({ children }) {
     setAuthToken,
     uid,
     setUid,
+    firebaseReferenceID,
+    setFirebaseReferenceID,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

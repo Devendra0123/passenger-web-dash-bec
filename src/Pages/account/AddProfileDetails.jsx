@@ -16,7 +16,7 @@ const AddProfileDetails = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [searchParams] = useSearchParams();
-  const { authToken, uid } = useAuthContext();
+  const { authToken, setFirebaseReferenceID } = useAuthContext();
 
   const loginType = searchParams.get("login-type");
 
@@ -65,11 +65,17 @@ const AddProfileDetails = () => {
 
     try {
       setIsPending(true);
-      const data = await registerPassenger(userCredential, authToken);
+      const apiResponse = await registerPassenger(userCredential, authToken);
+      const {title,message,data} = apiResponse;
+      if(title == "ValidationError"){
+        setErrorMessage(message);
+        setIsPending(false);
+        return;
+      }
       const status = await getProfileStatus(authToken);
 
-      const { profile_status } = status.data;
-
+      const { profile_status, firebase_reference } = status.data;
+      setFirebaseReferenceID(firebase_reference);
       setIsPending(false);
 
       if (profile_status == "required_card") {

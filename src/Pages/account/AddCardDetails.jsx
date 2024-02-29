@@ -1,9 +1,16 @@
 import React from "react";
 import AddCardFields from "../../components/Auth/AddCardFields";
 import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
+import { useAuthContext } from "../../Context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const AddCardDetails = () => {
+  const { isAuthenticated } = useAuthContext();
+  const navigate = useNavigate();
 
+  if (isAuthenticated) {
+    return navigate("/");
+  }
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen flex flex-col items-center justify-center p-[20px]">
       <div className="w-[80%] h-[600px] grid grid-cols-3 shadow-md rounded-lg overflow-hidden ">

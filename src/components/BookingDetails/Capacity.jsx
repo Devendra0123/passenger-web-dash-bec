@@ -91,9 +91,8 @@ const Capacity = ({
                   className=" flex flex-col items-center flex-wrap gap-[5px] text-[14px]"
                 >
                   <p className="text-center">{baby_seat_count}</p>
-                  {baby_seats?.length > 0 && (
-                    <p>Rear facing, Forward facing, Booster</p>
-                  )}
+                  {baby_seats?.length > 0 &&
+                    baby_seats.map((item, index) => <p key={index}>{item}</p>)}
                 </td>
               </tr>
             </tbody>

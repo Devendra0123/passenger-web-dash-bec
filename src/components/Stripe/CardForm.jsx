@@ -88,12 +88,18 @@ const CardForm = () => {
           .then((res) => res.token);
         console.log(token);
         if (token?.id) {
-          const apiTokenResponse = await addCard(authToken, token.id);
-          console.log(apiTokenResponse);
+          const {data, message} = await addCard(authToken, token.id);
+          if(data == null){
+            setIsPending(false);
+            setErrorMessage(message)
+            return;
+          }
+          console.log(data);
           setIsAuthenticated(true);
-          toast.success(apiTokenResponse.message)
-          navigate(`/`);
+          toast.success(message)
           setIsPending(false);
+          navigate(`/`);
+         
         }
       }
     } catch (error) {

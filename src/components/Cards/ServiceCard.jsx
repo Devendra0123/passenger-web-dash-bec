@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Rating from "../Element/Rating";
 import { IoCall, IoInformationOutline } from "react-icons/io5";
@@ -18,18 +18,25 @@ const ServiceCard = ({
 
   const {
     dateAndTime,
-    bookingType,
-    bookingStatus,
-    paymentStatus,
-    price,
+    trip_type,
+    payment_status,
+    payment_status_class,
+    status_class,
+    status,
+    fare_breakdown,
     duration,
-    bkid,
-    vehicle,
-    location,
+    id,
+    fleet,
+    pickup,
+    pickup_date_time,
+    via,
+    drop,
     distance,
     driver,
     dropOffTime,
   } = data;
+
+  const [totalPrice, setTotalPrice] = useState();
 
   const handleClose = (e) => {
     e.preventDefault();
@@ -37,14 +44,24 @@ const ServiceCard = ({
     setOpen(false);
   };
 
+  useEffect(() => {
+    if (fare_breakdown?.length > 0) {
+      const total = fare_breakdown.reduce(
+        (accumulator, item) => accumulator + parseInt(item.value),
+        0
+      );
+      setTotalPrice(total);
+    }
+  }, [fare_breakdown]);
+
   return (
     <Link
       to={
         doNotShowHoverEffect || serviceType == "current"
           ? ""
           : isHistory
-          ? `/service-details/${bkid}?service-type=history`
-          : `/service-details/${bkid}`
+          ? `/service-details/${id}?service-type=history`
+          : `/service-details/${id}`
       }
       className={`cursor-pointer w-full ${
         serviceType == "current"
@@ -59,11 +76,7 @@ const ServiceCard = ({
       <div className="flex justify-between">
         <div>
           <p className="text-primary font-[500] tracking-wider text-[14px] px-[10px] py-[6px] bg-white rounded-[4px] ">
-            {bookingType == "one-way"
-              ? "One Way"
-              : bookingType == "return"
-              ? "Return"
-              : null}
+            {trip_type}
           </p>
         </div>
 
@@ -98,16 +111,25 @@ const ServiceCard = ({
 
       <div className="w-full flex items-center justify-between gap-[5px]">
         <p className="px-[5px] py-[5px] rounded-[25px] bg-white text-center text-[14px] font-[400]">
-          BKID : <span>{bkid}</span>
+          BKID : <span>{id}</span>
         </p>
-        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
-          {dateAndTime}
-        </p>
-        <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
-          {distance}
-        </p>
+        {pickup_date_time && (
+          <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
+            {pickup_date_time}
+          </p>
+        )}
+
+        {distance && (
+          <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">
+            {distance}
+          </p>
+        )}
+
         <div className="relative flex items-center gap-[5px]">
-          <p className="text-primary font-semibold">£76.46</p>
+          {totalPrice && (
+            <p className="text-primary font-semibold">£{totalPrice}</p>
+          )}
+
           <div
             onMouseEnter={() => setIsPriceInfoHovered(true)}
             onMouseLeave={() => setIsPriceInfoHovered(false)}
@@ -118,48 +140,20 @@ const ServiceCard = ({
 
           {isPriceInfoHovered && (
             <div className="z-10 w-[200px] flex flex-col gap-[5px] absolute top-full right-0 bg-smoke/[90%] backdrop-blur-sm border border-slate-300 p-[10px] rounded-[5px]">
-              <div className="flex items-center justify-between w-full">
-                <h3 className="font-semibold text-[15px]">Base Fare:</h3>
-                <p>
-                  <span className="text-[14px] text-primary font-semibold">
-                    £56.46
-                  </span>
-                </p>
-              </div>
-              <div>
-                <div className="flex items-center justify-between w-full">
-                  <h3 className="font-semibold text-[15px]">
-                    Additional Fare:
-                  </h3>
-                  <p>
-                    <span className="text-[14px] text-primary font-semibold">
-                      £15
-                    </span>
-                  </p>
-                </div>
-                <ul className="pl-[5px]">
-                  <div className="flex items-center justify-between w-full">
-                    <p className="text-[14px]">Parking charge:</p>
-                    <p className="text-primary font-semibold text-[10px]">£4</p>
-                  </div>
-
-                  <div className="flex items-center justify-between w-full">
-                    <p className="text-[14px]">Waiting charge</p>
-                    <p className="text-primary font-semibold text-[10px]">
-                      £11
+              {fare_breakdown?.length > 0 &&
+                fare_breakdown.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between w-full"
+                  >
+                    <h3 className="font-semibold text-[15px]">{item?.name}:</h3>
+                    <p>
+                      <span className="text-[14px] text-primary font-semibold">
+                        £{item?.value}
+                      </span>
                     </p>
                   </div>
-
-                  {isHistory && (
-                    <div className="flex items-center justify-between w-full">
-                      <p className="text-[14px]">Tips</p>
-                      <p className="text-primary font-semibold text-[10px]">
-                        £5
-                      </p>
-                    </div>
-                  )}
-                </ul>
-              </div>
+                ))}
             </div>
           )}
         </div>
@@ -173,103 +167,136 @@ const ServiceCard = ({
         </div>
       )}
 
+      {/* Fleet Info */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[10px] text-[14px]">
           <div className="flex items-center gap-[5px]">
-            <img
-              src="/asset/icons/vehicle.svg"
-              alt=""
-              className="w-[20] h-[20]"
-            />
-            <p>{vehicle.name}</p>
+            {fleet?.image_url && (
+              <img
+                src={fleet.image_url}
+                alt=""
+                className="w-[30px] h-[30px] object-contain"
+              />
+            )}
+            {fleet?.name && <p>{fleet.name}</p>}
           </div>
         </div>
-
-        <div>
-          <p className="text-[14px]">
-            Registration No. <span>{vehicle.number}</span>
-          </p>
-        </div>
-        <div>
-          <div className="flex items-center gap-[5px]">
-            <img src="/asset/icons/duration.svg" alt="" className="" />
-            <span className="text-[14px]">{duration}</span>
+        {fleet?.registration_no && (
+          <div>
+            <p className="text-[14px]">
+              Registration No. <span>{fleet?.registration_no}</span>
+            </p>
           </div>
-        </div>
+        )}
+        {duration && (
+          <div>
+            <div className="flex items-center gap-[5px]">
+              <img src="/asset/icons/duration.svg" alt="" className="" />
+              <span className="text-[14px]">{duration}</span>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="flex items-start justify-between gap-[20px]">
+      <div className="w-full grid grid-cols-3 gap-[20px]">
+        {pickup?.name && (
+          <div>
+            <p className="text-blue-500 text-[12px] ">Origin</p>
+            <p className="text-[14px] ">
+              {pickup?.name && (
+                <span>
+                  {pickup?.name?.length > 20
+                    ? pickup?.name.substring(0, 20) + "..."
+                    : pickup?.name}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
         <div>
-          <p className="text-blue-500 text-[12px] ">Origin</p>
-          <p className="text-[14px] ">
-            {location.origin.place}
-            <span>,{location.origin.country.name}</span>
-          </p>
+          {/* Via point */}
+          {via?.length > 0 && (
+            <div className="flex flex-col items-center text-center">
+              <p className="text-blue-500 text-[12px] ">Via</p>
+              <p className="text-[14px] ">{via[0].name}</p>
+            </div>
+          )}
         </div>
-        <div className="flex flex-col items-center text-center">
-          <p className="text-blue-500 text-[12px] ">Via</p>
-          <p className="text-[14px] ">
-            {location.via.place}
-            <span>,{location.via.viaPointLocation}</span>
-          </p>
-        </div>
-        <div>
-          <p className="flex flex-col justify-end text-end text-blue-500 text-[12px] ">
-            Destination
-          </p>
-          <p className="text-end text-[14px] ">
-            {location.destination.place}
-            <span>,{location.destination.country.name}</span>
-          </p>
-        </div>
+        {drop?.name && (
+          <div>
+            <p className="flex flex-col justify-end text-end text-blue-500 text-[12px] ">
+              Destination
+            </p>
+            <p className="text-end text-[14px] ">
+              {drop?.name && (
+                <span>
+                  {drop?.name?.length > 20
+                    ? drop?.name.substring(0, 20) + "..."
+                    : drop?.name}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="relative w-full flex items-center justify-between gap-[10px]">
         {/* Driver info */}
-        <div
-          onClick={() => setDisplayDriverPopup(true)}
-          className={`${
-            serviceType == "current" &&
-            "hover:bg-light_gray cursor-pointer p-[10px] rounded-[5px]"
-          } flex items-center gap-[5px]`}
-        >
-          <img
-            src={driver?.image}
-            alt={driver?.name}
-            className="w-[37px] h-[37px] rounded-full border border-blue-400 "
-          />
-          <div>
-            {/* Make sure to use only first name */}
-            <p className="text-slate-500 text-[13px]">Ben</p>
-            <Rating
-              ratingValue={driver.rating?.value}
-              NumberOfRating={driver.rating.numberofRating}
-            />
+        {driver && (
+          <div
+            onClick={() => setDisplayDriverPopup(true)}
+            className={`${
+              serviceType == "current" &&
+              "hover:bg-light_gray cursor-pointer p-[10px] rounded-[5px]"
+            } flex items-center gap-[5px]`}
+          >
+            {driver?.image_url && (
+              <img
+                src={driver?.image_url}
+                alt={driver?.first_name}
+                className="w-[37px] h-[37px] rounded-full border border-blue-400 "
+              />
+            )}
+
+            <div>
+              {/* Make sure to use only first name */}
+              {driver?.first_name && (
+                <p className="text-slate-500 text-[13px]">
+                  {driver?.first_name}
+                </p>
+              )}
+              {/* Driver Rating */}
+              {/* <Rating
+                ratingValue={driver.rating?.value}
+                NumberOfRating={driver.rating.numberofRating}
+              /> */}
+            </div>
           </div>
-        </div>
+        )}
+
         <div className="flex items-center gap-[10px]">
           <p
             className={`${
-              bookingStatus == "confirmed"
+              status_class == "confirmed"
                 ? "text-green-700 border border-green-700"
-                : bookingStatus == "pending"
+                : status_class == "pending"
                 ? "text-yellow-600 border border-yellow-600"
                 : "text-primary border border-primary"
             } px-[10px] py-[3px] rounded-[25px]`}
           >
-            {bookingStatus}
+            {status}
           </p>
           <p
             className={`${
-              paymentStatus == "paid"
+              payment_status_class == "paid"
                 ? "text-green-700 border border-green-700"
                 : "text-primary border border-primary"
             } px-[10px] py-[3px] rounded-[25px]`}
           >
-            {paymentStatus}
+            {payment_status}
           </p>
         </div>
-        {displayDriverPopup && (
+        {displayDriverPopup && driver && (
           <DriverInfo
             handleCross={() => setDisplayDriverPopup(false)}
             data={driver}

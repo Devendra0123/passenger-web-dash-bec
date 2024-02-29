@@ -56,8 +56,8 @@ function WindowScrollTop() {
 function App() {
   const navigate = useNavigate();
 
-  const { isAuthenticated, authToken, isLoading } = useAuthContext();
-
+  const { isAuthenticated, isLoading,firebaseReferenceID } = useAuthContext();
+console.log(firebaseReferenceID)
   const [data, setData] = useState();
   const [notificationData, setNotificationData] = useState();
   const [notificationCount, setNotificationCount] = useState();
@@ -69,11 +69,11 @@ function App() {
   }, [isAuthenticated, isLoading]);
 
   // Get Profile Data
-  function getProfileData() {
+  function getProfileData(referenceID) {
     const docRef = doc(
       db,
       "passengers",
-      "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42",
+      referenceID,
       "data",
       "profile"
     );
@@ -108,9 +108,10 @@ function App() {
   }
 
   useEffect(() => {
-    getProfileData();
+    if(firebaseReferenceID)
+    getProfileData(firebaseReferenceID);
     // getPassengerNotificationData();
-  }, []);
+  }, [firebaseReferenceID]);
 
   if (isLoading) {
     return <LoadingPage />;

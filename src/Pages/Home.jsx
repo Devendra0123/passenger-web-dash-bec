@@ -4,21 +4,18 @@ import ScheduledBooking from "../components/ScheduledBooking";
 import Notice from "../components/Notice";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebase/setup";
+import { useAuthContext } from "../Context/AuthContext";
 
 const Home = () => {
+  const { firebaseReferenceID } = useAuthContext();
+
   const [noticeData, setNoticeData] = useState();
+  const [scheduleBookingData, setScheduleBookingData] = useState();
 
   // Get Notice Data
-  function getPassengerNoticeData() {
+  function getPassengerNoticeData(referenceId) {
     try {
-      const q = query(
-        collection(
-          db,
-          "passengers",
-          "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42",
-          "notices"
-        )
-      );
+      const q = query(collection(db, "passengers", referenceId, "notices"));
 
       onSnapshot(q, (querySnapshot) => {
         const notices = [];
@@ -32,10 +29,33 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-    getPassengerNoticeData();
-  }, []);
+  // Get Schedule booking data
+  function getScheduleBookingData(referenceId) {
+    try {
+      const q = query(collection(db, "passengers", referenceId, "schedules"));
 
+      onSnapshot(q, (querySnapshot) => {
+        const bookingData = [];
+        querySnapshot.forEach((doc) => {
+          console.log(doc)
+          bookingData.push(doc.data());
+        });
+
+        setScheduleBookingData(bookingData);
+      });
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (firebaseReferenceID) {
+      getPassengerNoticeData(firebaseReferenceID);
+      getScheduleBookingData(firebaseReferenceID);
+    }
+  }, [firebaseReferenceID]);
+
+  console.log(scheduleBookingData)
   return (
     <div className="w-full flex justify-center">
       <div className="w-full grid grid-cols-2 gap-[20px]">
@@ -51,7 +71,7 @@ const Home = () => {
           </div>
           {/* scheduled booking */}
           <div>
-            <ScheduledBooking />
+            <ScheduledBooking data={scheduleBookingData} />
           </div>
         </div>
       </div>

@@ -15,25 +15,28 @@ import FareBreakdown from "../components/BookingDetails/FareBreakdown";
 import Logs from "../components/BookingDetails/Logs";
 import CardInfo from "../components/BookingDetails/CardInfo";
 import LocationInformation from "../components/BookingDetails/LocationInformation";
+import { useAuthContext } from "../Context/AuthContext";
 
 const ServiceDetails = () => {
+
+  const { firebaseReferenceID } = useAuthContext();
+
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
   const serviceType = searchParams.get("service-type");
 
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState();
   const [bookingDetailsData, setBookingDetailsData] = useState();
 
   // Get Booking Details
-  function getBookingDetails() {
+  function getBookingDetails(referenceId) {
     try {
       const docRef = doc(
         db,
         "passengers",
-        "5mNt5etzeVb8GTM9BDtRTMDvSSR2-44",
+        referenceId,
         "schedules",
-        "27"
+        slug
       );
 
       onSnapshot(docRef, (doc) => {
@@ -45,20 +48,12 @@ const ServiceDetails = () => {
   }
 
   useEffect(() => {
-    getBookingDetails();
-  }, []);
-
-  // get data
-  useEffect(() => {
-    const filteredData = scheduledBookingData?.filter(
-      (item) => item.bkid === slug
-    );
-    if (filteredData.length) {
-      setData(filteredData[0]);
+    if(firebaseReferenceID){
+      getBookingDetails(firebaseReferenceID);
     }
-  }, []);
+  }, [firebaseReferenceID]);
 
-  if (!data) {
+  if (!bookingDetailsData) {
     return <span>No Data Found</span>;
   }
 
@@ -122,7 +117,7 @@ const ServiceDetails = () => {
 
                 <div>
                   <p className="w-max px-[15px] py-[6px] bg-white text-blue-500 border border-slate-300 rounded-[25px]">
-                    {data.dateAndTime}
+                    {bookingDetailsData?.pickup_date_time}
                   </p>
                 </div>
 
@@ -202,10 +197,10 @@ const ServiceDetails = () => {
               {/* Destination */}
               <div className="col-span-1 flex flex-col items-start">
                 <h3 className="text-primary">Destination</h3>
-                <p className="text-end">{bookingDetailsData?.drop?.name}</p>
+                <p className="text-start">{bookingDetailsData?.drop?.name}</p>
                 {/* Address line */}
                 {bookingDetailsData?.drop_address_line && (
-                  <p className="text-[12px]">
+                  <p className="text-[12px] text-start">
                     Dropoff location:{" "}
                     <span className="text-blue-500">
                       {bookingDetailsData?.drop_address_line}
