@@ -68,7 +68,7 @@ const ServiceDetails = () => {
         <div className="flex items-center gap-[30px] ">
           <h2 className="text-xl font-[600] text-slate-700">Booking Details</h2>
           <div className="flex items-center flex-wrap gap-[20px] ">
-            {bookingDetailsData?.driver && (
+            {(bookingDetailsData?.driver && bookingDetailsData?.driver?.length !== 0) && (
               <button className=" flex items-center gap-[6px] px-[13px] py-[6px] rounded-[4px] bg-green-800 text-white ">
                 <IoCall /> Call Driver
               </button>
@@ -238,7 +238,7 @@ const ServiceDetails = () => {
             {/* Right Section */}
             <div className="col-span-1 flex flex-col gap-[20px]">
               {/* Driver Info */}
-              {bookingDetailsData?.driver && (
+              {(bookingDetailsData?.driver && bookingDetailsData?.driver?.length !== 0) && (
                 <DriverInfo data={bookingDetailsData?.driver} />
               )}
 
@@ -252,7 +252,7 @@ const ServiceDetails = () => {
               />
 
               {/* Payment Card Info */}
-              {bookingDetailsData?.card?.length > 0 && <CardInfo />}
+              {(bookingDetailsData?.card && bookingDetailsData?.card?.length !== 0) && <CardInfo data={bookingDetailsData?.card} />}
             </div>
           </div>
         </div>

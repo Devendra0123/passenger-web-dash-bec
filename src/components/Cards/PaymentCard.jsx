@@ -1,10 +1,11 @@
+import { Tooltip } from "@mui/material";
 import React from "react";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 
 const PaymentCard = ({
   cardNumber,
   isVerified,
-  cardHolderName,
+  name,
   cardExpiryDate,
   isActive,
 }) => {
@@ -28,15 +29,31 @@ const PaymentCard = ({
       </div>
 
       <div className="flex gap-[70px]">
-        <div>
-          <p className="font-medium">HOLDER&rsquo;S NAME</p>
-          <p className="font-semibold">{cardHolderName}</p>
-        </div>
+        {name && (
+          <div>
+            <p className="font-medium">HOLDER&rsquo;S NAME</p>
+            <p className="font-semibold">{name}</p>
+          </div>
+        )}
 
         <div>
           <p className="font-medium">CARD EXPIRY</p>
           <p className="font-semibold">{cardExpiryDate}</p>
         </div>
+
+        <div>
+          <Tooltip
+            arrow={true}
+            sx={{ zIndex: 0 }}
+            leaveDelay={0}
+            title="Use this payment card as a primary card"
+          >
+            <button className="bg-blue-500 text-white px-[10px] py-[6px] rounded-[4px] text-[13px]">
+              Make Primary
+            </button>
+          </Tooltip>
+        </div>
+
       </div>
     </div>
   );

@@ -116,16 +116,18 @@ const SignInWithPhone = () => {
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
-      setOtpVerificationStatus({ pending: false });
+
       if (profile_status == "required_profile") {
+        setOtpVerificationStatus({ pending: false });
         navigate(`/account/add-profile-details?login-type=mobile`);
       }
       if (profile_status == "required_card") {
+        setOtpVerificationStatus({ pending: false });
         navigate(`/account/add-card-details`);
       }
       if (profile_status == "completed") {
-        setIsAuthenticated(true);
-        navigate("/");
+        setOtpVerificationStatus({ pending: false });
+        window.location.reload();
       }
     } catch (error) {
       setOtpVerificationStatus({ pending: false });
@@ -228,13 +230,17 @@ const SignInWithPhone = () => {
             isBtnDisabled={isButtonDisabled}
             resendOTP={async (e) => {
               setIsResendingOtp(true);
-              setOtpVerificationError('');
-              setPhoneNumberSubmitError('')
+              setOtpVerificationError("");
+              setPhoneNumberSubmitError("");
               await handlePhoneNumberSubmit(e);
               setIsResendingOtp(false);
             }}
             isResendingOTP={isResendingOtp}
-            errorMessage={otpVerificationError ? otpVerificationError : phoneNumberSubmitError}
+            errorMessage={
+              otpVerificationError
+                ? otpVerificationError
+                : phoneNumberSubmitError
+            }
           />
         </div>
 

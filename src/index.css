@@ -129,3 +129,16 @@ th {
     transform: translateY(-2px);
   }
 }
+
+.skeleton-loader {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-line {
+  height: 15px;
+  width: 100%;
+  background-color: #f0f0f0; /* Use a background color that matches your design */
+  margin-bottom: 10px;
+  border-radius: 4px;
+}

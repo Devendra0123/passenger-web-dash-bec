@@ -66,7 +66,7 @@ const GoogleMapDirection = ({ pickup, drop, via, routes }) => {
       map.fitBounds(bounds);
 
       // Poly lines
-      var decodedPoints = google.maps.geometry.encoding.decodePath(
+      var decodedPoints = google.maps?.geometry?.encoding?.decodePath(
         routes?.overview_polyline?.points
       );
 

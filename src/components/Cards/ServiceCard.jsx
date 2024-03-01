@@ -17,7 +17,6 @@ const ServiceCard = ({
   const [open, setOpen] = useState(false);
 
   const {
-    dateAndTime,
     trip_type,
     payment_status,
     payment_status_class,
@@ -82,15 +81,17 @@ const ServiceCard = ({
 
         {!isHistory && (
           <div className="flex items-center gap-[10px]">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              className=" flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-green-800 text-white "
-            >
-              <IoCall /> Call Driver
-            </button>
+            {driver && driver?.length !== 0 && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                className=" flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-green-800 text-white "
+              >
+                <IoCall /> Call Driver
+              </button>
+            )}
 
             <button
               onClick={(e) => {
@@ -242,7 +243,7 @@ const ServiceCard = ({
 
       <div className="relative w-full flex items-center justify-between gap-[10px]">
         {/* Driver info */}
-        {driver && (
+        {driver && driver?.length !== 0 && (
           <div
             onClick={() => setDisplayDriverPopup(true)}
             className={`${

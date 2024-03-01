@@ -56,12 +56,15 @@ function WindowScrollTop() {
 function App() {
   const navigate = useNavigate();
 
-  const { isAuthenticated, isLoading,firebaseReferenceID } = useAuthContext();
-console.log(firebaseReferenceID)
+  const { isAuthenticated, isLoading, firebaseReferenceID } = useAuthContext();
+
   const [data, setData] = useState();
   const [notificationData, setNotificationData] = useState();
   const [notificationCount, setNotificationCount] = useState();
-
+  const [profileDataStatus, setProfileDataStatus] = useState({
+    pending: true,
+    error: "",
+  });
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
       navigate("/login");
@@ -70,16 +73,16 @@ console.log(firebaseReferenceID)
 
   // Get Profile Data
   function getProfileData(referenceID) {
-    const docRef = doc(
-      db,
-      "passengers",
-      referenceID,
-      "data",
-      "profile"
-    );
-    onSnapshot(docRef, (doc) => {
-      setData(doc.data());
-    });
+    try {
+      const docRef = doc(db, "passengers", referenceID, "data", "profile");
+      onSnapshot(docRef, (doc) => {
+        setData(doc.data());
+        setProfileDataStatus({ pending: false, error: "" });
+      });
+
+    } catch (error) {
+      setProfileDataStatus({ pending: false, error: error.message });
+    }
   }
 
   // Get Notification
@@ -108,15 +111,16 @@ console.log(firebaseReferenceID)
   }
 
   useEffect(() => {
-    if(firebaseReferenceID)
-    getProfileData(firebaseReferenceID);
+    if (firebaseReferenceID && isAuthenticated)
+      getProfileData(firebaseReferenceID);
     // getPassengerNotificationData();
-  }, [firebaseReferenceID]);
+  }, [firebaseReferenceID, isAuthenticated]);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
+  console.log(firebaseReferenceID, isAuthenticated);
   return (
     <Elements stripe={stripePromise}>
       <div className="w-full min-h-[100vh] flex justify-center">
@@ -127,7 +131,11 @@ console.log(firebaseReferenceID)
             <Sidebar />
           </div>
           <div className="col-span-5 h-full">
-            <Header data={data} notificationCount={notificationCount} />
+            <Header
+              data={data}
+              notificationCount={notificationCount}
+              pending={profileDataStatus?.pending}
+            />
             <div className="mt-[20px] h-full">
               <Routes>
                 <Route path="/" element={<Home />} />

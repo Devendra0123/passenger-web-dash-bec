@@ -3,20 +3,29 @@ import UserCard from "../Cards/UserCard";
 import { getCurrentDate } from "../../utils/getCurrentDate";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../Context/AuthContext";
+import ProfileNameLoader from "../SkeletonLoader/ProfileNameLoader";
 
-const Header = ({data, notificationCount}) => {
+const Header = ({ data, pending, notificationCount }) => {
+  console.log(pending)
   const { isAuthenticated } = useAuthContext();
 
-  if(!isAuthenticated){
-    return null
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (
     <div className="z-10 sticky top-[0px] w-full flex items-center justify-between bg-white/75 backdrop-blur-sm rounded-[15px] p-[20px]">
       <div className="flex items-center gap-[20px]">
-        <div className="bg-[#F2F2F2] p-[6px] rounded-[25px] flex items-center justify-center border border-slate-300">
-          <UserCard name={data?.first_name} image={data?.profile_picture_url ? data?.profile_picture_url : ""} />
-        </div>
+        {pending ? (
+          <ProfileNameLoader />
+        ) : (
+          <div className="bg-[#F2F2F2] p-[6px] rounded-[25px] flex items-center justify-center border border-slate-300">
+            <UserCard
+              name={data?.first_name}
+              image={data?.profile_picture_url ? data?.profile_picture_url : ""}
+            />
+          </div>
+        )}
 
         <div>
           <p className="px-[15px] py-[6px] bg-[#E2E2E2] rounded-[25px] text-lg ">

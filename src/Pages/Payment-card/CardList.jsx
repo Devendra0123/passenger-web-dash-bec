@@ -23,7 +23,8 @@ const style = {
 };
 
 const PaymentCardList = () => {
-  const { authToken } = useAuthContext();
+
+  const { firebaseReferenceID } = useAuthContext();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -32,10 +33,10 @@ const PaymentCardList = () => {
   const [cardData, setCardData] = useState();
 
   // Get passenger card data
-  function getPassengerCardData() {
+  function getPassengerCardData(firebaseReferenceID) {
     try {
       const q = query(
-        collection(db, "passengers", "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42", "cards")
+        collection(db, "passengers", firebaseReferenceID , "cards")
       );
 
       onSnapshot(q, (querySnapshot) => {
@@ -51,15 +52,17 @@ const PaymentCardList = () => {
   }
 
   useEffect(() => {
-    // getPassengerCardData();
-  }, []);
-
-  useEffect(() => {
-    if (cardData?.length > 0) {
-      const activeCard = cardData.filter((item) => item.is_active);
-      console.log(activeCard);
+    if(firebaseReferenceID){
+      getPassengerCardData(firebaseReferenceID);
     }
-  }, [cardData]);
+  }, [firebaseReferenceID]);
+
+  // useEffect(() => {
+  //   if (cardData?.length > 0) {
+  //     const activeCard = cardData.filter((item) => item.is_active);
+  //     console.log(activeCard);
+  //   }
+  // }, [cardData]);
 
   console.log(cardData);
 
@@ -97,27 +100,18 @@ const PaymentCardList = () => {
           handleClose={handleClose}
         />
 
-        <PaymentCard
-          cardNumber="xxxx-xxxx-xxxx-1111"
-          isVerified={true}
-          cardHolderName="test name"
-          cardExpiryDate="03/2025"
-          isActive={true}
-        />
-
         {/* --------card-list-------- */}
         <div className="card-list  mt-7">
-          <h2 className="font-medium my-5 text-fontSize_lg ">Cards List</h2>
           <div className="flex flex-col gap-6">
             {cardData?.length > 0 &&
               cardData.map((data, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <PaymentCard
                     cardNumber={data.card_masked}
-                    isVerified={true}
+                    // isVerified={true}
                     isActive={data.is_active}
-                    cardHolderName={data.name}
                     cardExpiryDate={`${data.exp_month}/${data.exp_year}`}
+                    name={data?.name}
                   />
                   <Tooltip
                     arrow={true}

@@ -5,13 +5,20 @@ import Notice from "../components/Notice";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebase/setup";
 import { useAuthContext } from "../Context/AuthContext";
+import CardLoader from "../components/SkeletonLoader/CardLoader";
+import NoticeLoader from "../components/SkeletonLoader/NoticeLoader";
 
 const Home = () => {
-  const { firebaseReferenceID } = useAuthContext();
+  const { firebaseReferenceID, isAuthenticated } = useAuthContext();
 
   const [noticeData, setNoticeData] = useState();
   const [scheduleBookingData, setScheduleBookingData] = useState();
-
+  const [noticeStatus, setNoticeStatus] = useState({
+    pending: true,
+  });
+  const [scheduleBookingStatus, setScheduleBookingStatus] = useState({
+    pending: true,
+  });
   // Get Notice Data
   function getPassengerNoticeData(referenceId) {
     try {
@@ -23,8 +30,14 @@ const Home = () => {
           notices.push(doc.data());
         });
         setNoticeData(notices);
+        setNoticeStatus({
+          pending: false,
+        });
       });
     } catch (error) {
+      setNoticeStatus({
+        pending: false,
+      });
       console.error("Error fetching document:", error);
     }
   }
@@ -37,25 +50,31 @@ const Home = () => {
       onSnapshot(q, (querySnapshot) => {
         const bookingData = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc)
+          console.log(doc);
           bookingData.push(doc.data());
         });
 
         setScheduleBookingData(bookingData);
+        setScheduleBookingStatus({
+          pending: false,
+        });
       });
     } catch (error) {
+      setScheduleBookingStatus({
+        pending: false,
+      });
       console.error("Error fetching document:", error);
     }
   }
 
   useEffect(() => {
-    if (firebaseReferenceID) {
+    if (firebaseReferenceID && isAuthenticated) {
       getPassengerNoticeData(firebaseReferenceID);
       getScheduleBookingData(firebaseReferenceID);
     }
-  }, [firebaseReferenceID]);
+  }, [firebaseReferenceID, isAuthenticated]);
 
-  console.log(scheduleBookingData)
+  console.log(scheduleBookingData);
   return (
     <div className="w-full flex justify-center">
       <div className="w-full grid grid-cols-2 gap-[20px]">
@@ -67,11 +86,14 @@ const Home = () => {
         <div className="flex flex-col gap-[20px]">
           {/* notices */}
           <div>
-            <Notice data={noticeData} />
+            <Notice data={noticeData} pending={noticeStatus?.pending} />
           </div>
           {/* scheduled booking */}
           <div>
-            <ScheduledBooking data={scheduleBookingData} />
+            <ScheduledBooking
+              data={scheduleBookingData}
+              pending={scheduleBookingStatus?.pending}
+            />
           </div>
         </div>
       </div>

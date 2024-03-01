@@ -77,7 +77,7 @@ const NoticeSlider = ({ data }) => {
               key={index}
               className={`min-w-[100%] slide ${index === activeIndex ? "active" : ""}`}
             >
-              <NoticeCard title={data?.title} description={data?.message} />
+              <NoticeCard data={data} />
             </div>
           ))}
       </div>
