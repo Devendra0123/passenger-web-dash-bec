@@ -1,4 +1,7 @@
+import $ from "jquery";
+
 const apiUrl = import.meta.env.VITE_API_URL;
+const sessionUrl = import.meta.env.VITE_SESSION_URL;
 const appToken = import.meta.env.VITE_APP_TOKEN;
 
 // Passenger login
@@ -48,14 +51,43 @@ export const registerPassenger = async (passengerInfo, authToken) => {
 };
 
 // Get Profile Status
-export const getProfileStatus = async(authToken)=>{
- const data = await fetch(`${apiUrl}/passenger/status`, {
+export const getProfileStatus = async (authToken) => {
+  const data = await fetch(`${apiUrl}/passenger/status`, {
     method: "GET",
     headers: {
       AppToken: `${appToken}`,
       Authorization: `Bearer ${authToken}`,
-    }
-  }).then(res => res.json());
+    },
+  }).then((res) => res.json());
 
   return data;
-}
+};
+
+// Post method for passenger session
+export const postSession = async (credential, authToken) => {
+
+  $.ajax({
+    method: "POST",
+    xhrFields: {
+      withCredentials: true,
+    },
+    headers:{
+      "Content-Type": "application/json",
+      AppToken: `${appToken}`,
+      Authorization: `Bearer ${authToken}`
+    },
+    url: `${sessionUrl}`,
+    data: JSON.stringify(credential),
+  })
+    .done(function (data) {
+      return data;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ...
+    })
+    .fail(function () {
+      alert("Something went wrong!");
+    });
+};

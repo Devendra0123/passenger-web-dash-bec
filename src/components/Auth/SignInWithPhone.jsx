@@ -7,12 +7,17 @@ import "react-international-phone/style.css";
 import { useNavigate } from "react-router-dom";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from "../../firebase/setup";
-import { loginPassenger } from "../../query/AuthQuery";
+import {
+  getProfileStatus,
+  loginPassenger,
+  postSession,
+} from "../../query/AuthQuery";
 
 const SignInWithPhone = () => {
   const navigate = useNavigate();
 
-  const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID } =
+    useAuthContext();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState();
@@ -111,11 +116,20 @@ const SignInWithPhone = () => {
         mobile: enteredPhoneNumber,
       };
       const res = await loginPassenger(credential);
-      const { auth_token, profile_status } = res.data;
+      const { auth_token } = res.data;
       setUid(uid);
       setAuthToken(auth_token);
-      // Save the auth token in localStorage
+
       localStorage.setItem("auth_Token", auth_token);
+
+      // Get Profile Status
+      const status = await getProfileStatus(auth_token);
+      const { profile_status, firebase_reference } = status.data;
+      
+      setFirebaseReferenceID(firebase_reference);
+      // Session post
+      await postSession(credential,auth_token);
+    
 
       if (profile_status == "required_profile") {
         setOtpVerificationStatus({ pending: false });
@@ -127,7 +141,9 @@ const SignInWithPhone = () => {
       }
       if (profile_status == "completed") {
         setOtpVerificationStatus({ pending: false });
-        window.location.reload();
+        // window.location.reload();
+        setIsAuthenticated(true);
+        navigate("/");
       }
     } catch (error) {
       setOtpVerificationStatus({ pending: false });

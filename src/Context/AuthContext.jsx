@@ -1,6 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
-import { getProfileStatus, loginPassenger } from "../query/AuthQuery";
+import {
+  getProfileStatus,
+  loginPassenger,
+  postSession,
+} from "../query/AuthQuery";
 import { useLocation, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import { signInWithCustomToken } from "firebase/auth";
@@ -74,7 +78,7 @@ export function AuthProvider({ children }) {
       xhrFields: {
         withCredentials: true,
       },
-      url: "https://britishexpresscars.test/passenger-session",
+      url: `${import.meta.env.VITE_SESSION_URL}`,
     })
       .done(function (data) {
         const { auth_token, session } = data;
@@ -99,13 +103,16 @@ export function AuthProvider({ children }) {
                 // Hit login api
                 await loginPassenger(userData).then(async (res) => {
                   if (res?.data) {
+                    console.log(res?.data);
                     setIsLoading(false);
                     setUid(user.uid);
-                    setAuthToken(res?.auth_token);
-                    if (res?.auth_token) {
+                    setAuthToken(res?.data?.auth_token);
+                    if (res?.data?.auth_token) {
                       // Check status of user
-                      console.log("calling status")
-                      await checkAndSetAuthToken(res?.auth_token);
+                      console.log("calling status");
+                      await checkAndSetAuthToken(res?.data?.auth_token);
+
+                      await postSession(userData,res?.data?.auth_token);
                     }
                   }
                 });
@@ -120,7 +127,7 @@ export function AuthProvider({ children }) {
       })
       .catch((error) => {})
       .fail(function () {
-        alert("uh oh it failed");
+        alert("Something went wrong!");
       });
   };
 
