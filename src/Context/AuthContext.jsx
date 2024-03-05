@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
 import { getProfileStatus } from "../query/AuthQuery";
 import { useLocation, useNavigate } from "react-router-dom";
+import $ from "jquery"
 
 const AuthContext = createContext();
 
@@ -66,7 +67,32 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Get Passenger Session
+  const getSession = async()=>{
+    $.ajax({
+      method: "GET",
+    xhrFields: {
+          withCredentials: true
+      },
+      url: "https://britishexpresscars.test/passenger-session"
+    })
+    .done(function(data){
+      const {auth_token,session} = data;
+      console.log(data)
+      if(auth_token == null){
+        navigate("/login");
+      }
+    })
+    .catch((error) => {
+     
+    })
+    .fail(function(){
+      alert("uh oh it failed");
+    })
+  }
+
   useEffect(() => {
+    getSession()
     checkAndSetAuthToken();
   }, []);
 
