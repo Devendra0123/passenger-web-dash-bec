@@ -20,7 +20,15 @@ const ScheduledBooking = ({ data, pending }) => {
         </div>
 
         {pending ? (
-          <CardLoader />
+          <div className="flex flex-col gap-[20px]">
+            {Array(2)
+              .fill(null)
+              .map((item, index) => (
+                <div key={index} className="bg-light_gray/50 rounded-[15px] p-[20px]">
+                  <CardLoader />
+                </div>
+              ))}
+          </div>
         ) : (
           <div className="mt-[20px] flex flex-col gap-[20px]">
             {data?.length > 0 &&
@@ -29,7 +37,6 @@ const ScheduledBooking = ({ data, pending }) => {
                 .map((item, index) => <ServiceCard key={index} data={item} />)}
           </div>
         )}
-
       </div>
       <div className="gradient-circle z-[-1] absolute bottom-[20px] right-[20px] w-[300px] h-[300px] rounded-full " />
     </div>

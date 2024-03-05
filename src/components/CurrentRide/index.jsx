@@ -24,7 +24,7 @@ const CurrentRide = () => {
           </div>
         </div>
         {currentRideData && (
-          <ServiceCard data={currentRideData} serviceType="current" />
+          <ServiceCard data={currentRideData} serviceType="current" isMainCard={true} />
         )}
 
         <div className="w-full flex flex-col items-center gap-[10px] text-center">

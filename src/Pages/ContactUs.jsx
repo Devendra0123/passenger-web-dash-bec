@@ -18,7 +18,7 @@ const ContactUs = () => {
               </p>
             </div>
 
-            <div class="w-full bg-smoke/75 flex flex-col items-center gap-[10px] rounded-[10px] p-[20px]">
+            <div className="w-full bg-smoke/75 flex flex-col items-center gap-[10px] rounded-[10px] p-[20px]">
               <IoCallOutline className="text-primary text-[29px] font-[700] " />
               <h1 className="">Call us at</h1>
               <p className="pl-[10px] font-semibold text-lg text-center">
@@ -26,7 +26,7 @@ const ContactUs = () => {
               </p>
             </div>
 
-            <div class="col-span-2 bg-smoke/75 flex flex-col items-center gap-[10px] rounded-[10px] p-[20px]">
+            <div className="col-span-2 bg-smoke/75 flex flex-col items-center gap-[10px] rounded-[10px] p-[20px]">
               <IoLocationOutline className="text-primary text-[29px] font-[700] " />
               <h1 className="">Our address</h1>
               <p className="pl-[10px] whitespace-wrap font-semibold text-lg text-center">

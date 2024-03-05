@@ -152,7 +152,7 @@ const ProfileRequiredFields = () => {
           {isPending ? (
             <span className="flex items-center gap-[3px] justify-center ">
               <svg
-                class="animate-spin h-5 w-5 mr-3 ..."
+                className="animate-spin h-5 w-5 mr-3 ..."
                 fill="#fff"
                 viewBox="0 0 24 24"
               >

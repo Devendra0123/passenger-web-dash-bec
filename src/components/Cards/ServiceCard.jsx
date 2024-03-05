@@ -11,6 +11,7 @@ const ServiceCard = ({
   serviceType,
   doNotShowHoverEffect,
   isHistory,
+  isMainCard,
 }) => {
   const [isPriceInfoHovered, setIsPriceInfoHovered] = useState(false);
   const [displayDriverPopup, setDisplayDriverPopup] = useState(false);
@@ -99,7 +100,9 @@ const ServiceCard = ({
                 e.stopPropagation();
                 setOpen(true);
               }}
-              className="flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] bg-primary text-white"
+              className={`flex items-center gap-[6px] px-[5px] py-[5px] text-[13px] rounded-[4px] ${
+                isMainCard ? " bg-primary" : " bg-red-500"
+              } text-white`}
             >
               Cancel Booking
             </button>

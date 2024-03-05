@@ -4,6 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { loginPassenger } from "../../query/AuthQuery";
+import { FaTimes } from "react-icons/fa";
+import { Box, Modal } from "@mui/material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  minWidth: "600px",
+  minHeight: "400px",
+  bgcolor: "background.paper",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 4,
+};
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
@@ -11,7 +26,12 @@ const SignInWithEmail = () => {
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
   const [displayAddCard, setDisplayAddCard] = useState(false);
+  const [open, setOpen] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState("");
+  // const [passwordResetEmail, setPasswordResetEmail] = useState("");
+  // const [passwordResetFormStatus, setPasswordResetFormStatus] = useState({
+  //   pending: false,
+  // });
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -67,16 +87,11 @@ const SignInWithEmail = () => {
       if (profile_status == "required_card") {
         navigate(`/account/add-card-details`);
       }
-      if(profile_status == "completed"){
+      if (profile_status == "completed") {
         setIsAuthenticated(true);
-        navigate("/")
+        navigate("/");
       }
       setSignInStatus({ pending: false });
-      // setIsAuthenticated(true);
-      // setShowToast(true);
-      // setToastMessage("Logged in successfully!");
-      // navigate("/");
-      // console.log(user);
     } catch (error) {
       setSignInStatus({ pending: false });
 
@@ -131,11 +146,22 @@ const SignInWithEmail = () => {
                 className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
               />
             </div>
+
             {authErrorMessage && (
               <p className="text-primary text-[15px] font-[500]">
                 {authErrorMessage}
               </p>
             )}
+
+            {/* <div className="w-full flex justify-end ">
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                className="bg-none text-[12px] text-slate-700"
+              >
+                Forgot Password?
+              </button>
+            </div> */}
             <button
               type="submit"
               disabled={signInStatus.pending}
@@ -173,17 +199,62 @@ const SignInWithEmail = () => {
             </p>
           </div>
         </div>
-
-        {/* Add Card
-        <div
-          className={`pl-[50px] mt-[-70px] flex flex-col min-w-full h-[70%] overflow-y-auto p-[20px] pb-[30px]`}
-        >
-          <h2 className="text-[25px] text-start font-semibold">
-            Add Card Details
-          </h2>
-          <AddCardFields />
-        </div> */}
       </div>
+
+      {/* Forgot Password modal */}
+      {/* {open && (
+        <div>
+          <Modal
+            open={open}
+            onClose={() => setOpen(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className=" flex flex-col gap-[20px] ">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-primary text-lg font-bold">
+                    Forgot Password?
+                  </h2>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="absolute top-[20px] right-[20px]"
+                  >
+                    <FaTimes className="text-primary" size={20} />
+                  </button>
+                </div>
+                <h3 className="font-[600] w-full md:w-[75%] ">
+                  Did you forget your password? Enter your email id to reset
+                  your password.
+                </h3>
+
+                <div className="w-full lg:w-[300px] flex flex-col gap-[10px]">
+                  <input
+                    type="text"
+                    placeholder="Enter your email id"
+                    value={passwordResetEmail}
+                    onChange={(e) => setPasswordResetEmail(e.target.value)}
+                    className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+                  />
+                  <button
+                    type="button"
+                    disabled={
+                      !passwordResetEmail || passwordResetFormStatus?.pending
+                    }
+                    className={`${
+                      !passwordResetEmail || passwordResetFormStatus?.pending
+                        ? "bg-blue-500/50"
+                        : "bg-blue-500"
+                    } px-[20px] py-[7px] text-white rounded-[4px]`}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </Box>
+          </Modal>
+        </div>
+      )} */}
     </div>
   );
 };
