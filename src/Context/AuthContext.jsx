@@ -87,8 +87,8 @@ export function AuthProvider({ children }) {
             .then((userCredential) => {
               // Signed in
               const user = userCredential.user;
-              console.log(user);
-              checkAndSetAuthToken(auth_token);
+              console.log(user?.accessToken);
+              checkAndSetAuthToken(user?.accessToken);
               // ...
             })
             .catch((error) => {
