@@ -74,7 +74,9 @@ const Home = () => {
     }
   }, [firebaseReferenceID, isAuthenticated]);
 
+  console.log("firebase reference ID", firebaseReferenceID);
   console.log(scheduleBookingData);
+  
   return (
     <div className="w-full flex justify-center">
       <div className="w-full grid grid-cols-2 gap-[20px]">

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { createContext } from "react";
-import { getProfileStatus } from "../query/AuthQuery";
+import { getProfileStatus, loginPassenger } from "../query/AuthQuery";
 import { useLocation, useNavigate } from "react-router-dom";
 import $ from "jquery";
 import { signInWithCustomToken } from "firebase/auth";
@@ -80,16 +80,36 @@ export function AuthProvider({ children }) {
         const { auth_token, session } = data;
         console.log(data);
         if (auth_token == null) {
+          setIsLoading(false);
           navigate("/login");
         }
         if (auth_token) {
+          // Sign in with custom domain
           signInWithCustomToken(auth, auth_token)
-            .then((userCredential) => {
-              // Signed in
+            .then(async (userCredential) => {
               const user = userCredential.user;
-              console.log(user?.accessToken);
-              checkAndSetAuthToken(user?.accessToken);
-              // ...
+              console.log(user);
+              if (user?.uid) {
+                const userData = {
+                  uid: user?.uid,
+                  email: user?.email,
+                  mobile: user?.phoneNumber,
+                };
+
+                // Hit login api
+                await loginPassenger(userData).then(async (res) => {
+                  if (res?.data) {
+                    setIsLoading(false);
+                    setUid(user.uid);
+                    setAuthToken(res?.auth_token);
+                    if (res?.auth_token) {
+                      // Check status of user
+                      console.log("calling status")
+                      await checkAndSetAuthToken(res?.auth_token);
+                    }
+                  }
+                });
+              }
             })
             .catch((error) => {
               const errorCode = error.code;
