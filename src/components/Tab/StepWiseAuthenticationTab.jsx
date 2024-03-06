@@ -8,7 +8,7 @@ const StepWiseAuthenticationTab = ({ activeTab }) => {
       <div className="w-full flex items-center justify-start gap-[5px] ">
         {/* required_profile tab */}
         <div className="relative">
-          {activeTab == "required_profile" ? (
+          {activeTab == "new" ? (
             <GoDotFill className="text-blue-500 text-[21px]" />
           ) : activeTab == "required_card" ? (
             <IoIosCheckmark className="text-green-500 text-[21px]" />
@@ -25,7 +25,7 @@ const StepWiseAuthenticationTab = ({ activeTab }) => {
         <div className="w-[200px] h-[5px] bg-blue-300 rounded-[25px] " />
         {/* required_card tab */}
         <div className="relative">
-          {activeTab == "required_profile" ? (
+          {activeTab == "new" ? (
             <GoDot className="text-gray-500 text-[21px]" />
           ) : activeTab == "required_card" ? (
             <GoDotFill className="text-blue-500 text-[21px]" />

@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
         const status = await getProfileStatus(auth_token);
         const { profile_status, firebase_reference } = status.data;
         setFirebaseReferenceID(firebase_reference);
-        if (profile_status == "required_profile") {
+        if (profile_status == "new") {
           setIsLoading(false);
           navigate(`/account/add-profile-details?login-type=email`);
         }

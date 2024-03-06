@@ -131,7 +131,7 @@ const SignInWithPhone = () => {
       await postSession(credential,auth_token);
     
 
-      if (profile_status == "required_profile") {
+      if (profile_status == "new") {
         setOtpVerificationStatus({ pending: false });
         navigate(`/account/add-profile-details?login-type=mobile`);
       }

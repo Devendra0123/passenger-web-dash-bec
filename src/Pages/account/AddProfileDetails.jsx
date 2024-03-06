@@ -16,7 +16,7 @@ const AddProfileDetails = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [searchParams] = useSearchParams();
-  const { authToken, setFirebaseReferenceID } = useAuthContext();
+  const { authToken, setFirebaseReferenceID, setIsAuthenticated } = useAuthContext();
 
   const loginType = searchParams.get("login-type");
 
@@ -81,6 +81,13 @@ const AddProfileDetails = () => {
       if (profile_status == "required_card") {
         navigate(`/account/add-card-details`);
       }
+      if (profile_status == "required_card") {
+        navigate(`/account/add-card-details`);
+      }
+      if (profile_status == "completed") {
+        setIsAuthenticated(true);
+        navigate("/");
+      }
     } catch (error) {
       setIsPending(false);
       const errorCode = error.code || "unknown";
@@ -109,7 +116,7 @@ const AddProfileDetails = () => {
         </div>
 
         <div className="col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px] p-[20px]">
-          <StepWiseAuthenticationTab activeTab="required_profile" />
+          <StepWiseAuthenticationTab activeTab="new" />
           <h2 className="w-full text-start font-semibold text-[25px] mt-[50px] ">
             Add Profile Details
           </h2>

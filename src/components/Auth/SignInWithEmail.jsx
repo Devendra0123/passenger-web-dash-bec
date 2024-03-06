@@ -3,7 +3,7 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
-import { loginPassenger } from "../../query/AuthQuery";
+import { getProfileStatus, loginPassenger, postSession } from "../../query/AuthQuery";
 import { FaTimes } from "react-icons/fa";
 import { Box, Modal } from "@mui/material";
 
@@ -22,7 +22,7 @@ const style = {
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID } = useAuthContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
   const [displayAddCard, setDisplayAddCard] = useState(false);
@@ -74,14 +74,22 @@ const SignInWithEmail = () => {
       // Backend Login logic after successful firebase sign-in
       const res = await loginPassenger(credential);
 
-      const { auth_token, profile_status } = res.data;
+      const { auth_token } = res.data;
 
       setUid(user.uid);
       setAuthToken(auth_token);
       // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
 
-      if (profile_status == "required_profile") {
+      // Get Profile Status
+      const status = await getProfileStatus(auth_token);
+      const { profile_status, firebase_reference } = status.data;
+
+      setFirebaseReferenceID(firebase_reference);
+      // Session post
+      await postSession(credential, auth_token);
+
+      if (profile_status == "new") {
         navigate(`/account/add-profile-details?login-type=email`);
       }
       if (profile_status == "required_card") {

@@ -89,11 +89,6 @@ const CardForm = () => {
         console.log(token);
         if (token?.id) {
           const {data, message} = await addCard(authToken, token.id);
-          if(data == null){
-            setIsPending(false);
-            setErrorMessage(message)
-            return;
-          }
           console.log(data);
           setIsAuthenticated(true);
           toast.success(message)

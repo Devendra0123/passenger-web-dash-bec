@@ -89,7 +89,7 @@ const RegisterViaEmail = () => {
         mobile: enteredPhoneNumber,
         profile_image: file,
       };
-      if (profile_status == "required_profile") {
+      if (profile_status == "new") {
         const response = await registerPassenger(passengerInfo, auth_token);
 
         navigate(`/account/add-card-details`);
