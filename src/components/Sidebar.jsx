@@ -6,19 +6,15 @@ import { VscAccount } from "react-icons/vsc";
 import { IoCallOutline } from "react-icons/io5";
 import { LuLogOut } from "react-icons/lu";
 import { useAuthContext } from "../Context/AuthContext";
-
+import { logout } from "../query/AuthQuery";
 const Sidebar = () => {
   const location = useLocation();
   const pathname = location.pathname;
-
-  const { isAuthenticated } = useAuthContext();
-
+  const { isAuthenticated, setIsAuthenticated } = useAuthContext();
   const [activeLink, setActiveLink] = useState();
-
   const setActivePath = (route) => {
     setActiveLink(route);
   };
-
   useEffect(() => {
     if (pathname == "/") {
       setActiveLink("/");
@@ -26,10 +22,20 @@ const Sidebar = () => {
       setActiveLink(pathname);
     }
   }, [pathname]);
-
-  if(!isAuthenticated){
-    return null
+  if (!isAuthenticated) {
+    return null;
   }
+  // Handle Logout
+  const handleLogout = async () => {
+    try {
+      await logout().then((res) => {
+        localStorage.removeItem("auth_Token");
+        setIsAuthenticated(false);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="sticky top-[30px] w-full h-[90vh] overflow-auto bg-[#F2F2F2] flex flex-col items-start justify-between p-[20px] rounded-[15px] border border-slate-300 shadow-lg">
       <div className="w-full flex flex-col ">
@@ -52,14 +58,12 @@ const Sidebar = () => {
             ))}
         </div>
       </div>
-
       <div className="w-full bg-gradient-to-r from-white to-slate-100 p-[20px] flex flex-col items-center gap-[12px] rounded-[5px]">
         <p className="text-[19px] font-semibold text-center">Take a ride</p>
         <button className="w-max text-white font-[500] bg-primary px-[20px] py-[8px] rounded-[25px]">
           Book a Ride
         </button>
       </div>
-
       <div className="w-full flex flex-col gap-[3px]">
         {/* Account */}
         <Link
@@ -83,8 +87,10 @@ const Sidebar = () => {
           <IoCallOutline className="w-[15px] h-[15px]" />
           <p>Contact Us</p>
         </Link>
-
-        <div className="w-max flex items-center gap-1 px-[12px] py-[8px] rounded-[5px] bg-gray-300  ">
+        <div
+          onClick={handleLogout}
+          className="cursor-pointer w-max flex items-center gap-1 px-[12px] py-[8px] rounded-[5px] bg-gray-300  "
+        >
           <LuLogOut />
           <p>Logout</p>
         </div>
@@ -92,5 +98,4 @@ const Sidebar = () => {
     </div>
   );
 };
-
 export default Sidebar;
