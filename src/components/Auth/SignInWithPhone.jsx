@@ -12,12 +12,22 @@ import {
   loginPassenger,
   postSession,
 } from "../../query/AuthQuery";
+import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const SignInWithPhone = () => {
+
   const navigate = useNavigate();
 
-  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID } =
-    useAuthContext();
+  const {
+    setIsAuthenticated,
+    setAuthToken,
+    setUid,
+    setFirebaseReferenceID,
+    setLoginType,
+    setProfileStatus,
+    loginType,
+  } = useAuthContext();
+
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState();
@@ -125,26 +135,17 @@ const SignInWithPhone = () => {
       // Get Profile Status
       const status = await getProfileStatus(auth_token);
       const { profile_status, firebase_reference } = status.data;
-      
+
       setFirebaseReferenceID(firebase_reference);
       // Session post
-      await postSession(credential,auth_token);
-    
-
-      if (profile_status == "new") {
-        setOtpVerificationStatus({ pending: false });
-        navigate(`/account/add-profile-details?login-type=mobile`);
+      await postSession(credential, auth_token);
+      setOtpVerificationStatus({ pending: false });
+      setProfileStatus(profile_status);
+      setLoginType("mobile");
+      if(profile_status == "completed"){
+        setIsAuthenticated(true)
       }
-      if (profile_status == "required_card") {
-        setOtpVerificationStatus({ pending: false });
-        navigate(`/account/add-card-details`);
-      }
-      if (profile_status == "completed") {
-        setOtpVerificationStatus({ pending: false });
-        // window.location.reload();
-        setIsAuthenticated(true);
-        navigate("/");
-      }
+      navigateBasedOnStatus(profile_status, "mobile", navigate);
     } catch (error) {
       setOtpVerificationStatus({ pending: false });
       const errorCode = error.code;

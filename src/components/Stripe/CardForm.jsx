@@ -11,8 +11,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaLock } from "react-icons/fa";
 import { useAuthContext } from "../../Context/AuthContext";
 import { addCard } from "../../query/BackendPostQuery";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getProfileStatus } from "../../query/AuthQuery";
+import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const useOptions = () => {
   const options = useMemo(
@@ -37,7 +39,8 @@ const useOptions = () => {
 };
 
 const CardForm = () => {
-  const { authToken, setIsAuthenticated } = useAuthContext();
+  const { authToken, setIsAuthenticated, setFirebaseReferenceID,loginType } =
+    useAuthContext();
 
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -88,13 +91,18 @@ const CardForm = () => {
           .then((res) => res.token);
         console.log(token);
         if (token?.id) {
-          const {data, message} = await addCard(authToken, token.id);
-          console.log(data);
-          setIsAuthenticated(true);
-          toast.success(message)
+          const { data, message } = await addCard(authToken, token.id);
+          // Get Profile Status
+          const status = await getProfileStatus(authToken);
+          const { profile_status, firebase_reference } = status.data;
+
+          setFirebaseReferenceID(firebase_reference);
+
           setIsPending(false);
-          navigate(`/`);
-         
+          if (profile_status == "completed") {
+            setIsAuthenticated(true);
+          }
+          navigateBasedOnStatus(profile_status, loginType, navigate);
         }
       }
     } catch (error) {
@@ -102,7 +110,7 @@ const CardForm = () => {
       const errorCode = error.code || "unknown";
       const errorMessage = error.message || "An error occurred";
       setErrorMessage(errorMessage);
-      toast.error(errorMessage)
+      toast.error(errorMessage);
     }
   };
 
@@ -202,7 +210,7 @@ const CardForm = () => {
           type="checkbox"
           checked={hasAgreedToTerms}
           value={hasAgreedToTerms}
-          onClick={() => setHasAgreedToTerms((prev) => !prev)}
+          onChange={() => setHasAgreedToTerms((prev) => !prev)}
           className="mt-[4px]"
         />
         <label htmlFor="checkbox">
@@ -220,7 +228,11 @@ const CardForm = () => {
       <button
         type="submit"
         disabled={!stripe | isPending | !hasAgreedToTerms}
-        className={`mt-[20px] w-[80%] px-[20px] py-[10px] ${(!stripe | isPending | !hasAgreedToTerms) ? "bg-blue-500/50" : "bg-blue-500"} text-white `}
+        className={`mt-[20px] w-[80%] px-[20px] py-[10px] ${
+          !stripe | isPending | !hasAgreedToTerms
+            ? "bg-blue-500/50"
+            : "bg-blue-500"
+        } text-white `}
       >
         {isPending ? (
           <span className="flex items-center gap-[3px] justify-center ">

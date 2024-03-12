@@ -96,45 +96,6 @@ const Register = () => {
                 </div>
               </div>
             )}
-
-            {/* Register via phone */}
-            {!showAddCardFields && registerViaQuery == "phone" && (
-              <div className="w-full">
-                <div
-                  className={`pl-[50px] mt-[0px] flex flex-col min-w-full h-max p-[20px] pb-[30px]`}
-                >
-                  <h2 className="text-[25px] text-start font-semibold">
-                    Register Account
-                  </h2>
-                  <p className="mt-[20px] text-[14px]">
-                    Fill the details to register your account
-                  </p>
-                  <RegisterViaPhoneForm
-                    handleRegisterFormSubmit={(e) => {
-                      e.preventDefault();
-                      navigate(
-                        `/register?registerVia=phone&step=add-card-details`
-                      );
-                      // setIsAuthenticated(true);
-                      // navigate("/");
-                    }}
-                  />
-                </div>
-              </div>
-            )}
-
-            {showAddCardFields && (
-              <div className="w-full min-h-full overflow-y-auto">
-                <div
-                  className={`pl-[50px] mt-[0px] flex flex-col min-w-full h-max p-[20px] pb-[30px]`}
-                >
-                  <h2 className="text-[25px] text-start font-semibold">
-                    Add Card Details
-                  </h2>
-                  <AddCardFields />
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

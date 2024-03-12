@@ -65,11 +65,6 @@ function App() {
     pending: true,
     error: "",
   });
-  useEffect(() => {
-    if (!isAuthenticated && !isLoading) {
-      navigate("/login");
-    }
-  }, [isAuthenticated, isLoading]);
 
   // Get Profile Data
   function getProfileData(referenceID) {
@@ -79,53 +74,24 @@ function App() {
         setData(doc.data());
         setProfileDataStatus({ pending: false, error: "" });
       });
-
     } catch (error) {
       setProfileDataStatus({ pending: false, error: error.message });
-    }
-  }
-
-  // Get Notification
-  function getPassengerNotificationData() {
-    try {
-      const q = query(
-        collection(
-          db,
-          "passengers",
-          "8WcIlyU3ILZeqTpklPSfQKJNKoX2-42",
-          "notifications"
-        )
-      );
-
-      onSnapshot(q, (querySnapshot) => {
-        const notifications = [];
-        querySnapshot.forEach((doc) => {
-          notifications.push(doc.data());
-        });
-        setNotificationData(notifications);
-        setNotificationCount(notifications.length);
-      });
-    } catch (error) {
-      console.error("Error fetching document:", error);
     }
   }
 
   useEffect(() => {
     if (firebaseReferenceID && isAuthenticated)
       getProfileData(firebaseReferenceID);
-    // getPassengerNotificationData();
   }, [firebaseReferenceID, isAuthenticated]);
 
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  console.log(firebaseReferenceID, isAuthenticated);
   return (
     <Elements stripe={stripePromise}>
       <div className="w-full min-h-[100vh] flex justify-center">
         <WindowScrollTop />
-
         <div className="w-width_sm md:w-width_md lg:w-width_lg xl:w-width_xl min-h-[85vh] grid grid-cols-7 gap-[20px] mt-[30px]">
           <div className="col-span-2 h-full">
             <Sidebar />

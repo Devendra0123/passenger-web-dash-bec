@@ -3,9 +3,15 @@ import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
-import { getProfileStatus, loginPassenger, postSession } from "../../query/AuthQuery";
+import {
+  getProfileStatus,
+  loginPassenger,
+  postSession,
+} from "../../query/AuthQuery";
 import { FaTimes } from "react-icons/fa";
 import { Box, Modal } from "@mui/material";
+import useNavigationBasedOnStatus from "../../hooks/useNavigateBasedOnStatus";
+import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const style = {
   position: "absolute",
@@ -22,7 +28,8 @@ const style = {
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID,loginType } =
+    useAuthContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
   const [displayAddCard, setDisplayAddCard] = useState(false);
@@ -89,17 +96,11 @@ const SignInWithEmail = () => {
       // Session post
       await postSession(credential, auth_token);
 
-      if (profile_status == "new") {
-        navigate(`/account/add-profile-details?login-type=email`);
-      }
-      if (profile_status == "required_card") {
-        navigate(`/account/add-card-details`);
-      }
+      setSignInStatus({ pending: false });
       if (profile_status == "completed") {
         setIsAuthenticated(true);
-        navigate("/");
       }
-      setSignInStatus({ pending: false });
+      navigateBasedOnStatus(profile_status, loginType, navigate);
     } catch (error) {
       setSignInStatus({ pending: false });
 

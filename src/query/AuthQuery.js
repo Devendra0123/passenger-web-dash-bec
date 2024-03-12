@@ -76,7 +76,7 @@ export const postSession = async (credential, authToken) => {
       AppToken: `${appToken}`,
       Authorization: `Bearer ${authToken}`
     },
-    url: `${sessionUrl}`,
+    url: `${sessionUrl}/passenger-session`,
     data: JSON.stringify(credential),
   })
     .done(function (data) {
@@ -104,5 +104,19 @@ export const logout = async (authToken) => {
     },
     body: formData,
   }).then((res) => res.json());
+
   return data;
 };
+
+// Passenger-session-logout
+export const passengerSessionLogout = async(authToken)=>{
+  const data = await fetch(`${sessionUrl}/passenger-session-logout`, {
+    method: "GET",
+    headers: {
+      AppToken: `${appToken}`,
+      Authorization: `Bearer ${authToken}`,
+    },
+  }).then((res) => res.json());
+
+  return data;
+}

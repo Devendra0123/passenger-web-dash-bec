@@ -74,13 +74,13 @@ const RegisterViaEmail = () => {
         uid: user.uid,
         email,
       };
+
       const res = await loginPassenger(credential);
 
       const { auth_token, profile_status } = res.data;
 
       setUid(user.uid);
       setAuthToken(auth_token);
-      // Save the auth token in localStorage
       localStorage.setItem("auth_Token", auth_token);
 
       const passengerInfo = {
@@ -89,6 +89,7 @@ const RegisterViaEmail = () => {
         mobile: enteredPhoneNumber,
         profile_image: file,
       };
+      
       if (profile_status == "new") {
         const response = await registerPassenger(passengerInfo, auth_token);
 
@@ -234,7 +235,7 @@ const RegisterViaEmail = () => {
           {registerStatus.pending ? (
             <span className="flex items-center gap-[3px] justify-center ">
               <svg
-                class="animate-spin h-5 w-5 mr-3 ..."
+                className="animate-spin h-5 w-5 mr-3 ..."
                 fill="#fff"
                 viewBox="0 0 24 24"
               >

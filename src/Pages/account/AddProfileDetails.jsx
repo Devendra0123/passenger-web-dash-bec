@@ -11,6 +11,7 @@ import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
+import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const AddProfileDetails = () => {
   const navigate = useNavigate();
@@ -78,16 +79,12 @@ const AddProfileDetails = () => {
       setFirebaseReferenceID(firebase_reference);
       setIsPending(false);
 
-      if (profile_status == "required_card") {
-        navigate(`/account/add-card-details`);
-      }
-      if (profile_status == "required_card") {
-        navigate(`/account/add-card-details`);
-      }
       if (profile_status == "completed") {
         setIsAuthenticated(true);
-        navigate("/");
       }
+      
+      navigateBasedOnStatus(profile_status, loginType, navigate);
+
     } catch (error) {
       setIsPending(false);
       const errorCode = error.code || "unknown";
