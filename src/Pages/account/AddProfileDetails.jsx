@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import { useAuthContext } from "../../Context/AuthContext";
@@ -12,20 +12,32 @@ import "react-international-phone/style.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import StepWiseAuthenticationTab from "../../components/Tab/StepWiseAuthenticationTab";
 import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
+import { db } from "../../firebase/setup";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const AddProfileDetails = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const [searchParams] = useSearchParams();
-  const { authToken, setFirebaseReferenceID, setIsAuthenticated } = useAuthContext();
+  const {
+    authToken,
+    setFirebaseReferenceID,
+    firebaseReferenceID,
+    setIsAuthenticated,
+  } = useAuthContext();
 
   const loginType = searchParams.get("login-type");
 
+  const [data, setData] = useState();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [profileDataStatus, setProfileDataStatus] = useState({
+    pending: true,
+    error: "",
+  });
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -67,8 +79,8 @@ const AddProfileDetails = () => {
     try {
       setIsPending(true);
       const apiResponse = await registerPassenger(userCredential, authToken);
-      const {title,message,data} = apiResponse;
-      if(title == "ValidationError"){
+      const { title, message, data } = apiResponse;
+      if (title == "ValidationError") {
         setErrorMessage(message);
         setIsPending(false);
         return;
@@ -82,9 +94,8 @@ const AddProfileDetails = () => {
       if (profile_status == "completed") {
         setIsAuthenticated(true);
       }
-      
-      navigateBasedOnStatus(profile_status, loginType, navigate);
 
+      navigateBasedOnStatus(profile_status, loginType, navigate);
     } catch (error) {
       setIsPending(false);
       const errorCode = error.code || "unknown";
@@ -93,6 +104,27 @@ const AddProfileDetails = () => {
     }
   };
 
+  // Get Profile Data
+  const getProfileData = async (referenceID) => {
+    console.log(referenceID);
+    try {
+      const docRef = doc(db, "passengers", referenceID, "data", "profile");
+      onSnapshot(docRef, (doc) => {
+        setData(doc.data());
+        setProfileDataStatus({ pending: false, error: "" });
+      });
+    } catch (error) {
+      setProfileDataStatus({ pending: false, error: error.message });
+    }
+  };
+
+  useEffect(() => {
+    if (firebaseReferenceID) {
+      getProfileData(firebaseReferenceID);
+    }
+  }, [firebaseReferenceID]);
+
+  console.log(data);
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 w-screen h-screen flex flex-col items-center justify-center p-[20px]">
       <div className="w-[80%] h-[600px] grid grid-cols-3 shadow-md rounded-lg overflow-hidden ">
@@ -112,7 +144,7 @@ const AddProfileDetails = () => {
           </div>
         </div>
 
-        <div className="col-span-2 h-full overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px] p-[20px]">
+        <div className="col-span-2 h-[80%] overflow-y-auto bg-smoke/75 flex flex-col items-center gap-[20px] p-[20px]">
           <StepWiseAuthenticationTab activeTab="new" />
           <h2 className="w-full text-start font-semibold text-[25px] mt-[50px] ">
             Add Profile Details
@@ -167,7 +199,8 @@ const AddProfileDetails = () => {
                 <input
                   type="text"
                   name="first_name"
-                  value={formData.first_name}
+                  value={data?.first_name || formData.first_name}
+                  disabled={data?.first_name}
                   onChange={handleOnChange}
                   className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
                 />
@@ -177,40 +210,40 @@ const AddProfileDetails = () => {
                 <input
                   type="text"
                   name="last_name"
-                  value={formData.last_name}
+                  value={data?.last_name || formData.last_name}
+                  disabled={data?.last_name}
                   onChange={handleOnChange}
                   className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
                 />
               </div>
             </div>
-            {loginType != "mobile" && (
-              <div className="flex flex-col gap-[5px]">
-                <label>Phone Number:</label>
-                <PhoneInput
-                  defaultCountry="gb"
-                  value={enteredPhoneNumber}
-                  onChange={(phone) => setEnteredPhoneNumber(phone)}
-                  className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
-                  inputStyle={{
-                    border: "none",
-                    background: "transparent"
-                  }}
-                />
-              </div>
-            )}
 
-            {loginType != "email" && (
-              <div className="flex flex-col gap-[5px]">
-                <label>Email:</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleOnChange}
-                  className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
-                />
-              </div>
-            )}
+            <div className="flex flex-col gap-[5px]">
+              <label>Phone Number:</label>
+              <PhoneInput
+                defaultCountry="gb"
+                value={data?.mobile || enteredPhoneNumber}
+                disabled={data?.mobile}
+                onChange={(phone) => setEnteredPhoneNumber(phone)}
+                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+                inputStyle={{
+                  border: "none",
+                  background: "transparent",
+                }}
+              />
+            </div>
+
+            <div className="flex flex-col gap-[5px]">
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={data?.email || formData.email}
+                disabled={data?.email}
+                onChange={handleOnChange}
+                className="bg-light_gray px-[14px] py-[8px] rounded-[5px] border "
+              />
+            </div>
 
             {errorMessage && (
               <p className="text-primary text-[15px] font-[500]">
