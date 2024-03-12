@@ -91,3 +91,18 @@ export const postSession = async (credential, authToken) => {
       alert("Something went wrong!");
     });
 };
+
+// Passenger Logout
+export const logout = async (authToken) => {
+  const formData = new FormData();
+  formData.append("device_token", "kjsdhfkjshjkkjhsdkf")
+  const data = await fetch(`${apiUrl}/passenger/logout`, {
+    method: "POST",
+    headers: {
+      AppToken: `${appToken}`,
+      Authorization: `Bearer ${authToken}`,
+    },
+    body: formData,
+  }).then((res) => res.json());
+  return data;
+};
