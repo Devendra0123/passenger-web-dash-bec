@@ -5,8 +5,6 @@ import Notice from "../components/Notice";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { db } from "../firebase/setup";
 import { useAuthContext } from "../Context/AuthContext";
-import CardLoader from "../components/SkeletonLoader/CardLoader";
-import NoticeLoader from "../components/SkeletonLoader/NoticeLoader";
 
 const Home = () => {
   const { firebaseReferenceID, isAuthenticated } = useAuthContext();
@@ -19,6 +17,24 @@ const Home = () => {
   const [scheduleBookingStatus, setScheduleBookingStatus] = useState({
     pending: true,
   });
+  const [currentBookingStatus, setCurrentBookingStatus] = useState({
+    pending: true
+  })
+  const [currentBookingData, setCurrentBookingData] = useState()
+
+    // Get Profile Data
+    function getCurrentBookingData(referenceID) {
+      try {
+        const docRef = doc(db, "passengers", referenceID, "data", "current-booking");
+        onSnapshot(docRef, (doc) => {
+          setCurrentBookingData(doc.data());
+          setCurrentBookingStatus({ pending: false});
+        });
+      } catch (error) {
+        setCurrentBookingStatus({ pending: false });
+      }
+    }
+
   // Get Notice Data
   function getPassengerNoticeData(referenceId) {
     try {
@@ -69,27 +85,32 @@ const Home = () => {
 
   useEffect(() => {
     if (firebaseReferenceID && isAuthenticated) {
+      getCurrentBookingData(firebaseReferenceID)
       getPassengerNoticeData(firebaseReferenceID);
       getScheduleBookingData(firebaseReferenceID);
+      
     }
   }, [firebaseReferenceID, isAuthenticated]);
 
   console.log("firebase reference ID", firebaseReferenceID);
   console.log(scheduleBookingData);
-  
+
   return (
     <div className="w-full flex justify-center">
       <div className="w-full grid grid-cols-2 gap-[20px]">
         {/* Current Ride */}
         <div className="h-max">
-          <CurrentRide />
+          <CurrentRide data={currentBookingData} isPending={currentBookingStatus.pending} />
         </div>
 
         <div className="flex flex-col gap-[20px]">
           {/* notices */}
-          <div>
-            <Notice data={noticeData} pending={noticeStatus?.pending} />
-          </div>
+          {noticeData?.length > 0 && (
+            <div>
+              <Notice data={noticeData} pending={noticeStatus?.pending} />
+            </div>
+          )}
+
           {/* scheduled booking */}
           <div>
             <ScheduledBooking

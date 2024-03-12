@@ -54,13 +54,11 @@ function WindowScrollTop() {
 }
 
 function App() {
-  const navigate = useNavigate();
-
   const { isAuthenticated, isLoading, firebaseReferenceID } = useAuthContext();
 
   const [data, setData] = useState();
   const [notificationData, setNotificationData] = useState();
-  const [notificationCount, setNotificationCount] = useState();
+  const [counts, setCounts] = useState();
   const [profileDataStatus, setProfileDataStatus] = useState({
     pending: true,
     error: "",
@@ -79,9 +77,22 @@ function App() {
     }
   }
 
+  // Get Counts
+  function getCounts(referenceID) {
+    try {
+      const docRef = doc(db, "passengers", referenceID, "data", "counts");
+      onSnapshot(docRef, (doc) => {
+        setCounts(doc.data());
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (firebaseReferenceID && isAuthenticated)
       getProfileData(firebaseReferenceID);
+      getCounts(firebaseReferenceID)
   }, [firebaseReferenceID, isAuthenticated]);
 
   if (isLoading) {
@@ -99,7 +110,7 @@ function App() {
           <div className="col-span-5 h-full">
             <Header
               data={data}
-              notificationCount={notificationCount}
+              notificationCount={counts?.notification}
               pending={profileDataStatus?.pending}
             />
             <div className="mt-[20px] h-full">

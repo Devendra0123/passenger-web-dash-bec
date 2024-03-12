@@ -1,14 +1,10 @@
 
-export const navigateBasedOnStatus = (status,loginType,navigate)=>{
+export const navigateBasedOnStatus = (status,navigate)=>{
 
-  console.log(status, loginType)
-    if (status || loginType) {
+  console.log(status)
+    if (status) {
         if (status == "new") {
-          const targetPath = loginType
-            ? `/account/add-profile-details?login-type=${loginType}`
-            : "/account/add-profile-details?login-type=email";
-            console.log(targetPath)
-          navigate(targetPath);
+          navigate(`/account/add-profile-details`);
         } else if (status === "required_card") {
           navigate("/account/add-card-details");
         } else if (status === "completed") {

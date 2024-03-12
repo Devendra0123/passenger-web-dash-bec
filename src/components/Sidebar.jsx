@@ -42,12 +42,12 @@ const Sidebar = () => {
       setLogoutStatus({
         isPending: true,
       });
-      await logout(authToken).then(async(res) => {
+      await logout(authToken).then(async (res) => {
         setLogoutStatus({
           isPending: false,
         });
         localStorage.removeItem("auth_Token");
-        await passengerSessionLogout(authToken)
+        await passengerSessionLogout(authToken);
         setIsAuthenticated(false);
         navigate("/login");
       });
@@ -84,9 +84,13 @@ const Sidebar = () => {
 
       <div className="w-full bg-gradient-to-r from-white to-slate-100 p-[20px] flex flex-col items-center gap-[12px] rounded-[5px]">
         <p className="text-[19px] font-semibold text-center">Take a ride</p>
-        <button className="w-max text-white font-[500] bg-primary px-[20px] py-[8px] rounded-[25px]">
+        <Link
+          to={`${import.meta.env.VITE_PASSENGER_FRONTEND_URL}`}
+          target="_blank"
+          className="w-max text-white font-[500] bg-primary px-[20px] py-[8px] rounded-[25px]"
+        >
           Book a Ride
-        </button>
+        </Link>
       </div>
 
       <div className="w-full flex flex-col gap-[3px]">
@@ -115,10 +119,15 @@ const Sidebar = () => {
 
         <div
           onClick={handleLogout}
-          className="cursor-pointer w-max flex items-center gap-1 px-[12px] py-[8px] rounded-[5px] bg-gray-300  "
+          className="mt-[50px] cursor-pointer w-max flex items-center gap-1 px-[12px] py-[8px] rounded-[5px] bg-gray-300  "
         >
           <LuLogOut />
           {logoutStatus?.isPending ? <Loader2 /> : <p>Logout</p>}
+        </div>
+
+        <div className="w-full flex flex-wrap gap-[20px] mt-[20px]">
+          <Link to={`${import.meta.env.VITE_PASSENGER_FRONTEND_URL}/terms`} target="_blank" className="text-[13px] text-slate-600 text-[400]">Terms and Conditions</Link>
+          <Link to={`${import.meta.env.VITE_PASSENGER_FRONTEND_URL}/privacy-policy`} target="_blank" className="text-[13px] text-slate-600 text-[400]">Privacy Policy</Link>
         </div>
       </div>
     </div>

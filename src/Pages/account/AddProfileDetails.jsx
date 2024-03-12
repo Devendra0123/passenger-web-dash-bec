@@ -26,7 +26,7 @@ const AddProfileDetails = () => {
     setIsAuthenticated,
   } = useAuthContext();
 
-  const loginType = searchParams.get("login-type");
+  const loginType = "";
 
   const [data, setData] = useState();
   const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
@@ -95,7 +95,7 @@ const AddProfileDetails = () => {
         setIsAuthenticated(true);
       }
 
-      navigateBasedOnStatus(profile_status, loginType, navigate);
+      navigateBasedOnStatus(profile_status, navigate);
     } catch (error) {
       setIsPending(false);
       const errorCode = error.code || "unknown";

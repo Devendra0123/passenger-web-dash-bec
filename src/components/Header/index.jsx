@@ -6,7 +6,7 @@ import { useAuthContext } from "../../Context/AuthContext";
 import ProfileNameLoader from "../SkeletonLoader/ProfileNameLoader";
 
 const Header = ({ data, pending, notificationCount }) => {
-  console.log(pending)
+  console.log(pending);
   const { isAuthenticated } = useAuthContext();
 
   if (!isAuthenticated) {
@@ -52,9 +52,11 @@ const Header = ({ data, pending, notificationCount }) => {
           className="cursor-pointer relative w-[40px] h-[40px] rounded-full bg-[#F2F2F2] hover:bg-[#E2E2E2] flex items-center justify-center "
         >
           <img src="/asset/icons/bell.svg" alt="notification-icon" />
-          <div className="absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full flex items-center justify-center bg-primary text-white">
-            <span className="text-[12px]">{notificationCount}</span>
-          </div>
+          {notificationCount > 0 && (
+            <div className="absolute top-[0px] right-[0px] w-[20px] h-[20px] rounded-full flex items-center justify-center bg-primary text-white">
+              <span className="text-[12px]">{notificationCount}</span>
+            </div>
+          )}
         </Link>
       </div>
     </div>

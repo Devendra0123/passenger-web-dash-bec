@@ -1,7 +1,10 @@
 import React, { useRef, useState, useTransition } from "react";
 import { useAuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import {
   getProfileStatus,
@@ -10,7 +13,6 @@ import {
 } from "../../query/AuthQuery";
 import { FaTimes } from "react-icons/fa";
 import { Box, Modal } from "@mui/material";
-import useNavigationBasedOnStatus from "../../hooks/useNavigateBasedOnStatus";
 import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const style = {
@@ -28,17 +30,24 @@ const style = {
 
 const SignInWithEmail = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID,loginType } =
-    useAuthContext();
+  const {
+    setIsAuthenticated,
+    setAuthToken,
+    setUid,
+    setFirebaseReferenceID,
+    loginType,
+  } = useAuthContext();
 
   const [isRegisterBtnClicked, setIsRegisterBtnClicked] = useState(false);
   const [displayAddCard, setDisplayAddCard] = useState(false);
   const [open, setOpen] = useState(false);
   const [authErrorMessage, setAuthErrorMessage] = useState("");
-  // const [passwordResetEmail, setPasswordResetEmail] = useState("");
-  // const [passwordResetFormStatus, setPasswordResetFormStatus] = useState({
-  //   pending: false,
-  // });
+  const [passwordResetEmail, setPasswordResetEmail] = useState("");
+  const [passwordResetFormStatus, setPasswordResetFormStatus] = useState({
+    pending: false,
+    message: "",
+    error: "",
+  });
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -58,6 +67,7 @@ const SignInWithEmail = () => {
     });
   };
 
+  // Handle Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
@@ -93,6 +103,7 @@ const SignInWithEmail = () => {
       const { profile_status, firebase_reference } = status.data;
 
       setFirebaseReferenceID(firebase_reference);
+
       // Session post
       await postSession(credential, auth_token);
 
@@ -100,7 +111,7 @@ const SignInWithEmail = () => {
       if (profile_status == "completed") {
         setIsAuthenticated(true);
       }
-      navigateBasedOnStatus(profile_status, loginType, navigate);
+      navigateBasedOnStatus(profile_status, navigate);
     } catch (error) {
       setSignInStatus({ pending: false });
 
@@ -108,6 +119,32 @@ const SignInWithEmail = () => {
       const errorMessage = error.message || "An error occurred";
       setAuthErrorMessage(errorMessage);
       console.error(errorCode, errorMessage);
+    }
+  };
+
+  // Handle Password Reset
+  const handlePasswordReset = async () => {
+    if (!passwordResetEmail) return;
+    setPasswordResetFormStatus({
+      pending: true,
+      message: "",
+      error: "",
+    });
+    try {
+      await sendPasswordResetEmail(auth, passwordResetEmail).then((res) => {
+        setPasswordResetFormStatus({
+          pending: false,
+          message:
+            "Password reset email sent! Check your mail to reset password.",
+          error: "",
+        });
+      });
+    } catch (error) {
+      setPasswordResetFormStatus({
+        pending: false,
+        message: "",
+        error: error.message,
+      });
     }
   };
 
@@ -162,15 +199,17 @@ const SignInWithEmail = () => {
               </p>
             )}
 
-            {/* <div className="w-full flex justify-end ">
+            <div className="w-full flex justify-end ">
               <button
                 type="button"
-                onClick={() => setOpen(true)}
+                onClick={(e) => {
+                  setOpen(true);
+                }}
                 className="bg-none text-[12px] text-slate-700"
               >
                 Forgot Password?
               </button>
-            </div> */}
+            </div>
             <button
               type="submit"
               disabled={signInStatus.pending}
@@ -211,7 +250,7 @@ const SignInWithEmail = () => {
       </div>
 
       {/* Forgot Password modal */}
-      {/* {open && (
+      {open && (
         <div>
           <Modal
             open={open}
@@ -239,7 +278,7 @@ const SignInWithEmail = () => {
 
                 <div className="w-full lg:w-[300px] flex flex-col gap-[10px]">
                   <input
-                    type="text"
+                    type="email"
                     placeholder="Enter your email id"
                     value={passwordResetEmail}
                     onChange={(e) => setPasswordResetEmail(e.target.value)}
@@ -247,6 +286,7 @@ const SignInWithEmail = () => {
                   />
                   <button
                     type="button"
+                    onClick={handlePasswordReset}
                     disabled={
                       !passwordResetEmail || passwordResetFormStatus?.pending
                     }
@@ -256,14 +296,35 @@ const SignInWithEmail = () => {
                         : "bg-blue-500"
                     } px-[20px] py-[7px] text-white rounded-[4px]`}
                   >
-                    Submit
+                    {passwordResetFormStatus.pending ? (
+                      <span className="flex items-center gap-[3px] justify-center ">
+                        <svg
+                          className="animate-spin h-5 w-5 mr-3 ..."
+                          viewBox="0 0 24 24"
+                          fill="#fff"
+                        >
+                          <path d="M0 11c.511-6.158 5.685-11 12-11s11.489 4.842 12 11h-2.009c-.506-5.046-4.793-9-9.991-9s-9.485 3.954-9.991 9h-2.009zm21.991 2c-.506 5.046-4.793 9-9.991 9s-9.485-3.954-9.991-9h-2.009c.511 6.158 5.685 11 12 11s11.489-4.842 12-11h-2.009z" />
+                        </svg>
+                        Processing...
+                      </span>
+                    ) : (
+                      "Submit"
+                    )}
                   </button>
+
+                  {passwordResetFormStatus.message && (
+                    <p className="text-green-500 text-[14px]">{passwordResetFormStatus.message}</p>
+                  )}
+
+                  {passwordResetFormStatus.error && (
+                    <p className="text-red-500 text-[14px]">{passwordResetFormStatus.error}</p>
+                  )}
                 </div>
               </div>
             </Box>
           </Modal>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

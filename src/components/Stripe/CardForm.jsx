@@ -102,7 +102,7 @@ const CardForm = () => {
           if (profile_status == "completed") {
             setIsAuthenticated(true);
           }
-          navigateBasedOnStatus(profile_status, loginType, navigate);
+          navigateBasedOnStatus(profile_status, navigate);
         }
       }
     } catch (error) {

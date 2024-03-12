@@ -110,13 +110,27 @@ export const logout = async (authToken) => {
 
 // Passenger-session-logout
 export const passengerSessionLogout = async(authToken)=>{
-  const data = await fetch(`${sessionUrl}/passenger-session-logout`, {
+  $.ajax({
     method: "GET",
-    headers: {
-      AppToken: `${appToken}`,
-      Authorization: `Bearer ${authToken}`,
+    xhrFields: {
+      withCredentials: true,
     },
-  }).then((res) => res.json());
-
-  return data;
+    headers:{
+      "Content-Type": "application/json",
+      AppToken: `${appToken}`,
+      Authorization: `Bearer ${authToken}`
+    },
+    url: `${sessionUrl}/passenger-session-logout`,
+  })
+    .done(function (data) {
+      return data;
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ...
+    })
+    .fail(function () {
+      alert("Something went wrong!");
+    });
 }

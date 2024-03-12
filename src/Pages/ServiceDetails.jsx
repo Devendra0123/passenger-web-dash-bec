@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { scheduledBookingData } from "../consts/servicesData";
-import Rating from "../components/Element/Rating";
 import GoogleMapDirection from "../components/CurrentRide/GoogleMap";
 import { IoCall } from "react-icons/io5";
 import CancelBookingConfirmation from "../components/modal/CancelBookingConfirmation";
@@ -22,6 +20,7 @@ const ServiceDetails = () => {
   const { firebaseReferenceID } = useAuthContext();
 
   const { slug } = useParams();
+  console.log(slug)
   const [searchParams] = useSearchParams();
   const serviceType = searchParams.get("service-type");
 
@@ -53,14 +52,14 @@ const ServiceDetails = () => {
     }
   }, [firebaseReferenceID]);
 
-  if (!bookingDetailsData) {
-    return <span>No Data Found</span>;
-  }
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   console.log(bookingDetailsData);
+  
+  if (!bookingDetailsData) {
+    return <span>No Data Found</span>;
+  }
 
   return (
     <div>

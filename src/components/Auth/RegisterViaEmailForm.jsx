@@ -4,16 +4,23 @@ import { RxCross2 } from "react-icons/rx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/setup";
 import { useAuthContext } from "../../Context/AuthContext";
-import { loginPassenger, registerPassenger } from "../../query/AuthQuery";
+import {
+  getProfileStatus,
+  loginPassenger,
+  postSession,
+  registerPassenger,
+} from "../../query/AuthQuery";
 import { PhoneInput } from "react-international-phone";
 import "react-international-phone/style.css";
 import { useNavigate } from "react-router";
+import { navigateBasedOnStatus } from "../../utils/navigateBasedOnStatus";
 
 const RegisterViaEmail = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const { setIsAuthenticated, setAuthToken, setUid } = useAuthContext();
+  const { setIsAuthenticated, setAuthToken, setUid, setFirebaseReferenceID } =
+    useAuthContext();
 
   const [file, setFile] = useState();
   const [uploadedImageUrl, setUploadedImageUrl] = useState(null);
@@ -77,7 +84,7 @@ const RegisterViaEmail = () => {
 
       const res = await loginPassenger(credential);
 
-      const { auth_token, profile_status } = res.data;
+      const { auth_token } = res.data;
 
       setUid(user.uid);
       setAuthToken(auth_token);
@@ -89,15 +96,22 @@ const RegisterViaEmail = () => {
         mobile: enteredPhoneNumber,
         profile_image: file,
       };
-      
-      if (profile_status == "new") {
-        const response = await registerPassenger(passengerInfo, auth_token);
 
-        navigate(`/account/add-card-details`);
-      }
+      await registerPassenger(passengerInfo, auth_token).then(async (res) => {
+        // Session post
+        await postSession(credential, auth_token);
+        // Get Profile Status
+        const status = await getProfileStatus(auth_token);
+        const { profile_status, firebase_reference } = status.data;
 
-      // Save the auth token in localStorage
-      localStorage.setItem("auth_Token", auth_token);
+        setFirebaseReferenceID(firebase_reference);
+        if (profile_status == "completed") {
+          setIsAuthenticated(true);
+        }
+        navigateBasedOnStatus(profile_status, navigate);
+      });
+
+      navigate(`/account/add-card-details`);
 
       setRegisterStatus({
         pending: false,
@@ -230,7 +244,9 @@ const RegisterViaEmail = () => {
         <button
           type="submit"
           disabled={registerStatus.pending}
-          className={`mt-[20px] w-full px-[20px] py-[10px] ${registerStatus.pending ? "bg-blue-500/50" : "bg-blue-500"} text-white `}
+          className={`mt-[20px] w-full px-[20px] py-[10px] ${
+            registerStatus.pending ? "bg-blue-500/50" : "bg-blue-500"
+          } text-white `}
         >
           {registerStatus.pending ? (
             <span className="flex items-center gap-[3px] justify-center ">

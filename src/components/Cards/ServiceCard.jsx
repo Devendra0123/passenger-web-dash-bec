@@ -34,6 +34,7 @@ const ServiceCard = ({
     distance,
     driver,
     dropOffTime,
+    reference
   } = data;
 
   const [totalPrice, setTotalPrice] = useState();
@@ -60,8 +61,8 @@ const ServiceCard = ({
         doNotShowHoverEffect || serviceType == "current"
           ? ""
           : isHistory
-          ? `/service-details/${id}?service-type=history`
-          : `/service-details/${id}`
+          ? `/service-details/${reference}?service-type=history`
+          : `/service-details/${reference}`
       }
       className={`cursor-pointer w-full ${
         serviceType == "current"
@@ -115,7 +116,7 @@ const ServiceCard = ({
 
       <div className="w-full flex items-center justify-between gap-[5px]">
         <p className="px-[5px] py-[5px] rounded-[25px] bg-white text-center text-[14px] font-[400]">
-          BKID : <span>{id}</span>
+          BKID : <span>{reference}</span>
         </p>
         {pickup_date_time && (
           <p className="text-slate-500 text-[13px] px-[5px] py-[5px] rounded-[25px] bg-white text-center">

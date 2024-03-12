@@ -145,7 +145,7 @@ const SignInWithPhone = () => {
       if(profile_status == "completed"){
         setIsAuthenticated(true)
       }
-      navigateBasedOnStatus(profile_status, "mobile", navigate);
+      navigateBasedOnStatus(profile_status, navigate);
     } catch (error) {
       setOtpVerificationStatus({ pending: false });
       const errorCode = error.code;
