@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
   const location = useLocation();
 
   const pathname = location.pathname;
-
+console.log(pathname)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [authToken, setAuthToken] = useState("");
